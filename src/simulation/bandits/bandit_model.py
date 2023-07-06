@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 
 class BanditModel(ABC):
-    def __init__(self, n_arms):
+    def __init__(self, n_arms: int):
         self.n_arms = n_arms
 
     @abstractmethod
@@ -10,5 +10,5 @@ class BanditModel(ABC):
         pass
 
     @abstractmethod
-    def get_reward(self, reward: float):
+    def update(self, reward: float):
         pass

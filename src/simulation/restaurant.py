@@ -1,7 +1,7 @@
-
+from distributions.distribution import Distribution
 
 class Restaurant:
-    def __init__(self, distribution):
+    def __init__(self, distribution: Distribution):
         self.distribution = distribution
         self.history = []
 
