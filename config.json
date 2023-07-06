@@ -1,0 +1,46 @@
+{
+  "simulation": {
+    "frames": 100
+  },
+  "restaurants": [
+    {
+      "distribution": "normal",
+      "parameters": {
+        "mean": 5,
+        "sd": 1
+      }
+    },
+    {
+      "distribution": "normal",
+      "parameters": {
+        "mean": 6,
+        "sd": 1
+      }
+    },
+    {
+      "distribution": "normal",
+      "parameters": {
+        "mean": 7,
+        "sd": 1
+      }
+    },
+    {
+      "distribution": "normal",
+      "parameters": {
+        "mean": 8,
+        "sd": 1
+      }
+    },
+    {
+      "distribution": "normal",
+      "parameters": {
+        "mean": 9,
+        "sd": 1
+      }
+    }
+  ],
+  "bandit": {
+    "model": "random",
+    "parameters": {}
+  }
+}
