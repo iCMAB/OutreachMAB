@@ -1,4 +1,4 @@
-from distributions.distribution import Distribution
+from .distributions.distribution import Distribution
 
 class Restaurant:
     def __init__(self, distribution: Distribution):
