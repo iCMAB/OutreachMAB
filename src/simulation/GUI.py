@@ -33,12 +33,12 @@ class App:
 
         rightButton = tk.Button(root)
         rightButton["bg"] = "#f0f0f0"
-        ft = tkFont.Font(family='Times',size=30)
+        ft = tkFont.Font(family='Times', size=30)
         rightButton["font"] = ft
         rightButton["fg"] = "#000000"
         rightButton["justify"] = "center"
         rightButton["text"] = ">"
-        rightButton.place(x=390,y=370,width=140,height=80)
+        rightButton.place(x=390, y=370, width=140, height=80)
         rightButton["command"] = self.increaseCommand
 
         currentIter=tk.Label(root, textvariable=str(self.iter))
