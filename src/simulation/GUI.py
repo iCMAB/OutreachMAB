@@ -1,13 +1,13 @@
 import tkinter as tk
 import tkinter.font as tkFont
-from .simulator import Simulator
+#from .simulator import Simulator
 
 class App:
     rightButton = tk.Button
     currentIter = tk.Label
     leftButton = tk.Button
     def __init__(self, root):
-        simulation = Simulator("../config")
+        #simulation = Simulator("../config")
         root.title("Restaurant Outreach")
         width = 600
         height = 500
@@ -18,10 +18,18 @@ class App:
         root.resizable(width=False, height=False)
 
         #Variables for labels
-        self.integer = tk.IntVar()
-        self.integer.set(1)
+        self.iter = tk.IntVar()
+        self.iter.set(1)
 
-        self.restaurantNum = "Selection: Restaurant #"
+        self.restaurantNum = tk.StringVar()
+        self.restaurantNum.set("Selected: Restaurant #")
+
+        self.reward = tk.StringVar()
+        self.reward.set("Reward: ")
+
+        self.regret = tk.StringVar()
+        self.regret.set("Regret: ")
+
 
         rightButton = tk.Button(root)
         rightButton["bg"] = "#f0f0f0"
@@ -33,7 +41,7 @@ class App:
         rightButton.place(x=390,y=370,width=140,height=80)
         rightButton["command"] = self.increaseCommand
 
-        currentIter=tk.Label(root, textvariable=str(self.integer))
+        currentIter=tk.Label(root, textvariable=str(self.iter))
         ft = tkFont.Font(family='Times', size=50)
         currentIter["font"] = ft
         currentIter["fg"] = "#333333"
@@ -50,33 +58,34 @@ class App:
         leftButton.place(x=60, y=370, width=140, height=80)
         leftButton["command"] = self.decreaseCommand
 
-        GLabel_6 = tk.Label(root, textvariable=str(self.restaurantNum))
+        selectionLabel = tk.Label(root, textvariable=str(self.restaurantNum))
         ft = tkFont.Font(family='Times', size=23)
-        GLabel_6["font"] = ft
-        GLabel_6["fg"] = "#333333"
-        GLabel_6["justify"] = "left"
-        GLabel_6.place(x=60, y=90, width=300, height=40)
+        selectionLabel["font"] = ft
+        selectionLabel["fg"] = "#333333"
+        selectionLabel["justify"] = "left"
+        selectionLabel.place(x=60, y=90, width=300, height=40)
 
-        GLabel_411 = tk.Label(root, textvariable=str(self.reward))
+        rewardLabel = tk.Label(root, textvariable=str(self.reward))
         ft = tkFont.Font(family='Times', size=23)
-        GLabel_411["font"] = ft
-        GLabel_411["fg"] = "#333333"
-        GLabel_411["justify"] = "left"
-        GLabel_411.place(x=60, y=150, width=300, height=40)
+        rewardLabel["font"] = ft
+        rewardLabel["fg"] = "#333333"
+        rewardLabel["justify"] = "left"
+        rewardLabel.place(x=60, y=150, width=300, height=40)
 
-        GLabel_582 = tk.Label(root, textvariable=str(self.regret))
+        regretLabel = tk.Label(root, textvariable=str(self.regret))
         ft = tkFont.Font(family='Times', size=23)
-        GLabel_582["font"] = ft
-        GLabel_582["fg"] = "#333333"
-        GLabel_582["justify"] = "left"
-        GLabel_582.place(x=60, y=210, width=300, height=40)
+        regretLabel["font"] = ft
+        regretLabel["fg"] = "#333333"
+        regretLabel["justify"] = "left"
+        regretLabel.place(x=60, y=210, width=300, height=40)
 
     def increaseCommand(self):
-        self.integer.set(self.integer.get() + 1)
+        self.iter.set(self.iter.get() + 1)
 
 
     def decreaseCommand(self):
-        self.integer.set(self.integer.get() - 1)
+        if (self.iter.get() > 1):
+            self.iter.set(self.iter.get() - 1)
 
 if __name__ == "__main__":
     root = tk.Tk()
