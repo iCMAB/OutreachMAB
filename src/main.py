@@ -1,7 +1,7 @@
 from simulation.simulator import Simulator
 
 def main():
-    sim = Simulator("config.json")
+    sim = Simulator("../config.json")
     sim.run_simulation()
 
 
