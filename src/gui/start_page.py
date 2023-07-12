@@ -25,3 +25,7 @@ class StartPage(ttk.Frame):
         # putting the button in its place by
         # using grid
         button2.grid(row=2, column=1, padx=10, pady=10)
+
+
+        button3 = ttk.Button(self, text="Quit", command=lambda: controller.destroy())
+        button3.grid(row=3, column=1, padx=10, pady=10)
