@@ -1,8 +1,9 @@
 from simulation.simulator import Simulator
+from gui.app import App
 
 def main():
-    sim = Simulator("../config.json")
-    sim.run_simulation()
+    app = App()
+    app.mainloop()
 
 
 # Press the green button in the gutter to run the script.
