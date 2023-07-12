@@ -9,7 +9,7 @@ class App:
     currentIter = tk.Label
     leftButton = tk.Button
     def __init__(self, root):
-        self.simulation = Simulator("../../config.json")
+        self.simulation = Simulator("../config.json")
         self.simulation.run_simulation()
 
         root.title("Restaurant Outreach")

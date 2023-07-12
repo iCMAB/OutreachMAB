@@ -1,5 +1,6 @@
 import json
-from typing import List
+from typing import List, Dict
+from collections.abc import Mapping, MutableMapping
 
 from .distributions import DISTRIBUTIONS
 from .bandits import BANDITS, BanditModel
@@ -21,14 +22,14 @@ class Frame:
 
 
 class Simulator:
-    def __init__(self, config_filepath: str):
+    def __init__(self, config_filepath: str, overrides: Dict[str, Dict] = None):
         with open(config_filepath, "r") as config_file:
-            config = json.load(config_file)
-        self.config = config
+            config: Dict[str, Dict] = json.load(config_file)
+        self.config = recursive_update(config, overrides or {})
 
         self.num_frames = config["simulation"]["frames"]
         self.frame_num = 0
-        self.frames = []
+        self.frames = {}
 
         self.restaurants = []
         for r_config in config["restaurants"]:
@@ -42,18 +43,21 @@ class Simulator:
     def run_simulation(self):
         self.log_start()
         for i in range(self.num_frames):
-            self.frame_num = i
-            frame = self.run_frame()
-            self.frames.append(frame)
-            self.log_frame(frame)
+            self.run_frame(i)
 
-    def run_frame(self) -> Frame:
+    def run_frame(self, index: int) -> Frame:
+        self.frame_num = index
+
         frame = Frame(
-            frame_num=self.frame_num,
+            frame_num=index,
             rewards=[r.sample() for r in self.restaurants],
             choice=self.bandit.select_arm()
         )
         self.bandit.update(frame.reward)
+
+        self.frames[index] = frame
+        self.log_frame(frame)
+
         return frame
 
     def log_start(self):
@@ -69,3 +73,19 @@ class Simulator:
         print(f"Restaurant Selected: {frame.choice}")
         print(f"Reward: {frame.reward}")
         print(f"Regret: {frame.regret}")
+
+def recursive_update(d: MutableMapping, u: Mapping) -> MutableMapping:
+    """
+    Recursively updates dict1 with values from dict2. If a conflicting value is a Mapping, recursively updates the value
+    rather than replace it. Does not add entries, only updates them.
+
+    :param d: The original Mapping to update
+    :param u: The Mapping to update value from
+    :return: A reference to the d Mapping
+    """
+    for k, v in u.items():
+        if isinstance(v, Mapping):
+            d[k] = recursive_update(d.get(k, {}), v)
+        else:
+            d[k] = v
+    return d
