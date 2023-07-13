@@ -2,9 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 import tkinter.font as tkFont
 
-class SettingsPage(ttk.Frame):
+from .page import Page
+
+class SettingsPage(Page):
     def __init__(self, parent, controller):
-        super().__init__(parent)
+        super().__init__(parent, controller)
 
         self.grid_columnconfigure((1,2,3,4,5), weight=1)
 
