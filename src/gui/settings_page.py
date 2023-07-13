@@ -2,9 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 import tkinter.font as tkFont
 
-class SettingsPage(ttk.Frame):
+from .page import Page
+
+class SettingsPage(Page):
     def __init__(self, parent, controller):
-        super().__init__(parent)
+        super().__init__(parent, controller)
 
         # label of frame Layout 2
         label = ttk.Label(self, text="Settings", justify="center", font=tkFont.Font(size=18))
