@@ -2,6 +2,7 @@
   "simulation": {
     "frames": 100
   },
+  "options": 5,
   "restaurants": [
     {
       "distribution": "normal",

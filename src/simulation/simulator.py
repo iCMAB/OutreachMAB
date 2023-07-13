@@ -31,11 +31,16 @@ class Simulator:
         self.frame_num = 0
         self.frames = {}
 
+        self.num_restaurants = self.config["options"]
         self.restaurants = []
+        self.added_restaurants = 0;
         for r_config in config["restaurants"]:
             self.restaurants.append(Restaurant(
                 distribution=DISTRIBUTIONS[r_config["distribution"]](**r_config["parameters"])
             ))
+            self.added_restaurants += 1
+            if self.added_restaurants >= self.num_restaurants:
+                break
 
         self.bandit: BanditModel = BANDITS[config["bandit"]["model"]] \
             (n_arms=len(self.restaurants), **config["bandit"]["parameters"])
