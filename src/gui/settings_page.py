@@ -33,7 +33,7 @@ class SettingsPage(Page):
             "Linear UCB"
         ]
 
-        bandit_dropdown = tk.OptionMenu(self, self.selected_bandit, *options)
+        bandit_dropdown = ttk.OptionMenu(self, self.selected_bandit, *options)
         bandit_dropdown.grid(row=1, column=5, pady=10, sticky="nsew")
 
         #number of arms label and entry box
@@ -42,7 +42,7 @@ class SettingsPage(Page):
         arms_label.grid(row=2, column=1, padx=(10, 0), pady=10, columnspan=4, sticky="ew")
 
         self.num_of_arms = tk.IntVar(value=5)
-        arms_number = tk.Entry(self, exportselection=0, textvariable=self.num_of_arms, background='#b0ada9', justify='center', font=tkFont.Font(size=18))
+        arms_number = ttk.Entry(self, exportselection=0, textvariable=self.num_of_arms, background='#b0ada9', justify='center', font=tkFont.Font(size=18))
         arms_number.grid(row=2, column=4, pady=10, sticky="nsew")
 
         #number of iterations label and entry box
@@ -55,5 +55,5 @@ class SettingsPage(Page):
         button1.grid(row=4, column=1, padx=10, pady=10, ipadx=50, ipady=20)
 
         self.num_of_iters = tk.IntVar(value=100)
-        iter_number = tk.Entry(self, exportselection=0, textvariable=self.num_of_iters, background='#b0ada9', justify='center', font=tkFont.Font(size=18))
+        iter_number = ttk.Entry(self, exportselection=0, textvariable=self.num_of_iters, background='#b0ada9', justify='center', font=tkFont.Font(size=18))
         iter_number.grid(row=3, column=4, pady=10, sticky="nsew")
