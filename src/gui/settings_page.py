@@ -61,12 +61,6 @@ class SettingsPage(Page):
         self.iter_number.grid(row=3, column=4, padx=(0, 10), pady=10, sticky="nsew", columnspan=3)
 
         def start():
-            '''overrides: Dict[str, Dict] = {}
-            overrides['simulation'] = {}
-            overrides['simulation']['frames'] = iter_number.get()
-            overrides['options'] = arms_number.get()
-            overrides['bandit'] = {}
-            overrides['bandit']['model'] = self.selected_bandit.get()'''
 
             self.controller.simulation.num_frames = int(self.iter_number.get())
             self.controller.simulation.bandit: BanditModel = BANDITS[self.selected_bandit.get()] \
