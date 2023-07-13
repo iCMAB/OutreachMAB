@@ -48,8 +48,6 @@ class SettingsPage(Page):
         self.num_of_arms = tk.IntVar(value=5)
         arms_number = tk.Entry(self, exportselection=0, textvariable=self.num_of_arms, background='#b0ada9', justify='center', font=tkFont.Font(size=18))
         arms_number.grid(row=2, column=4, padx=(0, 10), pady=10, sticky="nsew", columnspan=3)
-        arms_number = ttk.Entry(self, exportselection=0, textvariable=self.num_of_arms, background='#b0ada9', justify='center', font=tkFont.Font(size=18))
-        arms_number.grid(row=2, column=4, pady=10, sticky="nsew")
 
         #number of iterations label and entry box
         iterations_label = ttk.Label(self, text="Number of Iterations", font=tkFont.Font(size=18), background='#b0ada9',
