@@ -24,7 +24,7 @@ class StartPage(ttk.Frame):
 
 
         ## button to show frame 2 with text layout2
-        button2 = ttk.Button(self, text="Options")
+        button2 = ttk.Button(self, text="Settings", command=lambda: controller.set_page("settings"))
 
         # putting the button in its place by
         # using grid

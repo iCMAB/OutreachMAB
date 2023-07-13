@@ -5,6 +5,7 @@ from tkinter import ttk
 
 from .start_page import StartPage
 from .simulation_page import SimulationPage
+from .settings_page import SettingsPage
 
 class App(tk.Tk):
     rightButton = tk.Button
@@ -21,7 +22,8 @@ class App(tk.Tk):
 
         self.frames: Dict[str, ttk.Frame] = {
             "start": StartPage(container, self),
-            "simulation": SimulationPage(container, self)
+            "simulation": SimulationPage(container, self),
+            "settings": SettingsPage(container, self)
         }
 
         for _, v in self.frames.items():
