@@ -4,7 +4,6 @@ import tkinter.font as tkfont
 from typing import Optional
 
 from .page import Page
-from src.simulation.simulator import Simulator
 
 class SimulationPage(Page):
     def __init__(self, parent, controller):
@@ -22,57 +21,57 @@ class SimulationPage(Page):
         self.reward_string = tk.StringVar()
         self.regret_string = tk.StringVar()
 
-        right_button = tk.Button(self)
-        right_button["bg"] = "#f0f0f0"
-        ft = tkfont.Font(family='Times', size=30)
-        right_button["font"] = ft
-        right_button["fg"] = "#000000"
-        right_button["justify"] = "center"
-        right_button["text"] = ">"
-        right_button.place(x=390, y=370, width=140, height=80)
-        right_button["command"] = self.increaseCommand
+        nav_button_style = ttk.Style().configure(
+            "Nav.TButton",
+            background="#f0f0f0",
+            font=('Times', 30),
+            foreground="#000000",
+            justify="center",
+        )
 
-        current_iter = tk.Label(self, textvariable=self.iter)
-        ft = tkfont.Font(family='Times', size=50)
-        current_iter["font"] = ft
-        current_iter["fg"] = "#333333"
-        current_iter["justify"] = "center"
+        right_button = ttk.Button(
+            self,
+            style="Nav.TButton",
+            text=">",
+            command=self.increaseCommand
+        )
+        right_button.place(x=390, y=370, width=140, height=80)
+
+        left_button = ttk.Button(
+            self,
+            style="Nav.TButton",
+            text="<",
+            command=self.decreaseCommand
+        )
+        left_button.place(x=60, y=370, width=140, height=80)
+
+        current_iter = ttk.Label(
+            self,
+            font=tkfont.Font(family='Times', size=50),
+            foreground="#333333",
+            justify="center",
+            textvariable=self.iter,
+        )
         current_iter.place(x=230, y=370, width=131, height=65)
 
-        left_button = tk.Button(self)
-        left_button["bg"] = "#f0f0f0"
-        ft = tkfont.Font(family='Times', size=30)
-        left_button["font"] = ft
-        left_button["fg"] = "#000000"
-        left_button["justify"] = "center"
-        left_button["text"] = "<"
-        left_button.place(x=60, y=370, width=140, height=80)
-        left_button["command"] = self.decreaseCommand
+        label_style = ttk.Style().configure(
+            "TLabel",
+            font=("Times", 23),
+            foreground="#333333",
+            justify="left"
+        )
 
-        selection_label = tk.Label(self, textvariable=self.restaurant_string)
-        ft = tkfont.Font(family='Times', size=23)
-        selection_label["font"] = ft
-        selection_label["fg"] = "#333333"
-        selection_label["justify"] = "left"
+        selection_label = ttk.Label(self, textvariable=self.restaurant_string)
         selection_label.place(x=60, y=90, width=300, height=40)
 
-        reward_label = tk.Label(self, textvariable=self.reward_string)
-        ft = tkfont.Font(family='Times', size=23)
-        reward_label["font"] = ft
-        reward_label["fg"] = "#333333"
-        reward_label["justify"] = "left"
+        reward_label = ttk.Label(self, textvariable=self.reward_string)
         reward_label.place(x=60, y=150, width=300, height=40)
 
-        regret_label = tk.Label(self, textvariable=self.regret_string)
-        ft = tkfont.Font(family='Times', size=23)
-        regret_label["font"] = ft
-        regret_label["fg"] = "#333333"
-        regret_label["justify"] = "left"
+        regret_label = ttk.Label(self, textvariable=self.regret_string)
         regret_label.place(x=60, y=210, width=300, height=40)
 
     def open(self):
-        self.simulation = Simulator("../config.json")
-        self.simulation.run_simulation()
+        self.controller.simulation.run_simulation()
         self.update_labels(frame_num=0)
 
     def increaseCommand(self):
@@ -91,7 +90,7 @@ class SimulationPage(Page):
         else:
             self.iter.set(frame_num)
 
-        frame = self.simulation.frames[frame_num]
+        frame = self.controller.simulation.frames[frame_num]
 
         self.iter.set(frame_num)
         self.restaurant_string.set(self.formats["restaurant"].format(frame.choice))

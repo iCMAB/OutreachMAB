@@ -7,13 +7,14 @@ from .page import Page
 from .start_page import StartPage
 from .simulation_page import SimulationPage
 from .settings_page import SettingsPage
+from src.simulation.simulator import Simulator
+
 
 class App(tk.Tk):
-    rightButton = tk.Button
-    currentIter = tk.Label
-    leftButton = tk.Button
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.simulation = Simulator("../config.json")
 
         container = ttk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -49,6 +50,7 @@ class App(tk.Tk):
         new_page.open()
         self.current_page = new_page
         new_page.tkraise()
+
 
 if __name__ == "__main__":
     root = tk.Tk()
