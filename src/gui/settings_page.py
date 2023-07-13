@@ -47,8 +47,8 @@ class SettingsPage(Page):
         arms_label.grid(row=2, column=1, padx=(10, 0), pady=10, columnspan=4, sticky="nsew")
 
         self.num_of_arms = tk.IntVar(value=5)
-        arms_number = tk.Entry(self, exportselection=0, textvariable=self.num_of_arms, background='#b0ada9', justify='center', font=tkFont.Font(size=18))
-        arms_number.grid(row=2, column=4, padx=(0, 10), pady=10, sticky="nsew", columnspan=3)
+        self.arms_number = tk.Entry(self, exportselection=0, textvariable=self.num_of_arms, background='#b0ada9', justify='center', font=tkFont.Font(size=18))
+        self.arms_number.grid(row=2, column=4, padx=(0, 10), pady=10, sticky="nsew", columnspan=3)
 
         #number of iterations label and entry box
         iterations_label = ttk.Label(self, text="Number of Iterations", font=tkFont.Font(size=18), background='#b0ada9',
@@ -69,7 +69,8 @@ class SettingsPage(Page):
             overrides['bandit']['model'] = self.selected_bandit.get()'''
 
             self.controller.simulation.num_frames = int(self.iter_number.get())
-            #self.controller.simulation.bandit: BanditModel = BANDITS[self.selected_bandit.get()]
+            self.controller.simulation.bandit: BanditModel = BANDITS[self.selected_bandit.get()] \
+                (n_arms=int(self.arms_number.get()), **self.controller.simulation.config["bandit"]["parameters"])
 
             self.controller.simulation.run_simulation()
             self.controller.set_page("simulation")
