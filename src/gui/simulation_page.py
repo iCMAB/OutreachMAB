@@ -3,14 +3,12 @@ from tkinter import ttk
 import tkinter.font as tkfont
 from typing import Optional
 
+from .page import Page
 from src.simulation.simulator import Simulator
 
-class SimulationPage(ttk.Frame):
+class SimulationPage(Page):
     def __init__(self, parent, controller):
-        super().__init__(parent)
-
-        self.simulation = Simulator("../config.json")
-        self.simulation.run_simulation()
+        super().__init__(parent, controller)
 
         self.formats = {
             "restaurant": "Selected: Restaurant {}",
@@ -23,7 +21,6 @@ class SimulationPage(ttk.Frame):
         self.restaurant_string = tk.StringVar()
         self.reward_string = tk.StringVar()
         self.regret_string = tk.StringVar()
-        self.update_labels(frame_num=0)
 
         right_button = tk.Button(self)
         right_button["bg"] = "#f0f0f0"
@@ -72,6 +69,11 @@ class SimulationPage(ttk.Frame):
         regret_label["fg"] = "#333333"
         regret_label["justify"] = "left"
         regret_label.place(x=60, y=210, width=300, height=40)
+
+    def activate(self):
+        self.simulation = Simulator("../config.json")
+        self.simulation.run_simulation()
+        self.update_labels(frame_num=0)
 
     def increaseCommand(self):
         frame_num = self.iter.get() + 1

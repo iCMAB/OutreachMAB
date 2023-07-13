@@ -3,6 +3,7 @@ from typing import Dict
 import tkinter as tk
 from tkinter import ttk
 
+from .page import Page
 from .start_page import StartPage
 from .simulation_page import SimulationPage
 from .settings_page import SettingsPage
@@ -20,13 +21,13 @@ class App(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
-        self.frames: Dict[str, ttk.Frame] = {
+        self.pages: Dict[str, Page] = {
             "start": StartPage(container, self),
             "simulation": SimulationPage(container, self),
             "settings": SettingsPage(container, self)
         }
 
-        for _, v in self.frames.items():
+        for _, v in self.pages.items():
             v.grid(row=0, column=0, sticky="nsew")
 
         self.title("Restaurant Outreach")
@@ -40,9 +41,10 @@ class App(tk.Tk):
 
         self.set_page("start")
 
-    def set_page(self, page: str):
-        frame = self.frames[page]
-        frame.tkraise()
+    def set_page(self, page_name: str):
+        page = self.pages[page_name]
+        page.activate()
+        page.tkraise()
 
 if __name__ == "__main__":
     root = tk.Tk()
