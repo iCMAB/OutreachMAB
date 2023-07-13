@@ -70,7 +70,7 @@ class SimulationPage(Page):
         regret_label["justify"] = "left"
         regret_label.place(x=60, y=210, width=300, height=40)
 
-    def activate(self):
+    def open(self):
         self.simulation = Simulator("../config.json")
         self.simulation.run_simulation()
         self.update_labels(frame_num=0)

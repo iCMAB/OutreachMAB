@@ -29,7 +29,6 @@ class SettingsPage(Page):
         model_selection = ttk.Label(self, textvariable=self.selected_bandit, font=tkFont.Font(size=18), background='#b0ada9', borderwidth=40, justify="left", relief="solid")
         model_selection.grid(row=1, column=3, pady=10, columnspan=3, sticky="nsew")
 
-
         #the actual menu for bandit selection
         bandit_menu_button = tk.Menubutton(self, background='#b0ada9', borderwidth=1, relief="solid", text="V")
         bandit_menu = tk.Menu(bandit_menu_button, tearoff=False)
@@ -40,6 +39,7 @@ class SettingsPage(Page):
 
         bandit_menu_button.grid(row=1, column=6, padx=(0, 10), pady=10, sticky="nsew")
 
+
         #number of arms label and entry box
         arms_label = ttk.Label(self, text="Number of Arms", font=tkFont.Font(size=18), background='#b0ada9',
                                 borderwidth=20, relief="solid")
@@ -48,6 +48,8 @@ class SettingsPage(Page):
         self.num_of_arms = tk.IntVar(value=5)
         arms_number = tk.Entry(self, exportselection=0, textvariable=self.num_of_arms, background='#b0ada9', justify='center', font=tkFont.Font(size=18))
         arms_number.grid(row=2, column=4, padx=(0, 10), pady=10, sticky="nsew", columnspan=3)
+        arms_number = ttk.Entry(self, exportselection=0, textvariable=self.num_of_arms, background='#b0ada9', justify='center', font=tkFont.Font(size=18))
+        arms_number.grid(row=2, column=4, pady=10, sticky="nsew")
 
         #number of iterations label and entry box
         iterations_label = ttk.Label(self, text="Number of Iterations", font=tkFont.Font(size=18), background='#b0ada9',
@@ -55,9 +57,11 @@ class SettingsPage(Page):
         iterations_label.grid(row=3, column=1, padx=(10, 0), pady=10, columnspan=4, sticky="nsew")
 
         self.num_of_iters = tk.IntVar(value=100)
+
         iter_number = tk.Entry(self, exportselection=0, textvariable=self.num_of_iters, background='#b0ada9', justify='center', font=tkFont.Font(size=18))
         iter_number.grid(row=3, column=4, padx=(0, 10), pady=10, sticky="nsew", columnspan=3)
 
         button1 = ttk.Button(self, text="Start",
                              command=lambda: controller.set_page("simulation"))
         button1.grid(row=4, column=1, padx=10, pady=10, ipadx=50, ipady=20)
+
