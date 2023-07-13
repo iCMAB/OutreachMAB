@@ -75,7 +75,7 @@ class SimulationPage(Page):
         self.update_labels(frame_num=0)
 
     def increaseCommand(self):
-        frame_num = self.iter.get() + 1
+        frame_num = min(self.iter.get() + 1, self.controller.simulation.num_frames - 1)
 
         self.update_labels(frame_num)
 
