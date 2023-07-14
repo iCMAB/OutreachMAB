@@ -9,7 +9,7 @@ class StartPage(Page):
         super().__init__(parent, controller)
 
         # label of frame Layout 2
-        label = ttk.Label(self, text="Mutli-Armed Bandit\nRestaurant Selector", justify="center", font=tkFont.Font(size=36))
+        label = ttk.Label(self, text="Multi-Armed Bandit\nRestaurant Selector", justify="center", font=tkFont.Font(size=36))
 
         # putting the grid in its place by using
         self.grid_columnconfigure((0, 2), weight=1)
