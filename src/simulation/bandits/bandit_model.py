@@ -10,5 +10,5 @@ class BanditModel(ABC):
         pass
 
     @abstractmethod
-    def update(self, reward: float):
+    def update(self, reward: float, choice: int):
         pass

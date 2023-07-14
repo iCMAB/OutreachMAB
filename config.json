@@ -2,6 +2,7 @@
   "simulation": {
     "frames": 100
   },
+  "options": 5,
   "restaurants": [
     {
       "distribution": "normal",
@@ -40,7 +41,7 @@
     }
   ],
   "bandit": {
-    "model": "random",
+    "model": "Epsilon Greedy",
     "parameters": {}
   }
 }
