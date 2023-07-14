@@ -1,6 +1,8 @@
 from .bandit_model import BanditModel
 from .random import RandomBandit
+from .epsilon_greedy import EpsilonGreedyBandit
 
 BANDITS = {
-    "random": RandomBandit
+    "Random": RandomBandit,
+    "Epsilon Greedy": EpsilonGreedyBandit
 }

@@ -53,7 +53,7 @@ class Simulator:
             rewards=[r.sample() for r in self.restaurants],
             choice=self.bandit.select_arm()
         )
-        self.bandit.update(frame.reward)
+        self.bandit.update(frame.reward, frame.choice)
 
         self.frames[index] = frame
         self.log_frame(frame)

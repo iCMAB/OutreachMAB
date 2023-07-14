@@ -21,7 +21,7 @@ class SettingsPage(Page):
         label.grid(row=0, column=3, padx=10, pady=50)
 
         self.selected_bandit = tk.StringVar()
-        self.selected_bandit.set("random")
+        self.selected_bandit.set("Random")
 
         #bandit model label and current selection
         model_label = ttk.Label(self, text='Bandit Model', font=tkFont.Font(size=18), background='#b0ada9', borderwidth=40, relief="solid")
@@ -35,8 +35,10 @@ class SettingsPage(Page):
         bandit_menu = tk.Menu(bandit_menu_button, tearoff=False)
         bandit_menu_button.configure(menu=bandit_menu)
 
-        bandit_menu.add_radiobutton(label="Random", variable=self.selected_bandit, value="random")
-        bandit_menu.add_radiobutton(label="Linear UCB", variable=self.selected_bandit, value="linear UCB")
+        #ALL BANDIT OPTIONS GO HERE
+        bandit_menu.add_radiobutton(label="Random", variable=self.selected_bandit, value="Random")
+        bandit_menu.add_radiobutton(label="Epsilon Greedy", variable=self.selected_bandit, value="Epsilon Greedy")
+        #END BANDIT OPTIONS
 
         bandit_menu_button.grid(row=1, column=6, padx=(0, 10), pady=10, sticky="nsew")
 
