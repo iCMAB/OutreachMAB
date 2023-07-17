@@ -42,6 +42,8 @@
   ],
   "bandit": {
     "model": "Epsilon Greedy",
-    "parameters": {}
+    "parameters": {
+      "epsilon": 0.2
+    }
   }
 }
