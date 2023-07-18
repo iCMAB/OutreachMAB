@@ -5,7 +5,6 @@ from typing import Dict
 from .bandits import BANDITS, BanditModel
 from .distributions import DISTRIBUTIONS
 from .frame import Frame
-from .grapher import Grapher
 from .restaurant import Restaurant
 
 
@@ -15,27 +14,25 @@ class Simulator:
             config: Dict[str, Dict] = json.load(config_file)
         self.config = recursive_update(config, overrides or {})
 
+        self.n_arms = config["simulation"]["n_arms"]
         self.num_frames = config["simulation"]["frames"]
         self.frame_num = 0
         self.frames = []
 
         self.restaurants = []
-        for r_config in config["restaurants"]:
+        for r_config in config["restaurants"][:self.n_arms]:
             self.restaurants.append(Restaurant(
                 distribution=DISTRIBUTIONS[r_config["distribution"]](**r_config["parameters"])
             ))
 
         self.bandit: BanditModel = BANDITS[config["bandit"]["model"]] \
-            (n_arms=len(self.restaurants), **config["bandit"]["parameters"])
-
-        self.grapher = Grapher("../graphs")
+            (n_arms=self.n_arms, **config["bandit"]["parameters"])
 
     def run_simulation(self):
         self.log_start()
         for i in range(self.num_frames):
             self.frame_num = i
             self.run_frame()
-            self.grapher.plots_from_frames(self.frames)
 
     def run_frame(self) -> Frame:
         frame = Frame(

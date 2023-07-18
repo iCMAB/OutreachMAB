@@ -1,5 +1,6 @@
 {
   "simulation": {
+    "n_arms": 5,
     "frames": 100
   },
   "options": 5,

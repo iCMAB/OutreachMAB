@@ -1,13 +1,16 @@
 import tkinter as tk
-from tkinter import ttk
 import tkinter.font as tkfont
-from typing import Optional
+from tkinter import ttk
 
+from src.simulation.grapher import Grapher
 from .page import Page
+
 
 class SimulationPage(Page):
     def __init__(self, parent, controller):
         super().__init__(parent, controller)
+
+        self.grapher = Grapher("../graphs")
 
         self.formats = {
             "restaurant": "Selected: Restaurant {}",
@@ -72,27 +75,25 @@ class SimulationPage(Page):
 
     def open(self):
         self.controller.simulation.run_simulation()
-        self.update_labels(frame_num=0)
+        self.update()
 
     def increaseCommand(self):
-        frame_num = min(self.iter.get() + 1, self.controller.simulation.num_frames - 1)
+        self.iter.set(min(self.iter.get() + 1, self.controller.simulation.num_frames - 1))
 
-        self.update_labels(frame_num)
+        self.update()
 
     def decreaseCommand(self):
-        frame_num = max(0, self.iter.get() - 1)
+        self.iter.set(max(0, self.iter.get() - 1))
 
-        self.update_labels(frame_num)
+        self.update()
 
-    def update_labels(self, frame_num: Optional[int] = None):
-        if frame_num is None:
-            frame_num = self.iter.get()
-        else:
-            self.iter.set(frame_num)
-
+    def update(self):
+        frame_num = self.iter.get()
         frame = self.controller.simulation.frames[frame_num]
 
         self.iter.set(frame_num)
         self.restaurant_string.set(self.formats["restaurant"].format(frame.choice))
         self.reward_string.set(self.formats["reward"].format(frame.reward))
         self.regret_string.set(self.formats["regret"].format(frame.regret))
+
+        self.grapher.plots_from_frames(self.controller.simulation.n_arms, self.controller.simulation.frames[:frame_num])

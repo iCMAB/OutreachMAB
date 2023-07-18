@@ -11,10 +11,9 @@ class Grapher:
         self.output_dir = output_dir
         os.makedirs(output_dir, exist_ok=True)
 
-    def plots_from_frames(self, frames: List[Frame]):
-        num_arms = len(frames[0].rewards)
+    def plots_from_frames(self, n_arms: int, frames: List[Frame]):
         restaurant_rewards = []
-        for i in range(num_arms):
+        for i in range(n_arms):
             restaurant_rewards.append([frame.rewards[i] for frame in frames])
         self.generate_reward_histograms(restaurant_rewards)
 
