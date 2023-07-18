@@ -64,8 +64,8 @@ class Simulator:
         print("Starting Simulation")
         print("")
         print(f"Number of frames: {self.num_frames}")
-        print(f"Bandit model: {self.config['bandit']['model']}")
-        print(f"Number of arms: {len(self.restaurants)}")
+        print(f"Bandit model: {self.bandit.type}")
+        print(f"Number of arms: {self.bandit.n_arms}")
 
     def log_frame(self, frame: Frame):
         print("\n")
