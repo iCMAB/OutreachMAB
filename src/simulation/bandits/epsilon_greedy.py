@@ -10,6 +10,7 @@ class EpsilonGreedyBandit(BanditModel):
         self.cumulative = [n_arms]
         self.max = 0
         self.max_choice = 0
+        self.type = "Epsilon Greedy"
 
         for i in range(self.n_arms - 1):
             self.counts.append(0)
