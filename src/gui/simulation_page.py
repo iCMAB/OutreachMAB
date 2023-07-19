@@ -74,11 +74,11 @@ class SimulationPage(Page):
         regret_label.place(x=60, y=210, width=300, height=40)
 
     def open(self):
-        self.controller.simulation.run_simulation()
+        self.controller.simulator.run_simulation()
         self.update()
 
     def increaseCommand(self):
-        self.iter.set(min(self.iter.get() + 1, self.controller.simulation.num_frames - 1))
+        self.iter.set(min(self.iter.get() + 1, self.controller.simulator.num_frames - 1))
 
         self.update()
 
@@ -89,11 +89,11 @@ class SimulationPage(Page):
 
     def update(self):
         frame_num = self.iter.get()
-        frame = self.controller.simulation.frames[frame_num]
+        frame = self.controller.simulator.frames[frame_num]
 
         self.iter.set(frame_num)
         self.restaurant_string.set(self.formats["restaurant"].format(frame.choice))
         self.reward_string.set(self.formats["reward"].format(frame.reward))
         self.regret_string.set(self.formats["regret"].format(frame.regret))
 
-        self.grapher.plots_from_frames(self.controller.simulation.n_arms, self.controller.simulation.frames[:frame_num])
+        self.grapher.generate_frame_graphs(frame_num, self.controller.simulator)

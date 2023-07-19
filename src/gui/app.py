@@ -13,7 +13,7 @@ class App(tk.Tk):
     def __init__(self, config_file: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.simulation = Simulator(config_file)
+        self.simulator = Simulator(config_file)
 
         container = ttk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
