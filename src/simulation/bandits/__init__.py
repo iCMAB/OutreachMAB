@@ -4,5 +4,6 @@ from .epsilon_greedy import EpsilonGreedyBandit
 
 BANDITS = {
     "Random": RandomBandit,
-    "Epsilon Greedy": EpsilonGreedyBandit
+    "Epsilon Greedy": EpsilonGreedyBandit,
+    "Thompson Sampling": TSBandit
 }
