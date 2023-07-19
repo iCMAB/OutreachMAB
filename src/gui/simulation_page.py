@@ -80,14 +80,14 @@ class SimulationPage(Page):
     def increaseCommand(self):
         self.iter.set(min(self.iter.get() + 1, self.controller.simulator.num_frames - 1))
 
-        self.update()
+        self.update(full_update=False)
 
     def decreaseCommand(self):
         self.iter.set(max(0, self.iter.get() - 1))
 
         self.update()
 
-    def update(self):
+    def update(self, full_update: bool = True):
         frame_num = self.iter.get()
         frame = self.controller.simulator.frames[frame_num]
 
@@ -96,4 +96,4 @@ class SimulationPage(Page):
         self.reward_string.set(self.formats["reward"].format(frame.reward))
         self.regret_string.set(self.formats["regret"].format(frame.regret))
 
-        self.grapher.generate_frame_graphs(frame_num, self.controller.simulator)
+        self.grapher.generate_frame_graphs(frame_num, self.controller.simulator, full_update=full_update)
