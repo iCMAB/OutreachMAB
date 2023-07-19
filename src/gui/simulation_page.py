@@ -1,6 +1,9 @@
+import os
 import tkinter as tk
 import tkinter.font as tkfont
 from tkinter import ttk
+
+from PIL import Image, ImageTk
 
 from src.simulation.grapher import Grapher
 from .page import Page
@@ -97,3 +100,10 @@ class SimulationPage(Page):
         self.regret_string.set(self.formats["regret"].format(frame.regret))
 
         self.grapher.generate_frame_graphs(frame_num, self.controller.simulator, full_update=full_update)
+        for i, graph in enumerate(os.listdir(self.grapher.output_dir)):
+            load = Image.open(f"{self.grapher.output_dir}/{graph}")
+            load = load.resize((64, 64))
+            render = ImageTk.PhotoImage(load)
+            img = ttk.Label(self, image=render)
+            img.image = render
+            img.place(x=0, y=i * render.height())

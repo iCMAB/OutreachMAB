@@ -6,6 +6,7 @@ import numpy as np
 
 from .simulator import Simulator
 
+MIN, MAX, STEP = 0, 10, 1
 
 # TODO: Only regenerate changed graphs
 
@@ -19,22 +20,29 @@ class Grapher:
         self.generate_reward_histograms(frame_num, simulator, full_update=full_update)
 
     def generate_reward_histograms(self, frame_num: int, simulator: Simulator, full_update: bool = True):
-        MIN, MAX, STEP = 0, 10, 1
+        if full_update:
+            for i in range(simulator.n_arms):
+                self.generate_reward_histogram(frame_num, i, simulator)
+        else:
+            choice = simulator.frames[frame_num].choice
+            self.generate_reward_histogram(frame_num, choice, simulator)
 
+            previous_choice = simulator.frames[frame_num - 1].choice
+            if frame_num > 0 and choice != previous_choice:
+                self.generate_reward_histogram(frame_num, previous_choice, simulator)
+
+    def generate_reward_histogram(self, frame_num: int, arm_index: int, simulator: Simulator):
         frames = simulator.frames[:frame_num + 1]
-        updates = range(simulator.n_arms) if full_update else [frames[-1].choice]
-        for i in updates:
-            # Generate Basic histogram
-            rewards = [frame.rewards[i] for frame in frames if i == frame.choice]
-            fig, ax = plt.subplots()
-            n, bins, patches = plt.hist(rewards, bins=np.arange(MIN, MAX, STEP))
+        rewards = [frame.rewards[arm_index] for frame in frames if arm_index == frame.choice]
+        fig, ax = plt.subplots()
+        n, bins, patches = plt.hist(rewards, bins=np.arange(MIN, MAX, STEP))
 
-            # Color the selected bar
-            if i == frames[-1].choice:
-                selected_bin = math.floor((rewards[-1] - MIN) / STEP)
-                patches[selected_bin].set_fc("r")
+        # Color the selected bar
+        if arm_index == frames[-1].choice:
+            selected_bin = math.floor((rewards[-1] - MIN) / STEP)
+            patches[selected_bin].set_fc("r")
 
-            # Add labels and save to file
-            plt.ylabel('Rewards')
-            plt.savefig(f"{self.output_dir}/{i}_rewards")
-            plt.close(fig)
+        # Add labels and save to file
+        plt.ylabel('Rewards')
+        plt.savefig(f"{self.output_dir}/{arm_index}_rewards")
+        plt.close(fig)
