@@ -106,4 +106,4 @@ class SimulationPage(Page):
             render = ImageTk.PhotoImage(load)
             img = ttk.Label(self, image=render)
             img.image = render
-            img.place(x=0, y=i * render.height())
+            img.place(x=600 - render.width(), y=i * render.height())

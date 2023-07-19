@@ -6,7 +6,7 @@ import numpy as np
 
 from .simulator import Simulator
 
-MIN, MAX, STEP = 0, 10, 1
+MIN, MAX, STEP = 0, 12, 1
 
 # TODO: Only regenerate changed graphs
 
@@ -35,6 +35,7 @@ class Grapher:
         frames = simulator.frames[:frame_num + 1]
         rewards = [frame.rewards[arm_index] for frame in frames if arm_index == frame.choice]
         fig, ax = plt.subplots()
+
         n, bins, patches = plt.hist(rewards, bins=np.arange(MIN, MAX, STEP))
 
         # Color the selected bar

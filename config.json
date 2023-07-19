@@ -8,6 +8,13 @@
     {
       "distribution": "normal",
       "parameters": {
+        "mean": 4,
+        "sd": 1
+      }
+    },
+    {
+      "distribution": "normal",
+      "parameters": {
         "mean": 5,
         "sd": 1
       }
@@ -32,19 +39,12 @@
         "mean": 8,
         "sd": 1
       }
-    },
-    {
-      "distribution": "normal",
-      "parameters": {
-        "mean": 9,
-        "sd": 1
-      }
     }
   ],
   "bandit": {
     "model": "Epsilon Greedy",
     "parameters": {
-      "epsilon": 0.2
+      "epsilon": 0.5
     }
   }
 }
