@@ -13,3 +13,6 @@ class Graph(ttk.Frame):
         self.filepath = Path(filepath)
         self.simulator = simulator
         self.data = None
+
+    def generate(self, frame_num: int):
+        pass

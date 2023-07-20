@@ -1,6 +1,6 @@
 import json
 from collections.abc import Mapping, MutableMapping
-from typing import Dict
+from typing import Dict, List
 
 from .bandits import BANDITS, BanditModel
 from .distributions import DISTRIBUTIONS
@@ -14,12 +14,12 @@ class Simulator:
             config: Dict[str, Dict] = json.load(config_file)
         self.config = recursive_update(config, overrides or {})
 
-        self.n_arms = config["simulation"]["n_arms"]
-        self.num_frames = config["simulation"]["frames"]
-        self.frame_num = 0
-        self.frames = []
+        self.n_arms: int = config["simulation"]["n_arms"]
+        self.num_frames: int = config["simulation"]["frames"]
+        self.frame_num: int = 0
+        self.frames: List[Frame] = []
 
-        self.restaurants = []
+        self.restaurants: List[Restaurant] = []
         for r_config in config["restaurants"][:self.n_arms]:
             self.restaurants.append(Restaurant(
                 distribution=DISTRIBUTIONS[r_config["distribution"]](**r_config["parameters"])
