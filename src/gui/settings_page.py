@@ -74,5 +74,8 @@ class SettingsPage(Page):
 
 
         button1 = ttk.Button(self, text="Start", command=start)
-        button1.grid(row=4, column=1, padx=10, pady=10, ipadx=50, ipady=20)
+        button1.grid(row=5, column=1, padx=10, pady=10, ipadx=50, ipady=20)
+
+        button2 = ttk.Button(self, text="What do these mean?", command=lambda: controller.set_page("settings_explained"))
+        button2.grid(row=4, column=1, padx=10, pady=10, ipadx=50, ipady=20)
 
