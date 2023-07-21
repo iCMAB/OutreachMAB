@@ -18,7 +18,7 @@ class StartPage(Page):
 
 
         button1 = ttk.Button(self, text="Start",
-                             command=lambda: controller.set_page("simulation"))
+                             command=lambda: controller.set_page("intro"))
 
         # putting the button in its place by
         # using grid

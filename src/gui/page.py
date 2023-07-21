@@ -6,6 +6,7 @@ class Page(ttk.Frame):
         super().__init__(parent)
 
         self.controller = controller
+        self.parent = parent
 
     def open(self):
         pass
