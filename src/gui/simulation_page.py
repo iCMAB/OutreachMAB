@@ -10,8 +10,8 @@ from .page import Page
 
 
 class SimulationPage(Page):
-    def __init__(self, parent, controller):
-        super().__init__(parent, controller)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         self.grapher = Grapher(simulator=self.controller.simulator, output_dir="../graphs")
 
@@ -76,6 +76,14 @@ class SimulationPage(Page):
         regret_label = ttk.Label(self, textvariable=self.regret_string)
         regret_label.place(x=60, y=210, width=300, height=40)
 
+        next_button = ttk.Button(
+            self,
+            style="Nav.TButton",
+            text="RESULTS",
+            command=lambda: self.controller.set_page("results")
+        )
+        next_button.place(x=0, y=0, width=300, height=60)
+
     def open(self):
         self.controller.simulator.run_simulation()
         self.update()
@@ -88,7 +96,7 @@ class SimulationPage(Page):
     def decreaseCommand(self):
         self.iter.set(max(0, self.iter.get() - 1))
 
-        self.update()
+        self.update(full_update=False)
 
     def update(self, full_update: bool = True):
         frame_num = self.iter.get()
