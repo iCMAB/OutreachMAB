@@ -70,7 +70,6 @@ class SettingsPage(Page):
                 (n_arms=int(self.arms_number.get()), **self.controller.simulator.config["bandit"]["parameters"])
             self.controller.simulator.n_arms = self.arms_number.get()
 
-            self.parent.children['!intropage'].update()
             self.controller.set_page("intro")
 
         button1 = ttk.Button(self, text="Start", command=start)
