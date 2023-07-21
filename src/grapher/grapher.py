@@ -3,7 +3,7 @@ from pathlib import Path
 
 from src.simulation.simulator import Simulator
 from .histogram import Histogram
-from .scatter import Scatter
+from .scatter import Scatter, ScatterType
 
 
 class Grapher:
@@ -20,10 +20,11 @@ class Grapher:
             self.reward_histograms.append(hist)
             self.graphs.append(hist)
 
-        self.scatter = Scatter(simulator=simulator, filepath=self.output_dir / "scatter.png", cumulative=False)
+        self.scatter = Scatter(simulator=simulator, filepath=self.output_dir / "scatter.png", type=ScatterType.AVERAGE)
         self.graphs.append(self.scatter)
 
-        self.cum_scatter = Scatter(simulator=simulator, filepath=self.output_dir / "cum_scatter.png", cumulative=True)
+        self.cum_scatter = Scatter(simulator=simulator, filepath=self.output_dir / "cum_scatter.png",
+                                   type=ScatterType.CUMULATIVE)
         self.graphs.append(self.cum_scatter)
 
     def generate_frame_graphs(self, frame_num: int):
