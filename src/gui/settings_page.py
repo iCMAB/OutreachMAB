@@ -65,10 +65,10 @@ class SettingsPage(Page):
         self.iter_number.grid(row=3, column=4, padx=(0, 10), pady=10, sticky="nsew", columnspan=3)
 
         def start():
-            self.controller.simulation.num_frames = int(self.iter_number.get())
-            self.controller.simulation.bandit: BanditModel = BANDITS[self.selected_bandit.get()] \
-                (n_arms=int(self.arms_number.get()), **self.controller.simulation.config["bandit"]["parameters"])
-            self.controller.simulation.n_arms = self.arms_number.get()
+            self.controller.simulator.num_frames = int(self.iter_number.get())
+            self.controller.simulator.bandit: BanditModel = BANDITS[self.selected_bandit.get()] \
+                (n_arms=int(self.arms_number.get()), **self.controller.simulator.config["bandit"]["parameters"])
+            self.controller.simulator.n_arms = self.arms_number.get()
 
             self.parent.children['!intropage'].update()
             self.controller.set_page("intro")
