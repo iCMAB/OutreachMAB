@@ -7,6 +7,9 @@ from .page import Page
 from .settings_page import SettingsPage
 from .simulation_page import SimulationPage
 from .start_page import StartPage
+from .settings_explain_page import SettingsExplainPage
+from .intro_page import IntroPage
+from src.simulation.simulator import Simulator
 
 
 class App(tk.Tk):
@@ -25,7 +28,9 @@ class App(tk.Tk):
         self.pages: Dict[str, Page] = {
             "start": StartPage(container, self),
             "simulation": SimulationPage(container, self),
-            "settings": SettingsPage(container, self)
+            "settings": SettingsPage(container, self),
+            "settings_explained": SettingsExplainPage(container, self),
+            "intro": IntroPage(container, self)
         }
 
         for _, v in self.pages.items():

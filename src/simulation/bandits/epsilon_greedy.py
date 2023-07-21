@@ -12,6 +12,7 @@ class EpsilonGreedyBandit(BanditModel):
         self.cumulative = [n_arms]
         self.max = 0
         self.max_choice = 0
+        self.type = "Epsilon Greedy"
 
         for i in range(self.n_arms - 1):
             self.counts.append(0)
@@ -26,7 +27,7 @@ class EpsilonGreedyBandit(BanditModel):
         self.counts[choice] += 1
         return choice
 
-    def update(self, reward: float, choice: int):
+    def update(self, reward: float, regret: int, choice: int):
         self.cumulative[choice] += reward
         avg = self.cumulative[choice]/self.counts[choice]
         self.values[choice] = avg
