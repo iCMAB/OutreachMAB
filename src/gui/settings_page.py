@@ -39,6 +39,7 @@ class SettingsPage(Page):
         #ALL BANDIT OPTIONS GO HERE
         bandit_menu.add_radiobutton(label="Random", variable=self.selected_bandit, value="Random")
         bandit_menu.add_radiobutton(label="Epsilon Greedy", variable=self.selected_bandit, value="Epsilon Greedy")
+        bandit_menu.add_radiobutton(label="Thompson Sampling", variable=self.selected_bandit, value="Thompson Sampling")
         #END BANDIT OPTIONS
 
         bandit_menu_button.grid(row=1, column=6, padx=(0, 10), pady=10, sticky="nsew")
@@ -64,13 +65,18 @@ class SettingsPage(Page):
         self.iter_number.grid(row=3, column=4, padx=(0, 10), pady=10, sticky="nsew", columnspan=3)
 
         def start():
-            self.controller.simulator.num_frames = int(self.iter_number.get())
-            self.controller.simulator.bandit = BANDITS[self.selected_bandit.get()] \
-                (n_arms=int(self.arms_number.get()), **self.controller.simulator.config["bandit"]["parameters"])
+            self.controller.simulation.num_frames = int(self.iter_number.get())
+            self.controller.simulation.bandit: BanditModel = BANDITS[self.selected_bandit.get()] \
+                (n_arms=int(self.arms_number.get()), **self.controller.simulation.config["bandit"]["parameters"])
+            self.controller.simulation.n_arms = self.arms_number.get()
 
-            self.controller.simulator.run_simulation()
-            self.controller.set_page("simulation")
+            self.parent.children['!intropage'].update()
+            self.controller.set_page("intro")
+
 
         button1 = ttk.Button(self, text="Start", command=start)
-        button1.grid(row=4, column=1, padx=10, pady=10, ipadx=50, ipady=20)
+        button1.grid(row=5, column=1, padx=10, pady=10, ipadx=50, ipady=20)
+
+        button2 = ttk.Button(self, text="What do these mean?", command=lambda: controller.set_page("settings_explained"))
+        button2.grid(row=4, column=1, padx=10, pady=10, ipadx=50, ipady=20)
 
