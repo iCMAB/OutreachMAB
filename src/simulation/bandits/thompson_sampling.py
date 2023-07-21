@@ -8,6 +8,7 @@ class TSBandit(BanditModel):
         super().__init__(n_arms)
         self.max_rewards = [0] * self.n_arms
         self.regrets = [0] * self.n_arms
+        self.type = "Thompson Sampling"
     def select_arm(self) -> int:
         bandit = 0
         beta_max = 0
