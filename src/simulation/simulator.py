@@ -1,24 +1,11 @@
 import json
-from typing import List, Dict
 from collections.abc import Mapping, MutableMapping
+from typing import Dict, List
 
-from .distributions import DISTRIBUTIONS
 from .bandits import BANDITS, BanditModel
+from .distributions import DISTRIBUTIONS
+from .frame import Frame
 from .restaurant import Restaurant
-
-
-class Frame:
-    def __init__(
-            self,
-            frame_num: int,
-            rewards: List[float],
-            choice: int,
-    ):
-        self.frame_num = frame_num
-        self.rewards = rewards
-        self.choice = choice
-        self.reward = self.rewards[self.choice]
-        self.regret = max(self.rewards) - self.reward
 
 
 class Simulator:
@@ -27,35 +14,35 @@ class Simulator:
             config: Dict[str, Dict] = json.load(config_file)
         self.config = recursive_update(config, overrides or {})
 
-        self.num_frames = config["simulation"]["frames"]
-        self.frame_num = 0
-        self.frames = {}
+        self.n_arms: int = config["simulation"]["n_arms"]
+        self.num_frames: int = config["simulation"]["frames"]
+        self.frame_num: int = 0
+        self.frames: List[Frame] = []
 
-        self.restaurants = []
-        for r_config in config["restaurants"]:
+        self.restaurants: List[Restaurant] = []
+        for r_config in config["restaurants"][:self.n_arms]:
             self.restaurants.append(Restaurant(
                 distribution=DISTRIBUTIONS[r_config["distribution"]](**r_config["parameters"])
             ))
 
         self.bandit: BanditModel = BANDITS[config["bandit"]["model"]] \
-            (n_arms=len(self.restaurants), **config["bandit"]["parameters"])
+            (n_arms=self.n_arms, **config["bandit"]["parameters"])
 
     def run_simulation(self):
         self.log_start()
         for i in range(self.num_frames):
-            self.run_frame(i)
+            self.frame_num = i
+            self.run_frame()
 
-    def run_frame(self, index: int) -> Frame:
-        self.frame_num = index
-
+    def run_frame(self) -> Frame:
         frame = Frame(
-            frame_num=index,
+            frame_num=self.frame_num,
             rewards=[r.sample() for r in self.restaurants],
             choice=self.bandit.select_arm()
         )
         self.bandit.update(frame.reward, frame.regret, frame.choice)
 
-        self.frames[index] = frame
+        self.frames.append(frame)
         self.log_frame(frame)
 
         return frame

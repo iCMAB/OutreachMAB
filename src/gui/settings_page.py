@@ -1,9 +1,10 @@
 import tkinter as tk
-from tkinter import ttk
 import tkinter.font as tkFont
+from tkinter import ttk
 
 from src.simulation.bandits import BANDITS
 from .page import Page
+
 
 class SettingsPage(Page):
     def __init__(self, parent, controller):
@@ -64,7 +65,6 @@ class SettingsPage(Page):
         self.iter_number.grid(row=3, column=4, padx=(0, 10), pady=10, sticky="nsew", columnspan=3)
 
         def start():
-
             self.controller.simulation.num_frames = int(self.iter_number.get())
             self.controller.simulation.bandit: BanditModel = BANDITS[self.selected_bandit.get()] \
                 (n_arms=int(self.arms_number.get()), **self.controller.simulation.config["bandit"]["parameters"])

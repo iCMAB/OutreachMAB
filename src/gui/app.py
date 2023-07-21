@@ -1,22 +1,22 @@
-from typing import Dict
-
 import tkinter as tk
 from tkinter import ttk
+from typing import Dict
 
+from src.simulation.simulator import Simulator
 from .page import Page
-from .start_page import StartPage
-from .simulation_page import SimulationPage
 from .settings_page import SettingsPage
+from .simulation_page import SimulationPage
+from .start_page import StartPage
 from .settings_explain_page import SettingsExplainPage
 from .intro_page import IntroPage
 from src.simulation.simulator import Simulator
 
 
 class App(tk.Tk):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, config_file: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.simulation = Simulator("../config.json")
+        self.simulator = Simulator(config_file)
 
         container = ttk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -54,9 +54,3 @@ class App(tk.Tk):
         new_page.open()
         self.current_page = new_page
         new_page.tkraise()
-
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = App(root)
-    root.mainloop()

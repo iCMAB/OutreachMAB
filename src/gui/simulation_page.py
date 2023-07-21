@@ -1,13 +1,19 @@
+import os
 import tkinter as tk
-from tkinter import ttk
 import tkinter.font as tkfont
-from typing import Optional
+from tkinter import ttk
 
+from PIL import Image, ImageTk
+
+from src.grapher.grapher import Grapher
 from .page import Page
+
 
 class SimulationPage(Page):
     def __init__(self, parent, controller):
         super().__init__(parent, controller)
+
+        self.grapher = Grapher(simulator=self.controller.simulator, output_dir="../graphs")
 
         self.formats = {
             "restaurant": "Selected: Restaurant {}",
@@ -71,28 +77,33 @@ class SimulationPage(Page):
         regret_label.place(x=60, y=210, width=300, height=40)
 
     def open(self):
-        self.controller.simulation.run_simulation()
-        self.update_labels(frame_num=0)
+        self.controller.simulator.run_simulation()
+        self.update()
 
     def increaseCommand(self):
-        frame_num = min(self.iter.get() + 1, self.controller.simulation.num_frames - 1)
+        self.iter.set(min(self.iter.get() + 1, self.controller.simulator.num_frames - 1))
 
-        self.update_labels(frame_num)
+        self.update(full_update=False)
 
     def decreaseCommand(self):
-        frame_num = max(0, self.iter.get() - 1)
+        self.iter.set(max(0, self.iter.get() - 1))
 
-        self.update_labels(frame_num)
+        self.update()
 
-    def update_labels(self, frame_num: Optional[int] = None):
-        if frame_num is None:
-            frame_num = self.iter.get()
-        else:
-            self.iter.set(frame_num)
-
-        frame = self.controller.simulation.frames[frame_num]
+    def update(self, full_update: bool = True):
+        frame_num = self.iter.get()
+        frame = self.controller.simulator.frames[frame_num]
 
         self.iter.set(frame_num)
         self.restaurant_string.set(self.formats["restaurant"].format(frame.choice))
         self.reward_string.set(self.formats["reward"].format(frame.reward))
         self.regret_string.set(self.formats["regret"].format(frame.regret))
+
+        self.grapher.generate_frame_graphs(frame_num)
+        for i, graph in enumerate(os.listdir(self.grapher.output_dir)):
+            load = Image.open(f"{self.grapher.output_dir}/{graph}")
+            load = load.resize((64, 64))
+            render = ImageTk.PhotoImage(load)
+            img = ttk.Label(self, image=render)
+            img.image = render
+            img.place(x=600 - render.width(), y=i * render.height())

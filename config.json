@@ -1,9 +1,17 @@
 {
   "simulation": {
+    "n_arms": 5,
     "frames": 100
   },
   "options": 5,
   "restaurants": [
+    {
+      "distribution": "normal",
+      "parameters": {
+        "mean": 4,
+        "sd": 1
+      }
+    },
     {
       "distribution": "normal",
       "parameters": {
@@ -31,17 +39,12 @@
         "mean": 8,
         "sd": 1
       }
-    },
-    {
-      "distribution": "normal",
-      "parameters": {
-        "mean": 9,
-        "sd": 1
-      }
     }
   ],
   "bandit": {
     "model": "Epsilon Greedy",
-    "parameters": {}
+    "parameters": {
+      "epsilon": 0.5
+    }
   }
 }
