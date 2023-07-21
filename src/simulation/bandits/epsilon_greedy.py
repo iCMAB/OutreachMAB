@@ -25,7 +25,7 @@ class EpsilonGreedyBandit(BanditModel):
         self.counts[choice] += 1
         return choice
 
-    def update(self, reward: float, choice: int):
+    def update(self, reward: float, regret: int, choice: int):
         self.cumulative[choice] += reward
         avg = self.cumulative[choice]/self.counts[choice]
         self.values[choice] = avg
