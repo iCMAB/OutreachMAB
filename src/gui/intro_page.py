@@ -22,24 +22,27 @@ class IntroPage(Page):
         intro_text.grid(row=0, column=0, padx=20, pady=(50, 10))
 
         button1 = ttk.Button(self, text="Continue",
-                             command=lambda: self.controller.set_page("simulation"))
+                             command=lambda: self.app.set_page("simulation"))
 
         your_settings = ttk.Label(self, text="Your Selected Settings", justify="center")
         your_settings.grid(row=1, column=0, padx=20, pady=10)
 
-        self.model_label = ttk.Label(self, text="Bandit Model: " + self.controller.simulator.bandit.type, font=tkFont.Font(size=12))
+        self.model_label = ttk.Label(self, text="Bandit Model: " + self.app.simulator.bandit.type,
+                                     font=tkFont.Font(size=12))
         self.model_label.grid(row=3, column=0, padx=20, pady=10)
 
-        self.arms_label = ttk.Label(self, text="Number of Arms: " + str(self.controller.simulator.bandit.n_arms), font=tkFont.Font(size=12))
+        self.arms_label = ttk.Label(self, text="Number of Arms: " + str(self.app.simulator.bandit.n_arms),
+                                    font=tkFont.Font(size=12))
         self.arms_label.grid(row=4, column=0, padx=20, pady=10)
 
-        self.iters_label = ttk.Label(self, text="Number of Frames: " + str(self.controller.simulator.num_frames), font=tkFont.Font(size=12))
+        self.iters_label = ttk.Label(self, text="Number of Frames: " + str(self.app.simulator.num_frames),
+                                     font=tkFont.Font(size=12))
         self.iters_label.grid(row=2, column=0, padx=20, pady=10)
         # putting the button in its place by
         # using grid
         button1.grid(row=5, column=0, padx=20, pady=10, ipadx=50, ipady=20)
 
     def open(self):
-        self.model_label.config(text="Bandit Model: " + self.controller.simulator.bandit.type)
-        self.arms_label.config(text="Number of Arms: " + str(self.controller.simulator.bandit.n_arms))
-        self.iters_label.config(text="Number of Frames: " + str(self.controller.simulator.num_frames))
+        self.model_label.config(text="Bandit Model: " + self.app.simulator.bandit.type)
+        self.arms_label.config(text="Number of Arms: " + str(self.app.simulator.bandit.n_arms))
+        self.iters_label.config(text="Number of Frames: " + str(self.app.simulator.num_frames))

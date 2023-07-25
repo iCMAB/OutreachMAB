@@ -18,5 +18,5 @@ class SettingsExplainPage(Page):
         # grid
         explain_text.grid(row=0, column=0, padx=20, pady=(50, 10))
 
-        button1 = ttk.Button(self, text="Back", command=lambda: self.controller.set_page("settings"))
+        button1 = ttk.Button(self, text="Back", command=lambda: self.app.set_page("settings"))
         button1.grid(row=1, column=0, padx=10, pady=10, ipadx=50, ipady=20)

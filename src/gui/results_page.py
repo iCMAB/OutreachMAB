@@ -2,10 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 
 import numpy as np
-from PIL import ImageTk, Image
 
 from src.simulation.simulator import Simulator
-from .page import Page
+from .page import Page, create_image_label
 
 
 # TODO: Fix out pane scaling and default width
@@ -21,9 +20,9 @@ class ResultsPage(Page):
         panes = ttk.PanedWindow(self, orient=tk.HORIZONTAL)
         panes.pack(side=tk.BOTTOM, expand=True, fill=tk.BOTH)
 
-        self.l_panel = _LeftPanel(self, self.controller.simulator)
+        self.l_panel = _LeftPanel(self, self.app.simulator)
         panes.add(self.l_panel, weight=1)
-        self.r_panel = _RightPanel(self, self.controller.simulator)
+        self.r_panel = _RightPanel(self, self.app.simulator)
         panes.add(self.r_panel, weight=1)
 
     def open(self):
@@ -37,8 +36,8 @@ class ResultsPage(Page):
             justify="left"
         )
 
-        frames = self.controller.simulator.frames
-        self.controller.simulator.generate_frame_graphs(len(frames) - 1)
+        frames = self.app.simulator.frames
+        self.app.simulator.generate_frame_graphs(len(frames) - 1)
 
         self.l_panel.update()
         self.r_panel.update()
@@ -125,12 +124,3 @@ class _LeftPanel(ttk.LabelFrame):
                     """
         )
         cumulative_label.grid(column=0, row=3)
-
-
-def create_image_label(master, image_filepath, text, size, *args, **kwargs):
-    load = Image.open(image_filepath)
-    load = load.resize(size)
-    render = ImageTk.PhotoImage(load)
-    img = ttk.Label(master, text=text, image=render, *args, **kwargs)
-    img.image = render
-    return img

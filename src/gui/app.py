@@ -26,12 +26,12 @@ class App(tk.Tk):
 
         self.current_page: Page | None = None
         self.pages: Dict[str, Page] = {
-            "start": StartPage(master=container, controller=self),
-            "simulation": SimulationPage(master=container, controller=self),
-            "settings": SettingsPage(master=container, controller=self),
-            "results": ResultsPage(master=container, controller=self),
-            "settings_explained": SettingsExplainPage(master=container, controller=self),
-            "intro": IntroPage(master=container, controller=self)
+            "start": StartPage(master=container, app=self),
+            "simulation": SimulationPage(master=container, app=self),
+            "settings": SettingsPage(master=container, app=self),
+            "results": ResultsPage(master=container, app=self),
+            "settings_explained": SettingsExplainPage(master=container, app=self),
+            "intro": IntroPage(master=container, app=self)
         }
 
         for _, v in self.pages.items():
