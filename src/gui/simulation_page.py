@@ -5,15 +5,12 @@ from tkinter import ttk
 
 from PIL import Image, ImageTk
 
-from src.grapher.grapher import Grapher
 from .page import Page
 
 
 class SimulationPage(Page):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        self.grapher = Grapher(simulator=self.controller.simulator, output_dir="../graphs")
 
         self.formats = {
             "restaurant": "Selected: Restaurant {}",
@@ -107,9 +104,9 @@ class SimulationPage(Page):
         self.reward_string.set(self.formats["reward"].format(frame.reward))
         self.regret_string.set(self.formats["regret"].format(frame.regret))
 
-        self.grapher.generate_frame_graphs(frame_num)
-        for i, graph in enumerate(os.listdir(self.grapher.output_dir)):
-            load = Image.open(f"{self.grapher.output_dir}/{graph}")
+        output_dir = self.controller.simulator.generate_frame_graphs(frame_num)
+        for i, graph in enumerate(os.listdir(output_dir)):
+            load = Image.open(f"{output_dir}/{graph}")
             load = load.resize((64, 64))
             render = ImageTk.PhotoImage(load)
             img = ttk.Label(self, image=render)

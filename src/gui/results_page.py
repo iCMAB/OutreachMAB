@@ -3,7 +3,7 @@ from tkinter import ttk
 
 from PIL import ImageTk, Image
 
-from src.grapher.grapher import Grapher
+from src.simulation.simulator import Simulator
 from .page import Page
 
 
@@ -14,18 +14,16 @@ class ResultsPage(Page):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.grapher = Grapher(simulator=self.controller.simulator, output_dir="../graphs")
-
         title = ttk.Label(self, text="Results Page")
         title.pack(side=tk.TOP)
 
         panes = ttk.PanedWindow(self, orient=tk.HORIZONTAL)
         panes.pack(side=tk.BOTTOM, expand=True, fill=tk.BOTH)
 
-        self.l_panel = ttk.LabelFrame(panes, text="LeftFrame", width=300)
-        panes.add(self.l_panel)
+        self.l_panel = ttk.LabelFrame(panes, text="LeftFrame")
+        panes.add(self.l_panel, weight=1)
         self.r_panel = ttk.LabelFrame(panes, text="RightFrame")
-        panes.add(self.r_panel)
+        panes.add(self.r_panel, weight=1)
 
     def open(self):
         self.update()
@@ -33,18 +31,18 @@ class ResultsPage(Page):
     def update(self, full_update: bool = True):
         default = ttk.Style().configure(
             "TLabel",
-            font=("Times", 16),
+            font=("Times", 12),
             foreground="#333333",
             justify="left"
         )
 
         frames = self.controller.simulator.frames
+        output_dir = self.controller.simulator.generate_frame_graphs(len(frames) - 1)
 
-        self.grapher.generate_frame_graphs(len(frames) - 1)
         for i in range(self.controller.simulator.n_arms):
             img = create_image_label(
                 parent=self.r_panel,
-                image_filepath=self.grapher.output_dir / f"{i}_rewards.png",
+                image_filepath=output_dir / f"{i}_rewards.png",
                 text=f"Restaurant #{i}",
                 size=(96, 96),
                 compound=tk.LEFT
@@ -53,7 +51,7 @@ class ResultsPage(Page):
 
         scatter = create_image_label(
             parent=self.l_panel,
-            image_filepath=self.grapher.output_dir / "scatter.png",
+            image_filepath=output_dir / "scatter.png",
             text="placeholder_text_for_reward_regret_chart",
             size=(512, 128),
         )
@@ -64,7 +62,7 @@ class ResultsPage(Page):
             text=f"""
             The [MODEL NAME] model selected gained a total of [REWARD]
             points over [N] iterations, with a total of [REGRET] missed
-            points. Ass you can see from the totals graphed over time,
+            points. As you can see from the totals graphed over time,
             the reward increases slowly as the Bandits explore, then settles
             into a linear growth once the optimal arm is found and the
             bandit starts to exploit it.
@@ -74,7 +72,7 @@ class ResultsPage(Page):
 
         cumulative = create_image_label(
             parent=self.l_panel,
-            image_filepath=self.grapher.output_dir / "cum_scatter.png",
+            image_filepath=output_dir / "cum_scatter.png",
             text="placeholder_text_for_cumulative_chart",
             size=(512, 128),
         )
@@ -95,6 +93,10 @@ class ResultsPage(Page):
         )
         cumulative_label.grid(column=0, row=3)
 
+
+class _LeftPanel(ttk.LabelFrame):
+    def __init__(self, parent, simulator: Simulator):
+        super().__init__(parent, text="Restaurant Sampling")
 
 def create_image_label(parent, image_filepath, text, size, *args, **kwargs):
     load = Image.open(image_filepath)

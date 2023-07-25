@@ -11,12 +11,14 @@ class ScatterType(Enum):
     AVERAGE = 2
 
 class Scatter(Graph):
-    def __init__(self, type: ScatterType, *args, **kwargs):
+    def __init__(self, plot_type: ScatterType, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.type = type
+        self.type = plot_type
 
-    def generate(self, frame_num: int):
-        frames = self.simulator.frames[:frame_num + 1]
+    def generate(self, frames, frame_num):
+        super().generate(frames, frame_num)
+
+        frames = frames[:frame_num + 1]
         rewards = [f.reward for f in frames]
         regrets = [f.regret for f in frames]
 
