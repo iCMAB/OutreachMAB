@@ -1,12 +1,13 @@
-import tkinter as tk
-from tkinter import ttk
 import tkinter.font as tkFont
+from tkinter import ttk
 
 from .page import Page
 
+
 class SettingsExplainPage(Page):
-    def __init__(self, parent, controller):
-        super().__init__(parent, controller)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
         explain_text = ttk.Label(self,
                                  text="In the context of the activity, these settings mean the following:\n\nBandit Model: This is the type of algorithm the bandit" \
                                       " will be using when selecting\nan option for each frame.\n\nNumber of Arms: This controls the number of possible restaurants the bandit\ncan" \
@@ -17,5 +18,5 @@ class SettingsExplainPage(Page):
         # grid
         explain_text.grid(row=0, column=0, padx=20, pady=(50, 10))
 
-        button1 = ttk.Button(self, text="Back", command=lambda: controller.set_page("settings"))
+        button1 = ttk.Button(self, text="Back", command=lambda: self.controller.set_page("settings"))
         button1.grid(row=1, column=0, padx=10, pady=10, ipadx=50, ipady=20)

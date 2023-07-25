@@ -1,4 +1,7 @@
 {
+  "graphing": {
+    "output_dir": "../graphs"
+  },
   "simulation": {
     "n_arms": 5,
     "frames": 100

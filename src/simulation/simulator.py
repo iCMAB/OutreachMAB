@@ -5,6 +5,7 @@ from typing import Dict, List
 from .bandits import BANDITS, BanditModel
 from .distributions import DISTRIBUTIONS
 from .frame import Frame
+from .grapher.grapher import Grapher
 from .restaurant import Restaurant
 
 
@@ -18,6 +19,7 @@ class Simulator:
         self.num_frames: int = config["simulation"]["frames"]
         self.frame_num: int = 0
         self.frames: List[Frame] = []
+        self.grapher = Grapher(n_arms=self.n_arms, output_dir=config["graphing"]["output_dir"])
 
         self.restaurants: List[Restaurant] = []
         for r_config in config["restaurants"][:self.n_arms]:
@@ -46,6 +48,10 @@ class Simulator:
         self.log_frame(frame)
 
         return frame
+
+    def generate_frame_graphs(self, frame_num: int):
+        self.grapher.generate_frame_graphs(frames=self.frames, frame_num=frame_num)
+        return self.grapher.output_dir
 
     def log_start(self):
         print("Starting Simulation")

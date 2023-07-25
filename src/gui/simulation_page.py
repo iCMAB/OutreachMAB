@@ -5,15 +5,12 @@ from tkinter import ttk
 
 from PIL import Image, ImageTk
 
-from src.grapher.grapher import Grapher
 from .page import Page
 
 
 class SimulationPage(Page):
-    def __init__(self, parent, controller):
-        super().__init__(parent, controller)
-
-        self.grapher = Grapher(simulator=self.controller.simulator, output_dir="../graphs")
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         self.formats = {
             "restaurant": "Selected: Restaurant {}",
@@ -76,6 +73,14 @@ class SimulationPage(Page):
         regret_label = ttk.Label(self, textvariable=self.regret_string)
         regret_label.place(x=60, y=210, width=300, height=40)
 
+        next_button = ttk.Button(
+            self,
+            style="Nav.TButton",
+            text="RESULTS",
+            command=lambda: self.controller.set_page("results")
+        )
+        next_button.place(x=0, y=0, width=300, height=60)
+
     def open(self):
         self.controller.simulator.run_simulation()
         self.update()
@@ -88,7 +93,7 @@ class SimulationPage(Page):
     def decreaseCommand(self):
         self.iter.set(max(0, self.iter.get() - 1))
 
-        self.update()
+        self.update(full_update=False)
 
     def update(self, full_update: bool = True):
         frame_num = self.iter.get()
@@ -99,9 +104,9 @@ class SimulationPage(Page):
         self.reward_string.set(self.formats["reward"].format(frame.reward))
         self.regret_string.set(self.formats["regret"].format(frame.regret))
 
-        self.grapher.generate_frame_graphs(frame_num)
-        for i, graph in enumerate(os.listdir(self.grapher.output_dir)):
-            load = Image.open(f"{self.grapher.output_dir}/{graph}")
+        output_dir = self.controller.simulator.generate_frame_graphs(frame_num)
+        for i, graph in enumerate(os.listdir(output_dir)):
+            load = Image.open(f"{output_dir}/{graph}")
             load = load.resize((64, 64))
             render = ImageTk.PhotoImage(load)
             img = ttk.Label(self, image=render)

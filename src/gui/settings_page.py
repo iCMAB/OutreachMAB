@@ -2,13 +2,13 @@ import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import ttk
 
-from src.simulation.bandits import BANDITS
+from src.simulation.bandits import BANDITS, BanditModel
 from .page import Page
 
 
 class SettingsPage(Page):
-    def __init__(self, parent, controller):
-        super().__init__(parent, controller)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         self.grid_columnconfigure((1, 2, 3, 4, 5), weight=2)
         self.grid_columnconfigure(6, weight=1)
@@ -72,10 +72,9 @@ class SettingsPage(Page):
 
             self.controller.set_page("intro")
 
-
         button1 = ttk.Button(self, text="Start", command=start)
         button1.grid(row=5, column=1, padx=10, pady=10, ipadx=50, ipady=20)
 
-        button2 = ttk.Button(self, text="What do these mean?", command=lambda: controller.set_page("settings_explained"))
+        button2 = ttk.Button(self, text="What do these mean?",
+                             command=lambda: self.controller.set_page("settings_explained"))
         button2.grid(row=4, column=1, padx=10, pady=10, ipadx=50, ipady=20)
-

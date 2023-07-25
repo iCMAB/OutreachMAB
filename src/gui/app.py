@@ -3,13 +3,13 @@ from tkinter import ttk
 from typing import Dict
 
 from src.simulation.simulator import Simulator
+from .intro_page import IntroPage
 from .page import Page
+from .results_page import ResultsPage
+from .settings_explain_page import SettingsExplainPage
 from .settings_page import SettingsPage
 from .simulation_page import SimulationPage
 from .start_page import StartPage
-from .settings_explain_page import SettingsExplainPage
-from .intro_page import IntroPage
-from src.simulation.simulator import Simulator
 
 
 class App(tk.Tk):
@@ -24,13 +24,14 @@ class App(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
-        self.current_page: Page = None
+        self.current_page: Page | None = None
         self.pages: Dict[str, Page] = {
-            "start": StartPage(container, self),
-            "simulation": SimulationPage(container, self),
-            "settings": SettingsPage(container, self),
-            "settings_explained": SettingsExplainPage(container, self),
-            "intro": IntroPage(container, self)
+            "start": StartPage(master=container, controller=self),
+            "simulation": SimulationPage(master=container, controller=self),
+            "settings": SettingsPage(master=container, controller=self),
+            "results": ResultsPage(master=container, controller=self),
+            "settings_explained": SettingsExplainPage(master=container, controller=self),
+            "intro": IntroPage(master=container, controller=self)
         }
 
         for _, v in self.pages.items():
@@ -43,14 +44,15 @@ class App(tk.Tk):
         screenheight = self.winfo_screenheight()
         alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
         self.geometry(alignstr)
-        self.resizable(width=False, height=False)
+        self.resizable(width=True, height=True)
 
         self.set_page("start")
 
     def set_page(self, page: str):
         if self.current_page is not None:
             self.current_page.close()
+
         new_page = self.pages[page]
         new_page.open()
-        self.current_page = new_page
         new_page.tkraise()
+        self.current_page = new_page
