@@ -1,8 +1,9 @@
-from simulation.simulator import Simulator
-from gui.app import App
+from src.gui.app import App
+
 
 def main():
-    app = App()
+    config_file = "../config.json"
+    app = App(config_file)
     app.mainloop()
 
 

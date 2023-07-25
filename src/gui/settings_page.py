@@ -1,13 +1,14 @@
 import tkinter as tk
-from tkinter import ttk
 import tkinter.font as tkFont
+from tkinter import ttk
 
-from src.simulation.bandits import BANDITS
+from src.simulation.bandits import BANDITS, BanditModel
 from .page import Page
 
+
 class SettingsPage(Page):
-    def __init__(self, parent, controller):
-        super().__init__(parent, controller)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         self.grid_columnconfigure((1, 2, 3, 4, 5), weight=2)
         self.grid_columnconfigure(6, weight=1)
@@ -32,6 +33,7 @@ class SettingsPage(Page):
         #ALL BANDIT OPTIONS GO HERE
         bandit_menu.add_radiobutton(label="Random", variable=self.selected_bandit, value="Random")
         bandit_menu.add_radiobutton(label="Epsilon Greedy", variable=self.selected_bandit, value="Epsilon Greedy")
+        bandit_menu.add_radiobutton(label="Thompson Sampling", variable=self.selected_bandit, value="Thompson Sampling")
         #END BANDIT OPTIONS
 
         bandit_menu_button.grid(row=1, column=6, padx=(0, 10), pady=(10,5), sticky="nsew")
@@ -71,15 +73,12 @@ class SettingsPage(Page):
         num_iter_desc.grid(row=6, column=1, columnspan=6, padx=10, pady=(0,10), sticky="nsew")
 
         def start():
+            self.controller.simulator.num_frames = int(self.iter_number.get())
+            self.controller.simulator.bandit: BanditModel = BANDITS[self.selected_bandit.get()] \
+                (n_arms=int(self.arms_number.get()), **self.controller.simulator.config["bandit"]["parameters"])
+            self.controller.simulator.n_arms = self.arms_number.get()
 
-            self.controller.simulation.num_frames = int(self.iter_number.get())
-            self.controller.simulation.bandit: BanditModel = BANDITS[self.selected_bandit.get()] \
-                (n_arms=int(self.arms_number.get()), **self.controller.simulation.config["bandit"]["parameters"])
-            self.controller.simulation.n_arms = self.arms_number.get()
-
-            self.parent.children['!intropage'].update()
             self.controller.set_page("intro")
-
 
         button1 = ttk.Button(self, text="Start", command=start)
         button1.grid(row=7, column=1, padx=10, pady=10, ipadx=50, ipady=20)

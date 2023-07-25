@@ -1,10 +1,12 @@
-from .bandit_model import BanditModel
 import random
 
+from .bandit_model import BanditModel
+
+
 class EpsilonGreedyBandit(BanditModel):
-    def __init__(self, n_arms: int):
+    def __init__(self, n_arms: int, epsilon: float = .1):
         super().__init__(n_arms)
-        self.epsilon = 30 #Chance for a random arm to be selected instead written as a percentage
+        self.epsilon = epsilon
         self.counts = [n_arms]
         self.values = [n_arms]
         self.cumulative = [n_arms]
@@ -18,15 +20,14 @@ class EpsilonGreedyBandit(BanditModel):
             self.cumulative.append(0)
 
     def select_arm(self) -> int:
-        chance = random.randint(0, 100)
-        if chance < self.epsilon:
+        if random.random() < self.epsilon:
             choice = random.randint(0, self.n_arms - 1)
         else:
             choice = self.max_choice
         self.counts[choice] += 1
         return choice
 
-    def update(self, reward: float, choice: int):
+    def update(self, reward: float, regret: int, choice: int):
         self.cumulative[choice] += reward
         avg = self.cumulative[choice]/self.counts[choice]
         self.values[choice] = avg
