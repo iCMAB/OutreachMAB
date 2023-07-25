@@ -5,7 +5,7 @@ from .bandit_model import BanditModel
 
 class RandomBandit(BanditModel):
 
-    def __init__(self, n_arms: int):
+    def __init__(self, n_arms: int, epsilon):
         super().__init__(n_arms)
         self.type = "Random"
     def select_arm(self) -> int:

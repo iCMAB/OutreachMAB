@@ -4,10 +4,11 @@ import numpy as np
 
 class TSBandit(BanditModel):
     #Very simple Thompson Sampling, takes Regret as a Bernoulli distribution, there either is or is not regret
-    def __init__(self, n_arms: int):
+    def __init__(self, n_arms: int, epsilon):
         super().__init__(n_arms)
         self.max_rewards = [0] * self.n_arms
         self.regrets = [0] * self.n_arms
+        self.type = "Thompson Sampling"
     def select_arm(self) -> int:
         bandit = 0
         beta_max = 0
