@@ -6,5 +6,6 @@ from .thompson_sampling import TSBandit
 BANDITS = {
     "Random": RandomBandit,
     "Epsilon Greedy": EpsilonGreedyBandit,
-    "Thompson Sampling": TSBandit
+    "Thompson Sampling": TSBandit,
+    "Upper Confidence Bound" : UCBBandit
 }
