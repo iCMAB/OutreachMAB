@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+import numpy as np
 from PIL import ImageTk, Image
 
 from src.simulation.simulator import Simulator
@@ -51,14 +52,26 @@ class _RightPanel(ttk.LabelFrame):
     def update(self):
         output_dir = self.simulator.grapher.output_dir
         for i in range(self.simulator.n_arms):
+            restaurant_frame = ttk.LabelFrame(master=self, text=f"Restaurant #{i}")
+            restaurant_frame.grid(column=0, row=i)
+
             img = create_image_label(
-                parent=self,
+                master=restaurant_frame,
                 image_filepath=output_dir / f"{i}_rewards.png",
-                text=f"Restaurant #{i}",
+                text=f"Restaurant #{i} graph placeholder",
                 size=(96, 96),
-                compound=tk.LEFT
             )
-            img.grid(column=0, row=i)
+            img.grid(column=0, row=0, rowspan=3)
+
+            rewards = self.simulator.get_rewards(arm_index=i)
+            samples_label = ttk.Label(restaurant_frame, text=f"Number of Samples: {len(rewards)}")
+            samples_label.grid(column=1, row=0)
+            avg_reward = np.average(rewards)
+            avg_label = ttk.Label(restaurant_frame, text=f"Average Reward: {avg_reward:0.2f}")
+            avg_label.grid(column=1, row=1)
+            std_dev = np.std(rewards)
+            sd_label = ttk.Label(restaurant_frame, text=f"Standard Deviation: {std_dev:0.2f}")
+            sd_label.grid(column=1, row=2)
 
 
 class _LeftPanel(ttk.LabelFrame):
@@ -70,7 +83,7 @@ class _LeftPanel(ttk.LabelFrame):
         output_dir = self.simulator.grapher.output_dir
 
         scatter = create_image_label(
-            parent=self,
+            master=self,
             image_filepath=output_dir / "scatter.png",
             text="placeholder_text_for_reward_regret_chart",
             size=(512, 128),
@@ -91,7 +104,7 @@ class _LeftPanel(ttk.LabelFrame):
         standard_label.grid(column=0, row=1)
 
         cumulative = create_image_label(
-            parent=self,
+            master=self,
             image_filepath=output_dir / "cum_scatter.png",
             text="placeholder_text_for_cumulative_chart",
             size=(512, 128),
@@ -113,10 +126,11 @@ class _LeftPanel(ttk.LabelFrame):
         )
         cumulative_label.grid(column=0, row=3)
 
-def create_image_label(parent, image_filepath, text, size, *args, **kwargs):
+
+def create_image_label(master, image_filepath, text, size, *args, **kwargs):
     load = Image.open(image_filepath)
     load = load.resize(size)
     render = ImageTk.PhotoImage(load)
-    img = ttk.Label(parent, text=text, image=render, *args, **kwargs)
+    img = ttk.Label(master, text=text, image=render, *args, **kwargs)
     img.image = render
     return img
