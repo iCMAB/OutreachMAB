@@ -37,9 +37,10 @@ class SettingsPage(Page):
         bandit_menu_button.configure(menu=bandit_menu)
 
         #ALL BANDIT OPTIONS GO HERE
-        bandit_menu.add_radiobutton(label="Random", variable=self.selected_bandit, value="Random")
         bandit_menu.add_radiobutton(label="Epsilon Greedy", variable=self.selected_bandit, value="Epsilon Greedy")
         bandit_menu.add_radiobutton(label="Thompson Sampling", variable=self.selected_bandit, value="Thompson Sampling")
+        bandit_menu.add_radiobutton(label="Upper Confidence Bound", variable=self.selected_bandit, value="Upper Confidence Bound")
+        bandit_menu.add_radiobutton(label="Randomly Selected", variable=self.selected_bandit, value="Random")
         #END BANDIT OPTIONS
 
         bandit_menu_button.grid(row=1, column=6, padx=(0, 10), pady=10, sticky="nsew")
