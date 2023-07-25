@@ -13,6 +13,7 @@ class Histogram(Graph):
     def __init__(self, arm_index: int, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.arm_index = arm_index
+        self.rewards_cache = []
         self.chosen = False
 
     def cache_check(self, frames, frame_num):
@@ -34,8 +35,14 @@ class Histogram(Graph):
             self.chosen = False
             return False
 
-        # If no reason to redraw, assume its fine
-        return True
+        # If the samples from this arm are the same, cached is True
+        rewards = [frame.reward for frame in frames if frame.choice == self.arm_index]
+        if rewards == self.rewards_cache:
+            return True
+        else:
+            self.rewards_cache = rewards
+
+        return False
 
     def generate(self, frames, frame_num):
         # Return immediately if cache_check returns true
