@@ -23,7 +23,7 @@ class BanditExplainPage(Page):
         next_button = ttk.Button(self, text="Continue", command=lambda: self.app.set_page("intro"))
         next_button.grid(row=3, column=2, padx=10, pady=10, ipadx=50, ipady=20)
 
-        back_button = ttk.Button(self, text="Back", command=lambda: self.app.set_page("settings"))
+        back_button = ttk.Button(self, text="Back to Start", command=lambda: self.app.set_page("start"))
         back_button.grid(row=3, column=1, padx=10, pady=10, ipadx=50, ipady=20)
 
 
