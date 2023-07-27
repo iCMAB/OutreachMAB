@@ -50,7 +50,7 @@ class _RightPanel(ttk.LabelFrame):
 
     def update(self):
         output_dir = self.simulator.grapher.output_dir
-        for i in range(self.simulator.n_arms):
+        for i in range(int(self.simulator.n_arms)):
             restaurant_frame = ttk.LabelFrame(master=self, text=f"Restaurant #{i}")
             restaurant_frame.grid(column=0, row=i)
 
