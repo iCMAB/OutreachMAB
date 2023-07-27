@@ -17,32 +17,31 @@ class Histogram(Graph):
         self.chosen = False
 
     def cache_check(self, frames, frame_num):
-        # If exact same setup as last time, cached is true
-        if super().cache_check(frames, frame_num):
-            return True
-
-        # If the graph hasn't generated yet, cached is false
+        # If the graph hasn't generated yet, always generate
         if not os.path.isfile(self.filepath):
             return False
 
-        # If this arm is chosen, cached is false
-        if self.arm_index == frames[frame_num].choice:
-            self.chosen = True
-            return False
+        # If exact same setup as last call, don't regenerate
+        if super().cache_check(frames, frame_num):
+            return True
 
-        # If this arm was chosen last selection, cached is false
-        if self.chosen:
-            self.chosen = False
-            return False
-
-        # If the samples from this arm are the same, cached is True
+        # If the samples are different, regenerate
         rewards = [frame.reward for frame in frames if frame.choice == self.arm_index]
         if rewards == self.rewards_cache:
+            # Regenerate if the arm needs to be highlighted
+            if self.arm_index == frames[frame_num].choice:
+                self.chosen = True
+                return False
+
+            # Regenerate if an old highlight needs to be removed
+            if self.chosen:
+                self.chosen = False
+                return False
+
             return True
         else:
             self.rewards_cache = rewards
-
-        return False
+            return False
 
     def generate(self, frames, frame_num):
         # Return immediately if cache_check returns true
