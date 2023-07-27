@@ -50,7 +50,7 @@ class Simulator:
         return frame
 
     def generate_frame_graphs(self, frame_num: int):
-        self.grapher.generate_frame_graphs(frames=self.frames, frame_num=frame_num)
+        self.grapher.generate_frame_graphs(frames=self.frames[:frame_num + 1], frame_num=frame_num)
         return self.grapher.output_dir
 
     def log_start(self):
