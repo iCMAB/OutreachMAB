@@ -48,38 +48,39 @@ class SimulationPage(Updatable, Page):
         super().update()
 
 
-class _LeftPanel(Updatable, ttk.LabelFrame):
+class _LeftPanel(Updatable, ttk.Frame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
-        super().__init__(master, text="Restaurant Sampling")
+        super().__init__(master)
         self.page = page
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
 
+        self.columnconfigure(0, weight=1)
 
-class _RightPanel(Updatable, ttk.PanedWindow):
-    def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
-        super().__init__(master, orient=tk.VERTICAL)
-        self.page = page
-        self.simulator = page.app.simulator
-        self.frame_num_var = frame_num_var
-
-        header = _RightHeader(master=self, page=self.page, frame_num_var=self.frame_num_var)
-        self.add(header)
+        header = _LeftHeader(master=self, page=self.page, frame_num_var=self.frame_num_var)
+        header.grid(column=0, row=0, sticky=tk.NSEW)
         self.subwidgets.append(header)
+        self.rowconfigure(index=0, weight=0, minsize=32)
 
-        sample_grid = _SampleGrid(master=self, page=self.page, frame_num_var=self.frame_num_var)
-        self.add(sample_grid, weight=1)
-        self.subwidgets.append(sample_grid)
+        frame_info = _FrameInfo(master=self, page=self.page, frame_num_var=self.frame_num_var)
+        frame_info.grid(column=0, row=1, sticky=tk.NSEW)
+        self.subwidgets.append(frame_info)
+        self.rowconfigure(index=1, weight=0, minsize=128)
+
+        charts = _Charts(master=self, page=self.page, frame_num_var=self.frame_num_var)
+        charts.grid(column=0, row=2, sticky=tk.NSEW)
+        self.subwidgets.append(charts)
+        self.rowconfigure(index=2, weight=1)
 
 
-class _RightHeader(ttk.LabelFrame):
+class _LeftHeader(ttk.LabelFrame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master, text="TEST")
         self.page = page
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
 
-        self.frame_num_string = tk.StringVar(value=str(self.frame_num_var.get()))
+        self.frame_entry = tk.StringVar(value=str(self.frame_num_var.get()))
 
         left_button = tk.Button(
             self,
@@ -90,15 +91,6 @@ class _RightHeader(ttk.LabelFrame):
         )
         left_button.grid(column=0, row=0)
 
-        current_iter = ttk.Label(
-            self,
-            font=tkfont.Font(family='Times', size=32),
-            foreground="#333333",
-            justify="center",
-            textvariable=self.frame_num_string,
-        )
-        current_iter.grid(column=1, row=0)
-
         right_button = tk.Button(
             self,
             height=2,
@@ -106,10 +98,40 @@ class _RightHeader(ttk.LabelFrame):
             text="NEXT",
             command=self.increment_frame_num,
         )
-        right_button.grid(column=2, row=0)
+        right_button.grid(column=1, row=0)
+
+        current_iter = ttk.Entry(
+            self,
+            font=tkfont.Font(family='Times', size=16),
+            foreground="#333333",
+            justify="center",
+            textvariable=self.frame_entry,
+        )
+        current_iter.grid(column=2, row=0)
+        current_iter.bind(sequence="<Key-Return>", func=self.entry_submit)
+
+        right_button = tk.Button(
+            self,
+            height=2,
+            width=5,
+            text="JUMP",
+            command=self.entry_submit,
+        )
+        right_button.grid(column=4, row=0)
 
     def update(self) -> None:
-        self.frame_num_string.set(str(self.frame_num_var.get()))
+        self.frame_entry.set(str(self.frame_num_var.get()))
+
+    def entry_submit(self, *args):
+        try:
+            new_frame_num = int(self.frame_entry.get())
+            new_frame_num = max(0, new_frame_num)
+            new_frame_num = min(new_frame_num, self.simulator.num_frames - 1)
+            self.frame_num_var.set(new_frame_num)
+        except ValueError:
+            self.frame_entry.set(str(self.frame_num_var.get()))
+        self.page.update()
+
 
     def increment_frame_num(self):
         self.frame_num_var.set(min(self.frame_num_var.get() + 1, self.simulator.num_frames - 1))
@@ -120,7 +142,68 @@ class _RightHeader(ttk.LabelFrame):
         self.page.update()
 
 
-class _SampleGrid(ttk.Frame):
+class _FrameInfo(Updatable, ttk.LabelFrame):
+    def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
+        super().__init__(master, text="Frame Information")
+        self.page = page
+        self.simulator = page.app.simulator
+        self.frame_num_var = frame_num_var
+
+    def update(self):
+        super().update()
+
+        frame = self.simulator.frames[self.frame_num_var.get()]
+
+        choice_label = ttk.Label(master=self, text=f"Restaurant Choice: {frame.choice}")
+        choice_label.grid(column=0, row=0)
+
+        reward_label = ttk.Label(master=self, text=f"Reward: {frame.reward:0.2f}")
+        reward_label.grid(column=0, row=1)
+
+        regret_label = ttk.Label(master=self, text=f"Regret: {frame.regret:0.2f}")
+        regret_label.grid(column=0, row=2)
+
+
+class _Charts(Updatable, ttk.LabelFrame):
+    def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
+        super().__init__(master, text="Reward/Regret Charts")
+        self.page = page
+        self.simulator = page.app.simulator
+        self.frame_num_var = frame_num_var
+
+    def update(self):
+        output_dir = self.simulator.grapher.output_dir
+
+        avg_scatter = ImageLabel(
+            master=self,
+            image_filepath=output_dir / "avg_scatter.png",
+            text="placeholder_text_for_reward_regret_chart",
+            size=(512, 128),
+        )
+        avg_scatter.grid(column=0, row=0)
+
+        standard_label = ttk.Label(
+            self,
+            text="Average reward and regret"
+        )
+        standard_label.grid(column=0, row=1)
+
+        cumulative = ImageLabel(
+            master=self,
+            image_filepath=output_dir / "cum_scatter.png",
+            text="placeholder_text_for_cumulative_chart",
+            size=(512, 128),
+        )
+        cumulative.grid(column=0, row=2)
+
+        cumulative_label = ttk.Label(
+            self,
+            text="Cumulative reward and regret"
+        )
+        cumulative_label.grid(column=0, row=3)
+
+
+class _RightPanel(ttk.Frame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master)
         self.page = page
@@ -131,7 +214,8 @@ class _SampleGrid(ttk.Frame):
         output_dir = self.simulator.grapher.output_dir
         for i in range(int(self.simulator.n_arms)):
             restaurant_frame = ttk.LabelFrame(master=self, text=f"Restaurant #{i}")
-            restaurant_frame.grid(column=0, row=i)
+            restaurant_frame.grid(column=0, row=i, sticky=tk.NSEW)
+            self.columnconfigure(index=0, weight=1)
 
             image_label = ImageLabel(
                 master=restaurant_frame,
