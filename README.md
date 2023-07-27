@@ -1,20 +1,26 @@
 # OutreachMAB
-Repository to store the codebase for the multi-armed bandit and context MAB application examples 
 
+Repository to store the codebase for the multi-armed bandit and context MAB application examples
 
 ## Todo list
+
 List of current ideas to implement. No order or priority is established.
 Some ideas are not finalized yet.
 
+- Change GUI counting to be 1-based instead of 0-based
+- Add Back buttons
+- Add image scaling
+
 ### Ideas for context options:
- - Distance:
+
+- Distance:
    - Decreases reward with distance to restaurant
    - Flat penalty based on distance or sqrt of distance
- - Time of Day:
+- Time of Day:
    - Changes Restaurant reward distribution
    - Scales the entire reward dist, 0 reward if restaurant is closed
    - Normal dist centered around peak time
- - Interest?:
+- Interest?:
    - Rewards choosing a restaurant with the same type of food
    - Restaurants may have overlapping food tags
    - Last choice might be automatically not interested

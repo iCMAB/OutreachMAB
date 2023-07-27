@@ -67,6 +67,9 @@ class Simulator:
         print(f"Reward: {frame.reward}")
         print(f"Regret: {frame.regret}")
 
+    def get_rewards(self, arm_index: int) -> List[float]:
+        return [frame.rewards[arm_index] for frame in self.frames if arm_index == frame.choice]
+
 def recursive_update(d: MutableMapping, u: Mapping) -> MutableMapping:
     """
     Recursively updates dict1 with values from dict2. If a conflicting value is a Mapping, recursively updates the value
