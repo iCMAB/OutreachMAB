@@ -15,7 +15,7 @@ class SettingsPage(Page):
             app=self.app,
             title="Settings",
             forward_button_args={
-                "text": "START",
+                "text": "NEXT",
                 "command": lambda: start()
             }
         )
