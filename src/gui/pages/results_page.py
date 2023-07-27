@@ -95,7 +95,7 @@ class _LeftPanel(ttk.LabelFrame):
 
         avg_scatter = ImageLabel(
             master=self,
-            image_filepath=output_dir / "avg_scatter.png",
+            image_filepath=output_dir / "cum_scatter.png",
             text="placeholder_text_for_reward_regret_chart",
             size=(512, 128),
         )
@@ -116,7 +116,7 @@ class _LeftPanel(ttk.LabelFrame):
 
         cumulative = ImageLabel(
             master=self,
-            image_filepath=output_dir / "cum_scatter.png",
+            image_filepath=output_dir / "avg_scatter.png",
             text="placeholder_text_for_cumulative_chart",
             size=(512, 128),
         )
