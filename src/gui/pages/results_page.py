@@ -92,13 +92,13 @@ class _LeftPanel(ttk.LabelFrame):
         standard_label = ttk.Label(
             self,
             text=f"""
-                    The [MODEL NAME] model selected gained a total of [REWARD]
-                    points over [N] iterations, with a total of [REGRET] missed
-                    points. As you can see from the totals graphed over time,
-                    the reward increases slowly as the Bandits explore, then settles
-                    into a linear growth once the optimal arm is found and the
-                    bandit starts to exploit it.
-                    """
+            The [MODEL NAME] model selected gained a total of [REWARD]
+            points over [N] iterations, with a total of [REGRET] missed
+            points. As you can see from the totals graphed over time,
+            the reward increases slowly as the Bandits explore, then settles
+            into a linear growth once the optimal arm is found and the
+            bandit starts to exploit it.
+            """
         )
         standard_label.grid(column=0, row=1)
 
@@ -113,14 +113,14 @@ class _LeftPanel(ttk.LabelFrame):
         cumulative_label = ttk.Label(
             self,
             text=f"""
-                    One of the methods used to judge the efficacy of Bandit models
-                    is the trend of the average reward and regret over the course
-                    of a simulation. A strong bandit model should have an average
-                    reward that approaches the average return of the optimal arm,
-                    which in this case is set to 5, and the average regret should
-                    approach 0. You can judge the selected model for yourself by
-                    looking at the averages above, and the expected average reward
-                    has been added for reference.
-                    """
+            One of the methods used to judge the efficacy of Bandit models
+            is the trend of the average reward and regret over the course
+            of a simulation. A strong bandit model should have an average
+            reward that approaches the average return of the optimal arm,
+            which in this case is set to 5, and the average regret should
+            approach 0. You can judge the selected model for yourself by
+            looking at the averages above, and the expected average reward
+            has been added for reference.
+            """
         )
         cumulative_label.grid(column=0, row=3)

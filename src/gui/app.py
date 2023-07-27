@@ -38,8 +38,8 @@ class App(tk.Tk):
             v.grid(row=0, column=0, sticky="nsew")
 
         self.title("Restaurant Outreach")
-        width = 600
-        height = 500
+        width = 1200
+        height = 800
         screenwidth = self.winfo_screenwidth()
         screenheight = self.winfo_screenheight()
         alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
