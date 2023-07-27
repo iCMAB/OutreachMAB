@@ -17,7 +17,7 @@ class SettingsPage(Page):
         self.rowconfigure((1, 2, 3, 4, 5), weight=1)
 
         self.selected_bandit = tk.StringVar()
-        self.selected_bandit.set("Random")
+        self.selected_bandit.set("Epsilon Greedy")
 
         #bandit model label and current selection
         model_label = ttk.Label(self, text='Bandit Model', font=tkFont.Font(size=18), background='#b0ada9', borderwidth=40, relief="solid")
