@@ -4,7 +4,7 @@ from typing import Dict
 
 from src.gui.pages.intro_page import IntroPage
 from src.gui.pages.results_page import ResultsPage
-from src.gui.pages.settings_explain_page import SettingsExplainPage
+from src.gui.pages.bandit_explain_page import BanditExplainPage
 from src.gui.pages.settings_page import SettingsPage
 from src.gui.pages.simulation_page import SimulationPage
 from src.gui.pages.start_page import StartPage
@@ -30,7 +30,7 @@ class App(tk.Tk):
             "simulation": SimulationPage(master=container, app=self),
             "settings": SettingsPage(master=container, app=self),
             "results": ResultsPage(master=container, app=self),
-            "settings_explained": SettingsExplainPage(master=container, app=self),
+            "bandits_explained": BanditExplainPage(master=container, app=self),
             "intro": IntroPage(master=container, app=self)
         }
 

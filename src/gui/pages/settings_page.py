@@ -88,7 +88,7 @@ class SettingsPage(Page):
                 (n_arms=int(self.arms_number.get()), **self.app.simulator.config["bandit"]["parameters"])
             self.app.simulator.n_arms = self.arms_number.get()
 
-            self.app.set_page("intro")
+            self.app.set_page("bandits_explained")
 
         button1 = ttk.Button(self, text="Start", command=start)
         button1.grid(row=7, column=1, padx=10, pady=10, ipadx=50, ipady=20)
