@@ -2,17 +2,19 @@ import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import ttk
 
+from src.gui.standard_widgets.page import Page
 from src.simulation.bandits import BANDITS, BanditModel
-from .page import Page
 
 
 class SettingsPage(Page):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.grid_columnconfigure((1, 2, 3, 4, 5), weight=2)
-        self.grid_columnconfigure(6, weight=1)
-        self.grid_rowconfigure((1, 2, 3, 4, 5), weight=1)
+        # noinspection PyTypeChecker
+        self.columnconfigure((1, 2, 3, 4, 5), weight=2)
+        self.columnconfigure(6, weight=1)
+        # noinspection PyTypeChecker
+        self.rowconfigure((1, 2, 3, 4, 5), weight=1)
 
         # label of frame Layout 2
         label = tk.Label(self, text="Settings", font=tkFont.Font(size=18))
@@ -51,7 +53,8 @@ class SettingsPage(Page):
         arms_label.grid(row=2, column=1, padx=(10, 0), pady=10, columnspan=4, sticky="nsew")
 
         self.num_of_arms = tk.IntVar(value=5)
-        self.arms_number = tk.Entry(self, exportselection=0, textvariable=self.num_of_arms, background='#b0ada9', justify='center', font=tkFont.Font(size=18))
+        self.arms_number = tk.Entry(self, exportselection=False, textvariable=self.num_of_arms, background='#b0ada9',
+                                    justify='center', font=tkFont.Font(size=18))
         self.arms_number.grid(row=2, column=4, padx=(0, 10), pady=10, sticky="nsew", columnspan=3)
 
         #number of iterations label and entry box
@@ -61,11 +64,13 @@ class SettingsPage(Page):
 
         self.num_of_iters = tk.IntVar(value=100)
 
-        self.iter_number = tk.Entry(self, exportselection=0, textvariable=self.num_of_iters, background='#b0ada9', justify='center', font=tkFont.Font(size=18))
+        self.iter_number = tk.Entry(self, exportselection=False, textvariable=self.num_of_iters, background='#b0ada9',
+                                    justify='center', font=tkFont.Font(size=18))
         self.iter_number.grid(row=3, column=4, padx=(0, 10), pady=10, sticky="nsew", columnspan=3)
 
         def start():
             self.app.simulator.num_frames = int(self.iter_number.get())
+            # noinspection PyTypeHints
             self.app.simulator.bandit: BanditModel = BANDITS[self.selected_bandit.get()] \
                 (n_arms=int(self.arms_number.get()), **self.app.simulator.config["bandit"]["parameters"])
             self.app.simulator.n_arms = self.arms_number.get()

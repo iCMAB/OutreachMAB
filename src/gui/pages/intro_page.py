@@ -1,7 +1,7 @@
 import tkinter.font as tkFont
 from tkinter import ttk
 
-from .page import Page
+from src.gui.standard_widgets.page import Page
 
 
 class IntroPage(Page):

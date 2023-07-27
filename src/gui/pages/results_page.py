@@ -3,8 +3,8 @@ from tkinter import ttk
 
 import numpy as np
 
+from src.gui.standard_widgets import Page, ImageLabel
 from src.simulation.simulator import Simulator
-from .page import Page, create_image_label
 
 
 # TODO: Fix out pane scaling and default width
@@ -54,13 +54,13 @@ class _RightPanel(ttk.LabelFrame):
             restaurant_frame = ttk.LabelFrame(master=self, text=f"Restaurant #{i}")
             restaurant_frame.grid(column=0, row=i)
 
-            img = create_image_label(
+            image_label = ImageLabel(
                 master=restaurant_frame,
                 image_filepath=output_dir / f"{i}_rewards.png",
                 text=f"Restaurant #{i} graph placeholder",
                 size=(96, 96),
             )
-            img.grid(column=0, row=0, rowspan=3)
+            image_label.grid(column=0, row=0, rowspan=3)
 
             rewards = self.simulator.get_rewards(arm_index=i)
             samples_label = ttk.Label(restaurant_frame, text=f"Number of Samples: {len(rewards)}")
@@ -81,13 +81,13 @@ class _LeftPanel(ttk.LabelFrame):
     def update(self):
         output_dir = self.simulator.grapher.output_dir
 
-        scatter = create_image_label(
+        avg_scatter = ImageLabel(
             master=self,
-            image_filepath=output_dir / "scatter.png",
+            image_filepath=output_dir / "avg_scatter.png",
             text="placeholder_text_for_reward_regret_chart",
             size=(512, 128),
         )
-        scatter.grid(column=0, row=0)
+        avg_scatter.grid(column=0, row=0)
 
         standard_label = ttk.Label(
             self,
@@ -102,7 +102,7 @@ class _LeftPanel(ttk.LabelFrame):
         )
         standard_label.grid(column=0, row=1)
 
-        cumulative = create_image_label(
+        cumulative = ImageLabel(
             master=self,
             image_filepath=output_dir / "cum_scatter.png",
             text="placeholder_text_for_cumulative_chart",

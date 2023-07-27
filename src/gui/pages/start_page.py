@@ -1,7 +1,7 @@
 import tkinter.font as tkFont
 from tkinter import ttk
 
-from .page import Page
+from src.gui.standard_widgets.page import Page
 
 
 class StartPage(Page):
@@ -13,7 +13,8 @@ class StartPage(Page):
                           font=tkFont.Font(size=36))
 
         # putting the grid in its place by using
-        self.grid_columnconfigure((0, 2), weight=1)
+        self.columnconfigure(index=0, weight=1)
+        self.columnconfigure(index=2, weight=1)
         # grid
         label.grid(row=0, column=1, padx=10, pady=50)
 

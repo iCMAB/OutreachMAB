@@ -2,14 +2,14 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Dict
 
+from src.gui.pages.intro_page import IntroPage
+from src.gui.pages.results_page import ResultsPage
+from src.gui.pages.settings_explain_page import SettingsExplainPage
+from src.gui.pages.settings_page import SettingsPage
+from src.gui.pages.simulation_page import SimulationPage
+from src.gui.pages.start_page import StartPage
+from src.gui.standard_widgets.page import Page
 from src.simulation.simulator import Simulator
-from .intro_page import IntroPage
-from .page import Page
-from .results_page import ResultsPage
-from .settings_explain_page import SettingsExplainPage
-from .settings_page import SettingsPage
-from .simulation_page import SimulationPage
-from .start_page import StartPage
 
 
 class App(tk.Tk):
