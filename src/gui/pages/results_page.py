@@ -3,7 +3,7 @@ from tkinter import ttk
 
 import numpy as np
 
-from src.gui.standard_widgets import Page, ImageLabel
+from src.gui.standard_widgets import Page, ImageLabel, Header
 from src.simulation.simulator import Simulator
 
 
@@ -14,11 +14,23 @@ class ResultsPage(Page):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        title = ttk.Label(self, text="Results Page")
-        title.pack(side=tk.TOP)
+        self.columnconfigure(0, weight=1)
+
+        header = Header(
+            master=self,
+            app=self.app,
+            title="Simulation Results",
+            forward_button_args={
+                "text": "QUIT",
+                "command": lambda: self.app.destroy(),
+            }
+        )
+        header.grid(column=0, row=0, sticky=tk.NSEW)
+        self.rowconfigure(0, weight=0, minsize=32)
 
         panes = ttk.PanedWindow(self, orient=tk.HORIZONTAL)
-        panes.pack(side=tk.BOTTOM, expand=True, fill=tk.BOTH)
+        panes.grid(column=0, row=1, sticky=tk.NSEW)
+        self.rowconfigure(1, weight=1)
 
         self.l_panel = _LeftPanel(self, self.app.simulator)
         panes.add(self.l_panel, weight=1)
