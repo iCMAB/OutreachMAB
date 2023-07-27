@@ -2,14 +2,14 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Dict
 
+from src.gui.pages.intro_page import IntroPage
+from src.gui.pages.results_page import ResultsPage
+from src.gui.pages.settings_explain_page import SettingsExplainPage
+from src.gui.pages.settings_page import SettingsPage
+from src.gui.pages.simulation_page import SimulationPage
+from src.gui.pages.start_page import StartPage
+from src.gui.standard_widgets.page import Page
 from src.simulation.simulator import Simulator
-from .intro_page import IntroPage
-from .page import Page
-from .results_page import ResultsPage
-from .settings_explain_page import SettingsExplainPage
-from .settings_page import SettingsPage
-from .simulation_page import SimulationPage
-from .start_page import StartPage
 
 
 class App(tk.Tk):
@@ -26,12 +26,12 @@ class App(tk.Tk):
 
         self.current_page: Page | None = None
         self.pages: Dict[str, Page] = {
-            "start": StartPage(master=container, controller=self),
-            "simulation": SimulationPage(master=container, controller=self),
-            "settings": SettingsPage(master=container, controller=self),
-            "results": ResultsPage(master=container, controller=self),
-            "settings_explained": SettingsExplainPage(master=container, controller=self),
-            "intro": IntroPage(master=container, controller=self)
+            "start": StartPage(master=container, app=self),
+            "simulation": SimulationPage(master=container, app=self),
+            "settings": SettingsPage(master=container, app=self),
+            "results": ResultsPage(master=container, app=self),
+            "settings_explained": SettingsExplainPage(master=container, app=self),
+            "intro": IntroPage(master=container, app=self)
         }
 
         for _, v in self.pages.items():

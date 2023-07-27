@@ -20,7 +20,7 @@ class Grapher:
             hist = Histogram(filepath=self.output_dir / f"{i}_rewards.png", arm_index=i)
             self.graphs.append(hist)
 
-        scatter = Scatter(filepath=self.output_dir / "scatter.png", plot_type=ScatterType.AVERAGE)
+        scatter = Scatter(filepath=self.output_dir / "avg_scatter.png", plot_type=ScatterType.AVERAGE)
         self.graphs.append(scatter)
 
         cum_scatter = Scatter(filepath=self.output_dir / "cum_scatter.png", plot_type=ScatterType.CUMULATIVE)

@@ -2,10 +2,9 @@ from tkinter import ttk
 
 
 class Page(ttk.Frame):
-    def __init__(self, controller, *args, **kwargs):
+    def __init__(self, app, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        self.controller = controller
+        self.app = app
 
     def open(self):
         pass
