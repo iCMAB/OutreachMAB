@@ -84,7 +84,6 @@ class _LeftHeader(ttk.LabelFrame):
         self.frame_num_var = frame_num_var
 
         self.frame_entry = tk.StringVar(value=str(self.frame_num_var.get()))
-        self.frame_entry.trace_add(mode="write", callback=self.entry_change)
 
         left_button = tk.Button(
             self,
@@ -95,15 +94,6 @@ class _LeftHeader(ttk.LabelFrame):
         )
         left_button.grid(column=0, row=0)
 
-        current_iter = ttk.Entry(
-            self,
-            font=tkfont.Font(family='Times', size=32),
-            foreground="#333333",
-            justify="center",
-            textvariable=self.frame_entry,
-        )
-        current_iter.grid(column=1, row=0)
-
         right_button = tk.Button(
             self,
             height=2,
@@ -111,12 +101,31 @@ class _LeftHeader(ttk.LabelFrame):
             text="NEXT",
             command=self.increment_frame_num,
         )
-        right_button.grid(column=2, row=0)
+        right_button.grid(column=1, row=0)
+
+        current_iter = ttk.Entry(
+            self,
+            font=tkfont.Font(family='Times', size=16),
+            foreground="#333333",
+            justify="center",
+            textvariable=self.frame_entry,
+        )
+        current_iter.grid(column=2, row=0)
+        current_iter.bind(sequence="<Key-Return>", func=self.entry_submit)
+
+        right_button = tk.Button(
+            self,
+            height=2,
+            width=5,
+            text="JUMP",
+            command=self.entry_submit,
+        )
+        right_button.grid(column=4, row=0)
 
     def update(self) -> None:
         self.frame_entry.set(str(self.frame_num_var.get()))
 
-    def entry_change(self, *args):
+    def entry_submit(self, *args):
         try:
             new_frame_num = int(self.frame_entry.get())
             new_frame_num = max(0, new_frame_num)
@@ -208,7 +217,8 @@ class _RightPanel(ttk.Frame):
         output_dir = self.simulator.grapher.output_dir
         for i in range(int(self.simulator.n_arms)):
             restaurant_frame = ttk.LabelFrame(master=self, text=f"Restaurant #{i}")
-            restaurant_frame.grid(column=0, row=i)
+            restaurant_frame.grid(column=0, row=i, sticky=tk.NSEW)
+            self.columnconfigure(index=0, weight=1)
 
             image_label = ImageLabel(
                 master=restaurant_frame,
