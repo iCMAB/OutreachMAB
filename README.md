@@ -2,6 +2,12 @@
 
 Repository to store the codebase for the multi-armed bandit and context MAB application examples
 
+## Instructions for usage
+
+- Requires Python 3.10
+- Install dependencies by running `pip install -r requirements.txt`
+- Run the application by calling `python src/main.py`
+
 ## Todo list
 
 List of current ideas to implement. No order or priority is established.
