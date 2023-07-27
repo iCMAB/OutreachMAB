@@ -24,7 +24,7 @@ class App(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
-        self.current_page: Page | None = None
+        self.page_history = []
         self.pages: Dict[str, Page] = {
             "start": StartPage(master=container, app=self),
             "simulation": SimulationPage(master=container, app=self),
@@ -49,10 +49,20 @@ class App(tk.Tk):
         self.set_page("start")
 
     def set_page(self, page: str):
-        if self.current_page is not None:
-            self.current_page.close()
+        if len(self.page_history) > 0:
+            self.page_history[-1].close()
 
         new_page = self.pages[page]
         new_page.open()
         new_page.tkraise()
-        self.current_page = new_page
+        self.page_history.append(new_page)
+
+    def back_page(self):
+        if len(self.page_history) <= 1:
+            return
+
+        current = self.page_history.pop(-1)
+        previous = self.page_history[-1]
+        current.close()
+        previous.open()
+        previous.tkraise()

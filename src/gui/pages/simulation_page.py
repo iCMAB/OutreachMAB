@@ -17,11 +17,8 @@ class SimulationPage(Updatable, Page):
 
         header = Header(
             master=self,
+            app=self.app,
             title="Simulation Page",
-            back_button_args={
-                "text": "BACK",
-                "command": lambda: self.app.set_page("start"),
-            },
             forward_button_args={
                 "text": "END",
                 "command": lambda: self.app.set_page("results"),
