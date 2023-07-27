@@ -19,7 +19,7 @@ class StartPage(Page):
         label.grid(row=0, column=1, padx=10, pady=50)
 
         button1 = ttk.Button(self, text="Start",
-                             command=lambda: self.app.set_page("intro"))
+                             command=lambda: self.app.set_page("bandits_explained"))
 
         # putting the button in its place by
         # using grid
