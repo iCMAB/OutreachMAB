@@ -8,14 +8,41 @@ Repository to store the codebase for the multi-armed bandit and context MAB appl
 - Install dependencies by running `pip install -r requirements.txt`
 - Run the application by calling `python src/main.py`
 
+### Modifying Configurations
+
+Configurations can be modified via the `config.json` file. These settings will act as defaults, and the below values
+can be overridden in the application itself:
+
+- Number of Frames to simulate
+    - Defaults to `100`
+    - Value must be between `1` and `1024`
+    - Less than 100 not recommended as MAB performance will suffer
+- Number of Arms
+    - Defaults to `5`
+    - Value must be between `1` and `5`
+    - Runs simulation using the first `n` arms specified in `config.json`
+- Bandit Model
+    - Select from drop-down
+    - Bandit parameters must be specified in `config.json`
+
 ## Todo list
 
 List of current ideas to implement. No order or priority is established.
 Some ideas are not finalized yet.
 
+### Additional features
 - Change GUI counting to be 1-based instead of 0-based
-- Add Back buttons
 - Add image scaling
+- Allow in-app parameter modification
+- Add contextual bandit simulation
+- Add comparison simulation
+- Dynamic max arm loading
+
+### Known Bugs
+
+- Header text not centered
+- Running with limited arms does not update regret calculations
+    - Need to overhaul settings page
 
 ### Ideas for context options:
 

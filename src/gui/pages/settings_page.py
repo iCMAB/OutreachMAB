@@ -75,7 +75,7 @@ class SettingsPage(Page):
         self.num_arms_entry.bind(sequence="<Key-Return>", func=lambda x: self.validate_int_input(
             var=self.num_arms_var,
             max_=5,
-            min_=0,
+            min_=1,
             default=5
         ))
 
@@ -103,7 +103,7 @@ class SettingsPage(Page):
         self.num_frames_entry.bind(sequence="<Key-Return>", func=lambda x: self.validate_int_input(
             var=self.num_frames_var,
             max_=1024,
-            min_=0,
+            min_=1,
             default=100
         ))
 
