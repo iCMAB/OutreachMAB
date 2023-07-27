@@ -82,23 +82,24 @@ class _LeftHeader(ttk.LabelFrame):
 
         self.frame_entry = tk.StringVar(value=str(self.frame_num_var.get()))
 
-        left_button = tk.Button(
+        self.left_button = tk.Button(
             self,
             text="PREV",
             height=2,
             width=5,
             command=self.decrement_frame_num,
+            bg='black'
         )
-        left_button.grid(column=0, row=0)
+        self.left_button.grid(column=0, row=0)
 
-        right_button = tk.Button(
+        self.right_button = tk.Button(
             self,
             height=2,
             width=5,
             text="NEXT",
             command=self.increment_frame_num,
         )
-        right_button.grid(column=1, row=0)
+        self.right_button.grid(column=1, row=0)
 
         current_iter = ttk.Entry(
             self,
@@ -128,6 +129,15 @@ class _LeftHeader(ttk.LabelFrame):
             new_frame_num = max(0, new_frame_num)
             new_frame_num = min(new_frame_num, self.simulator.num_frames - 1)
             self.frame_num_var.set(new_frame_num)
+            if new_frame_num >= self.simulator.num_frames - 1:
+                self.right_button.config(bg='black')
+                self.left_button.config(bg='#f0f0f0')
+            elif new_frame_num <= 0:
+                self.left_button.config(bg='black')
+                self.right_button.config(bg='#f0f0f0')
+            else:
+                self.right_button.config(bg='#f0f0f0')
+                self.left_button.config(bg='#f0f0f0')
         except ValueError:
             self.frame_entry.set(str(self.frame_num_var.get()))
         self.page.update()
@@ -135,10 +145,16 @@ class _LeftHeader(ttk.LabelFrame):
 
     def increment_frame_num(self):
         self.frame_num_var.set(min(self.frame_num_var.get() + 1, self.simulator.num_frames - 1))
+        if self.frame_num_var.get() >= self.simulator.num_frames - 1:
+            self.right_button.config(bg='black')
+        self.left_button.config(bg='#f0f0f0')
         self.page.update()
 
     def decrement_frame_num(self):
         self.frame_num_var.set(max(0, self.frame_num_var.get() - 1))
+        if self.frame_num_var.get() <= 0:
+            self.left_button.config(bg='black')
+        self.right_button.config(bg='#f0f0f0')
         self.page.update()
 
 
