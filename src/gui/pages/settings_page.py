@@ -2,13 +2,24 @@ import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import ttk
 
-from src.gui.standard_widgets.page import Page
+from src.gui.standard_widgets import Page, Header
 from src.simulation.bandits import BANDITS, BanditModel
 
 
 class SettingsPage(Page):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        header = Header(
+            master=self,
+            app=self.app,
+            title="Settings",
+            forward_button_args={
+                "text": "NEXT",
+                "command": lambda: start()
+            }
+        )
+        header.grid(column=0, columnspan=7, row=0, sticky=tk.NSEW)
 
         # noinspection PyTypeChecker
         self.columnconfigure((1, 2, 3, 4, 5), weight=2)
