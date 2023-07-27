@@ -60,4 +60,4 @@ class IntroPage(Page):
 
         continue_button = ttk.Button(self, text="START",
                                      command=lambda: self.app.set_page("simulation"))
-        continue_button.grid(row=5, column=0, padx=20, pady=10, ipadx=50, ipady=20)
+        continue_button.grid(row=6, column=0, padx=20, pady=10, ipadx=50, ipady=20)
