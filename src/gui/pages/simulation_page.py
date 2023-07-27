@@ -83,7 +83,8 @@ class _LeftHeader(ttk.LabelFrame):
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
 
-        self.frame_num_string = tk.StringVar(value=str(self.frame_num_var.get()))
+        self.frame_entry = tk.StringVar(value=str(self.frame_num_var.get()))
+        self.frame_entry.trace_add(mode="write", callback=self.entry_change)
 
         left_button = tk.Button(
             self,
@@ -94,12 +95,12 @@ class _LeftHeader(ttk.LabelFrame):
         )
         left_button.grid(column=0, row=0)
 
-        current_iter = ttk.Label(
+        current_iter = ttk.Entry(
             self,
             font=tkfont.Font(family='Times', size=32),
             foreground="#333333",
             justify="center",
-            textvariable=self.frame_num_string,
+            textvariable=self.frame_entry,
         )
         current_iter.grid(column=1, row=0)
 
@@ -113,7 +114,18 @@ class _LeftHeader(ttk.LabelFrame):
         right_button.grid(column=2, row=0)
 
     def update(self) -> None:
-        self.frame_num_string.set(str(self.frame_num_var.get()))
+        self.frame_entry.set(str(self.frame_num_var.get()))
+
+    def entry_change(self, *args):
+        try:
+            new_frame_num = int(self.frame_entry.get())
+            new_frame_num = max(0, new_frame_num)
+            new_frame_num = min(new_frame_num, self.simulator.num_frames - 1)
+            self.frame_num_var.set(new_frame_num)
+        except ValueError:
+            self.frame_entry.set(str(self.frame_num_var.get()))
+        self.page.update()
+
 
     def increment_frame_num(self):
         self.frame_num_var.set(min(self.frame_num_var.get() + 1, self.simulator.num_frames - 1))
