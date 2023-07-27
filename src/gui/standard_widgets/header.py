@@ -3,14 +3,15 @@ from tkinter import ttk
 
 
 class Header(ttk.LabelFrame):
-    def __init__(self, master, title: str, back_button_args: dict, forward_button_args: dict):
+    def __init__(self, master, app, title: str, forward_button_args: dict):
         super().__init__(master, text="TEST")
 
         back_button = tk.Button(
             self,
             height=2,
             width=5,
-            **back_button_args,
+            text="BACK",
+            command=lambda: app.back_page()
         )
         back_button.grid(column=0, row=0, sticky=tk.NW)
 
