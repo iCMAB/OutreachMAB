@@ -29,7 +29,7 @@ class SettingsPage(Page):
             title="Settings",
             forward_button_args={
                 "text": "NEXT",
-                "command": lambda: self.app.set_page("bandits_explained")
+                "command": lambda: self.app.set_page("intro")
             }
         )
         header.grid(column=0, columnspan=7, row=0, sticky=tk.NSEW)
@@ -127,7 +127,7 @@ class SettingsPage(Page):
 
         num_iter_desc.grid(row=6, column=1, columnspan=6, padx=10, pady=(0, 10), sticky="nsew")
 
-        button1 = ttk.Button(self, text="Start", command=lambda: self.app.set_page("bandits_explained"))
+        button1 = ttk.Button(self, text="Start", command=lambda: self.app.set_page("intro"))
         button1.grid(row=7, column=1, padx=10, pady=10, ipadx=50, ipady=20)
 
     def close(self):

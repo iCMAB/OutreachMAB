@@ -27,7 +27,7 @@ class StartPage(Page):
 
 
         ## button to show frame 2 with text layout2
-        button2 = ttk.Button(self, text="Settings", command=lambda: self.app.set_page("settings"))
+        button2 = ttk.Button(self, text="Settings", command=lambda: self.app.set_page("bandits_explained"))
 
         # putting the button in its place by
         # using grid
