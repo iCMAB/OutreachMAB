@@ -2,6 +2,9 @@
 
 Repository to store the codebase for the multi-armed bandit and context MAB application examples
 
+### Requires:
+- Python 3.10
+
 ## Todo list
 
 List of current ideas to implement. No order or priority is established.
