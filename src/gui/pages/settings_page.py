@@ -6,6 +6,19 @@ from src.gui.standard_widgets import Page, Header
 from src.simulation.bandits import BANDITS, BanditModel
 
 
+def validate_int_input(var: tk.StringVar, min_: int, max_: int, default: int = None):
+    if default is None:
+        default = max_
+
+    try:
+        n = int(var.get())
+        n = max(min_, n)
+        n = min(n, max_)
+        var.set(str(n))
+    except ValueError:
+        var.set(str(default))
+
+
 class SettingsPage(Page):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -16,7 +29,7 @@ class SettingsPage(Page):
             title="Settings",
             forward_button_args={
                 "text": "NEXT",
-                "command": lambda: start()
+                "command": lambda: self.app.set_page("bandits_explained")
             }
         )
         header.grid(column=0, columnspan=7, row=0, sticky=tk.NSEW)
@@ -72,7 +85,7 @@ class SettingsPage(Page):
             justify='center',
             font=tkFont.Font(size=18))
         self.num_arms_entry.grid(row=3, column=4, padx=(0, 10), pady=(10, 5), sticky="nsew", columnspan=3)
-        self.num_arms_entry.bind(sequence="<Key-Return>", func=lambda x: self.validate_int_input(
+        self.num_arms_entry.bind(sequence="<Key-Return>", func=lambda x: validate_int_input(
             var=self.num_arms_var,
             max_=5,
             min_=1,
@@ -100,7 +113,7 @@ class SettingsPage(Page):
             font=tkFont.Font(size=18)
         )
         self.num_frames_entry.grid(row=5, column=4, padx=(0, 10), pady=(10, 5), sticky="nsew", columnspan=3)
-        self.num_frames_entry.bind(sequence="<Key-Return>", func=lambda x: self.validate_int_input(
+        self.num_frames_entry.bind(sequence="<Key-Return>", func=lambda x: validate_int_input(
             var=self.num_frames_var,
             max_=1024,
             min_=1,
@@ -114,27 +127,13 @@ class SettingsPage(Page):
 
         num_iter_desc.grid(row=6, column=1, columnspan=6, padx=10, pady=(0, 10), sticky="nsew")
 
-        def start():
-            num_arms = int(self.num_arms_var.get())
-            self.app.simulator.num_frames = int(self.num_frames_var.get())
-            # noinspection PyTypeHints
-            self.app.simulator.bandit: BanditModel = BANDITS[self.selected_bandit.get()] \
-                (n_arms=num_arms, **self.app.simulator.config["bandit"]["parameters"])
-            self.app.simulator.n_arms = num_arms
-
-            self.app.set_page("bandits_explained")
-
-        button1 = ttk.Button(self, text="Start", command=start)
+        button1 = ttk.Button(self, text="Start", command=lambda: self.app.set_page("bandits_explained"))
         button1.grid(row=7, column=1, padx=10, pady=10, ipadx=50, ipady=20)
 
-    def validate_int_input(self, var: tk.StringVar, min_: int, max_: int, default: int = None):
-        if default is None:
-            default = max_
-
-        try:
-            n = int(var.get())
-            n = max(min_, n)
-            n = min(n, max_)
-            var.set(str(n))
-        except ValueError:
-            var.set(str(default))
+    def close(self):
+        num_arms = int(self.num_arms_var.get())
+        self.app.simulator.num_frames = int(self.num_frames_var.get())
+        # noinspection PyTypeHints
+        self.app.simulator.bandit: BanditModel = BANDITS[self.selected_bandit.get()] \
+            (n_arms=num_arms, **self.app.simulator.config["bandit"]["parameters"])
+        self.app.simulator.n_arms = num_arms
