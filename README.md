@@ -37,13 +37,16 @@ Some ideas are not finalized yet.
 - Add contextual bandit simulation
 - Add comparison simulation
 - Dynamic max arm loading
-- Refactory `ttk.Entry` objects to utilize `validate` option
+- Refactor `ttk.Entry` objects to utilize `validate` option
+- Check if `ttk.Text` widget is better for paragraphs than `ttk.Label`
+- Completely disable "disabled" buttons for performance
 
 ### Known Bugs
 
 - Header text not centered
 - Running with limited arms does not update regret calculations
     - Need to overhaul settings page
+- Ensure that new simulation runs when after backing out of an existing simulation
 
 ### Ideas for context options:
 

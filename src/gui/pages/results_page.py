@@ -101,11 +101,13 @@ class _LeftPanel(ttk.LabelFrame):
         )
         avg_scatter.grid(column=0, row=0)
 
+        total_reward = sum(frame.reward for frame in self.simulator.frames)
+        total_regret = sum(frame.regret for frame in self.simulator.frames)
         standard_label = ttk.Label(
             self,
             text=f"""
-            The [MODEL NAME] model selected gained a total of [REWARD]
-            points over [N] iterations, with a total of [REGRET] missed
+            The {self.simulator.bandit.type} model selected gained a total of {total_reward:0.1f}
+            points over {self.simulator.num_frames} iterations, with a total of {total_regret:0.1f} missed
             points. As you can see from the totals graphed over time,
             the reward increases slowly as the Bandits explore, then settles
             into a linear growth once the optimal arm is found and the
@@ -129,7 +131,7 @@ class _LeftPanel(ttk.LabelFrame):
             is the trend of the average reward and regret over the course
             of a simulation. A strong bandit model should have an average
             reward that approaches the average return of the optimal arm,
-            which in this case is set to 5, and the average regret should
+            which in this case is set to {self.simulator.n_arms}, and the average regret should
             approach 0. You can judge the selected model for yourself by
             looking at the averages above, and the expected average reward
             has been added for reference.

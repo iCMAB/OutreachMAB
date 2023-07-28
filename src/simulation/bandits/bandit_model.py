@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 class BanditModel(ABC):
     def __init__(self, n_arms: int):
         self.n_arms = n_arms
+        self.type: str
 
     @abstractmethod
     def select_arm(self) -> int:
