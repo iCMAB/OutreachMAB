@@ -37,6 +37,7 @@ Some ideas are not finalized yet.
 - Add contextual bandit simulation
 - Add comparison simulation
 - Dynamic max arm loading
+- Refactory `ttk.Entry` objects to utilize `validate` option
 
 ### Known Bugs
 
