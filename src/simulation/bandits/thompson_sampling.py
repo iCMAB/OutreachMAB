@@ -1,6 +1,7 @@
-from .bandit_model import BanditModel
 import random
-import numpy as np
+
+from .bandit_model import BanditModel
+
 
 class TSBandit(BanditModel):
     #Very simple Thompson Sampling, takes Regret as a Bernoulli distribution, there either is or is not regret

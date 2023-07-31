@@ -2,9 +2,9 @@ import os
 from pathlib import Path
 from typing import List
 
-from src.simulation.frame import Frame
 from .histogram import Histogram
 from .scatter import Scatter, ScatterType
+from ..frame import Frame
 
 
 class Grapher:

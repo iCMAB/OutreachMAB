@@ -1,7 +1,10 @@
-from .bandit_model import BanditModel
-import random
 import math
+
 import numpy as np
+
+from .bandit_model import BanditModel
+
+
 class UCBBandit(BanditModel):
     def __init__(self, n_arms: int, epsilon: float = 1):
         super().__init__(n_arms)
