@@ -1,6 +1,6 @@
 {
   "graphing": {
-    "output_dir": "../graphs"
+    "output_dir": "./graphs"
   },
   "simulation": {
     "n_arms": 5,
