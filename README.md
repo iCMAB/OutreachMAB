@@ -46,9 +46,7 @@ Some ideas are not finalized yet.
 - Header text not centered
 - Running with limited arms does not update regret calculations
     - Need to overhaul settings page
-- Entry validate only occurs on `Enter`
 - Simulation.run_simulation() does not erase old sim data
-- Instantiate `Page`'s dynamically
 
 ### Ideas for context options:
 

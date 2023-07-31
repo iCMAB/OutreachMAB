@@ -43,7 +43,6 @@ class SimulationPage(Subwidget, Page):
         self.subwidgets.append(r_panel)
 
     def open(self):
-        self.app.simulator.run_simulation()
         self.update()
 
     def update(self):

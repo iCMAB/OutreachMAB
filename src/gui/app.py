@@ -1,6 +1,7 @@
+import json
 import tkinter as tk
 from tkinter import ttk
-from typing import Dict, Type
+from typing import Dict, Optional
 
 from src.gui.pages.bandit_explain_page import BanditExplainPage
 from src.gui.pages.intro_page import IntroPage
@@ -13,10 +14,13 @@ from src.simulation.simulator import Simulator
 
 
 class App(tk.Tk):
-    def __init__(self, config_file: str, *args, **kwargs):
+    def __init__(self, config_filepath: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.simulator = Simulator(config_file)
+        self.simulator: Optional[Simulator] = None
+
+        with open(config_filepath, "r") as config_file:
+            self.config: Dict[str, Dict] = json.load(config_file)
 
         self.container = ttk.Frame(self)
         self.container.pack(side="top", fill="both", expand=True)
@@ -25,7 +29,7 @@ class App(tk.Tk):
         self.container.grid_columnconfigure(0, weight=1)
 
         self.page_history = []
-        self.pages: Dict[str, Type] = {
+        self.pages = {
             "start": StartPage,
             "simulation": SimulationPage,
             "settings": SettingsPage,
@@ -75,3 +79,16 @@ class App(tk.Tk):
         x, y = self.winfo_pointerxy()  # get the mouse position on screen
         widget = self.winfo_containing(x, y)  # identify the widget at this location
         widget.focus()  # focus on root
+
+    def create_simulator(
+            self,
+            num_frames: int,
+            bandit: str,
+            n_arms: int
+    ):
+        self.simulator = Simulator(
+            config=self.config,
+            bandit=bandit,
+            n_arms=n_arms,
+            num_frames=num_frames,
+        )

@@ -1,4 +1,3 @@
-import tkinter.font as tkFont
 import tkinter as tk
 import webbrowser
 

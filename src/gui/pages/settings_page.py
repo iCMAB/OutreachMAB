@@ -3,7 +3,6 @@ import tkinter.font as tkFont
 from tkinter import ttk
 
 from src.gui.standard_widgets import Page, Header, BoundedEntry
-from src.simulation.bandits import BANDITS, BanditModel
 
 
 class SettingsPage(Page):
@@ -113,8 +112,8 @@ class SettingsPage(Page):
 
     def close(self):
         num_arms = int(self.num_arms_var.get())
-        self.app.simulator.num_frames = int(self.num_frames_var.get())
-        # noinspection PyTypeHints
-        self.app.simulator.bandit: BanditModel = BANDITS[self.selected_bandit.get()] \
-            (n_arms=num_arms, **self.app.simulator.config["bandit"]["parameters"])
-        self.app.simulator.n_arms = num_arms
+        self.app.create_simulator(
+            num_frames=int(self.num_frames_var.get()),
+            bandit=self.selected_bandit.get(),
+            n_arms=num_arms
+        )
