@@ -1,4 +1,7 @@
-class Updatable:
+import tkinter as tk
+
+
+class Subwidget(tk.Widget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.subwidgets = []

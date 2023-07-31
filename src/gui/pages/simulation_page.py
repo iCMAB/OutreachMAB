@@ -4,13 +4,13 @@ from tkinter import ttk
 
 import numpy as np
 
-from src.gui.standard_widgets import Page, Updatable, Header, ImageLabel
+from src.gui.standard_widgets import Page, Subwidget, Header, ImageLabel, BoundedEntry
 
 DARK_BUTTON_BG = "#ff8080"
 LIGHT_BUTTON_BG = "#f0f0f0"
 
 
-class SimulationPage(Updatable, Page):
+class SimulationPage(Subwidget, Page):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -51,7 +51,7 @@ class SimulationPage(Updatable, Page):
         super().update()
 
 
-class _LeftPanel(Updatable, ttk.Frame):
+class _LeftPanel(Subwidget, ttk.Frame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master)
         self.page = page
@@ -76,14 +76,12 @@ class _LeftPanel(Updatable, ttk.Frame):
         self.rowconfigure(index=2, weight=1)
 
 
-class _LeftHeader(ttk.LabelFrame):
+class _LeftHeader(Subwidget, ttk.LabelFrame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master, text="TEST")
         self.page = page
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
-
-        self.frame_entry = tk.StringVar(value=str(self.frame_num_var.get()))
 
         self.left_button = tk.Button(
             self,
@@ -103,14 +101,19 @@ class _LeftHeader(ttk.LabelFrame):
         )
         self.right_button.grid(column=1, row=0)
 
-        current_iter = ttk.Entry(
-            self,
+        self.frame_entry = tk.StringVar(value=str(self.frame_num_var.get()))
+        current_iter = BoundedEntry(
+            master=self,
+            minimum=0,
+            maximum=self.simulator.num_frames - 1,
+            default=0,
+            var=self.frame_entry,
             font=tkfont.Font(family='Times', size=16),
             foreground="#333333",
             justify="center",
-            textvariable=self.frame_entry,
         )
         current_iter.grid(column=2, row=0)
+        current_iter.bind(sequence="<FocusOut>", func=self.entry_submit)
         current_iter.bind(sequence="<Key-Return>", func=self.entry_submit)
 
         right_button = tk.Button(
@@ -135,13 +138,7 @@ class _LeftHeader(ttk.LabelFrame):
             self.left_button.config(bg=DARK_BUTTON_BG)
 
     def entry_submit(self, *args):
-        try:
-            new_frame_num = int(self.frame_entry.get())
-            new_frame_num = max(0, new_frame_num)
-            new_frame_num = min(new_frame_num, self.simulator.num_frames - 1)
-            self.frame_num_var.set(new_frame_num)
-        except ValueError:
-            self.frame_entry.set(str(self.frame_num_var.get()))
+        self.frame_num_var.set(int(self.frame_entry.get()))
         self.page.update()
 
 
@@ -160,7 +157,7 @@ class _LeftHeader(ttk.LabelFrame):
         self.page.update()
 
 
-class _FrameInfo(Updatable, ttk.LabelFrame):
+class _FrameInfo(Subwidget, ttk.LabelFrame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master, text="Frame Information")
         self.page = page
@@ -182,7 +179,7 @@ class _FrameInfo(Updatable, ttk.LabelFrame):
         regret_label.grid(column=0, row=2)
 
 
-class _Charts(Updatable, ttk.LabelFrame):
+class _Charts(Subwidget, ttk.LabelFrame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master, text="Reward/Regret Charts")
         self.page = page
@@ -221,7 +218,7 @@ class _Charts(Updatable, ttk.LabelFrame):
         cumulative_label.grid(column=0, row=3)
 
 
-class _RightPanel(ttk.Frame):
+class _RightPanel(Subwidget, ttk.Frame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master)
         self.page = page
