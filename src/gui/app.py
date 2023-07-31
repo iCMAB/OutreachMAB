@@ -8,6 +8,7 @@ from src.gui.pages.results_page import ResultsPage
 from src.gui.pages.settings_page import SettingsPage
 from src.gui.pages.simulation_page import SimulationPage
 from src.gui.pages.start_page import StartPage
+from src.gui.standard_widgets import Page
 from src.simulation.simulator import Simulator
 
 
@@ -45,15 +46,19 @@ class App(tk.Tk):
 
         self.set_page("start")
 
-    def set_page(self, page: str):
+    def show_page(self, page_name: str) -> Page:
+        page = self.pages[page_name](master=self.container, app=self)
+        page.open()
+        page.grid(column=0, row=0, sticky=tk.NSEW)
+        return page
+
+    def set_page(self, page_name: str):
         if len(self.page_history) > 0:
             self.page_history[-1].close()
-            self.page_history[-1].destroy()
+            # self.page_history[-1].destroy()
 
-        new_page = self.pages[page](master=self.container, app=self)
-        new_page.open()
-        new_page.grid(column=0, row=0, sticky=tk.NSEW)
-        self.page_history.append(new_page)
+        page = self.show_page(page_name)
+        self.page_history.append(page)
 
     def back_page(self):
         if len(self.page_history) <= 1:
@@ -62,8 +67,9 @@ class App(tk.Tk):
         current = self.page_history.pop(-1)
         previous = self.page_history[-1]
         current.close()
+        current.destroy()
         previous.open()
-        previous.tkraise()
+        previous.grid(column=0, row=0, sticky=tk.NSEW)
 
     def click_event(self, event):
         x, y = self.winfo_pointerxy()  # get the mouse position on screen
