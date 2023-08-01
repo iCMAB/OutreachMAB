@@ -21,8 +21,8 @@ class ResultsPage(Page):
             app=self.app,
             title="Simulation Results",
             forward_button_args={
-                "text": "QUIT",
-                "command": lambda: self.app.destroy(),
+                "text": "RESTART",
+                "command": lambda: self.app.set_page("start"),
             }
         )
         header.grid(column=0, row=0, sticky=tk.NSEW)
