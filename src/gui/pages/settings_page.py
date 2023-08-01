@@ -37,7 +37,7 @@ class SettingsPage(Page):
         model_selection.grid(row=1, column=3, pady=(10,5), columnspan=3, sticky="nsew")
 
         #the actual menu for bandit selection
-        bandit_menu_button = tk.Menubutton(self, background='#b0ada9', borderwidth=1, relief="solid", text="V")
+        bandit_menu_button = tk.Menubutton(self, background='#b0ada9', borderwidth=1, relief="solid", text="Select "+u'\u25BC', font=tkFont.Font(size=20))
         bandit_menu = tk.Menu(bandit_menu_button, tearoff=False)
         bandit_menu_button.configure(menu=bandit_menu)
 
