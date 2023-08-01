@@ -104,13 +104,12 @@ class _LeftHeader(Subwidget, ttk.LabelFrame):
             maximum=self.simulator.num_frames - 1,
             default=0,
             var=self.frame_entry,
+            func=self.entry_submit,
             font=tkfont.Font(family='Times', size=16),
             foreground="#333333",
             justify="center",
         )
         current_iter.grid(column=2, row=0)
-        current_iter.bind(sequence="<FocusOut>", func=self.entry_submit)
-        current_iter.bind(sequence="<Key-Return>", func=self.entry_submit)
 
         right_button = tk.Button(
             self,
@@ -133,8 +132,8 @@ class _LeftHeader(Subwidget, ttk.LabelFrame):
         elif frame_num <= 0:
             self.left_button.config(state=tk.DISABLED)
 
-    def entry_submit(self, *args):
-        self.frame_num_var.set(int(self.frame_entry.get()))
+    def entry_submit(self, frame_num: int):
+        self.frame_num_var.set(frame_num)
         self.page.update()
 
 
