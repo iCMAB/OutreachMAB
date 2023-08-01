@@ -2,21 +2,7 @@ import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import ttk
 
-from src.gui.standard_widgets import Page, Header
-from src.simulation.bandits import BANDITS, BanditModel
-
-
-def validate_int_input(var: tk.StringVar, min_: int, max_: int, default: int = None):
-    if default is None:
-        default = max_
-
-    try:
-        n = int(var.get())
-        n = max(min_, n)
-        n = min(n, max_)
-        var.set(str(n))
-    except ValueError:
-        var.set(str(default))
+from src.gui.standard_widgets import Page, Header, BoundedEntry
 
 
 class SettingsPage(Page):
@@ -77,20 +63,17 @@ class SettingsPage(Page):
         arms_label.grid(row=3, column=1, padx=(10, 0), pady=(10, 5), columnspan=4, sticky="nsew")
 
         self.num_arms_var = tk.StringVar(value="5")
-        self.num_arms_entry = ttk.Entry(
-            self,
+        self.num_arms_entry = BoundedEntry(
+            master=self,
+            minimum=1,
+            maximum=5,
+            default=5,
+            var=self.num_arms_var,
             exportselection=False,
-            textvariable=self.num_arms_var,
             background='#b0ada9',
             justify='center',
             font=tkFont.Font(size=18))
         self.num_arms_entry.grid(row=3, column=4, padx=(0, 10), pady=(10, 5), sticky="nsew", columnspan=3)
-        self.num_arms_entry.bind(sequence="<Key-Return>", func=lambda x: validate_int_input(
-            var=self.num_arms_var,
-            max_=5,
-            min_=1,
-            default=5
-        ))
 
         num_arms_desc = tk.Label(self,
                                  text="Number of Arms: This controls the number of possible restaurants the bandit can\n" \
@@ -104,21 +87,18 @@ class SettingsPage(Page):
         iterations_label.grid(row=5, column=1, padx=(10, 0), pady=(10,5), columnspan=4, sticky="nsew")
 
         self.num_frames_var = tk.StringVar(value="100")
-        self.num_frames_entry = ttk.Entry(
-            self,
+        self.num_frames_entry = BoundedEntry(
+            master=self,
+            minimum=1,
+            maximum=1024,
+            default=100,
+            var=self.num_frames_var,
             exportselection=False,
-            textvariable=self.num_frames_var,
             background='#b0ada9',
             justify='center',
             font=tkFont.Font(size=18)
         )
         self.num_frames_entry.grid(row=5, column=4, padx=(0, 10), pady=(10, 5), sticky="nsew", columnspan=3)
-        self.num_frames_entry.bind(sequence="<Key-Return>", func=lambda x: validate_int_input(
-            var=self.num_frames_var,
-            max_=1024,
-            min_=1,
-            default=100
-        ))
 
         num_iter_desc = tk.Label(self,
                                  text="Number of Iterations: This is the total number of frames that will be included\nin the simulation.\n\n" \
@@ -132,8 +112,8 @@ class SettingsPage(Page):
 
     def close(self):
         num_arms = int(self.num_arms_var.get())
-        self.app.simulator.num_frames = int(self.num_frames_var.get())
-        # noinspection PyTypeHints
-        self.app.simulator.bandit: BanditModel = BANDITS[self.selected_bandit.get()] \
-            (n_arms=num_arms, **self.app.simulator.config["bandit"]["parameters"])
-        self.app.simulator.n_arms = num_arms
+        self.app.create_simulator(
+            num_frames=int(self.num_frames_var.get()),
+            bandit=self.selected_bandit.get(),
+            n_arms=num_arms
+        )

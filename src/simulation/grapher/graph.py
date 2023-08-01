@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
+from os import PathLike
 from pathlib import Path
 from typing import List
 
-from src.simulation.frame import Frame
-from src.utils import Pathlike
+from ..frame import Frame
 
 
 class Graph(ABC):
-    def __init__(self, filepath: Pathlike, *args, **kwargs) -> None:
+    def __init__(self, filepath: PathLike | str | bytes, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         self.filepath = Path(filepath)

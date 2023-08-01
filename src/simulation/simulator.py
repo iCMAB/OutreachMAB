@@ -1,6 +1,5 @@
-import json
 from collections.abc import Mapping, MutableMapping
-from typing import Dict, List
+from typing import List
 
 from .bandits import BANDITS, BanditModel
 from .distributions import DISTRIBUTIONS
@@ -10,13 +9,15 @@ from .restaurant import Restaurant
 
 
 class Simulator:
-    def __init__(self, config_filepath: str, overrides: Dict[str, Dict] = None):
-        with open(config_filepath, "r") as config_file:
-            config: Dict[str, Dict] = json.load(config_file)
-        self.config = recursive_update(config, overrides or {})
-
-        self.n_arms: int = config["simulation"]["n_arms"]
-        self.num_frames: int = config["simulation"]["frames"]
+    def __init__(
+            self,
+            config: dict,
+            bandit: str,
+            n_arms: int,
+            num_frames: int,
+    ):
+        self.n_arms: int = n_arms
+        self.num_frames: int = num_frames
         self.frame_num: int = 0
         self.frames: List[Frame] = []
         self.grapher = Grapher(n_arms=self.n_arms, output_dir=config["graphing"]["output_dir"])
@@ -27,8 +28,7 @@ class Simulator:
                 distribution=DISTRIBUTIONS[r_config["distribution"]](**r_config["parameters"])
             ))
 
-        self.bandit: BanditModel = BANDITS[config["bandit"]["model"]] \
-            (n_arms=self.n_arms, **config["bandit"]["parameters"])
+        self.bandit: BanditModel = BANDITS[bandit](n_arms=self.n_arms, **config["bandit"]["parameters"])
 
     def run_simulation(self):
         self.log_start()

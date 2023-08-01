@@ -11,7 +11,6 @@ class IntroPage(Page):
 
         self.grid_columnconfigure(0, weight=1)
 
-    def open(self):
         header = Header(
             master=self,
             app=self.app,
@@ -27,15 +26,15 @@ class IntroPage(Page):
         intro_text = ttk.Label(
             master=self,
             text="""
-            In this activity you will be going through a simulation of a multi-armed bandit
-            making restaurant recommendations. The multi-armed bandit in this stage will
-            not be utilizing context. It will be attempting to find the restaurant that provides
-            the best reward the most often. 
-            
-            You will be going through the simulation with the bandit and see the decision it
-            makes each step of the way. There are supporting graphs to display the data
-            that the bandit has collected so far.
-            """,
+                    In this activity you will be going through a simulation of a multi-armed bandit
+                    making restaurant recommendations. The multi-armed bandit in this stage will
+                    not be utilizing context. It will be attempting to find the restaurant that provides
+                    the best reward the most often. 
+
+                    You will be going through the simulation with the bandit and see the decision it
+                    makes each step of the way. There are supporting graphs to display the data
+                    that the bandit has collected so far.
+                    """,
             justify="left",
             font=tkFont.Font(size=12)
         )
@@ -61,3 +60,6 @@ class IntroPage(Page):
         continue_button = ttk.Button(self, text="START",
                                      command=lambda: self.app.set_page("simulation"))
         continue_button.grid(row=6, column=0, padx=20, pady=10, ipadx=50, ipady=20)
+
+    def open(self):
+        self.app.simulator.run_simulation()

@@ -1,41 +1,29 @@
+import json
 import tkinter as tk
 from tkinter import ttk
-from typing import Dict
+from typing import Dict, Optional
 
-from src.gui.pages.intro_page import IntroPage
-from src.gui.pages.results_page import ResultsPage
-from src.gui.pages.bandit_explain_page import BanditExplainPage
-from src.gui.pages.settings_page import SettingsPage
-from src.gui.pages.simulation_page import SimulationPage
-from src.gui.pages.start_page import StartPage
-from src.gui.standard_widgets.page import Page
+from src.gui.pages import PAGES
+from src.gui.standard_widgets import Page
 from src.simulation.simulator import Simulator
 
 
 class App(tk.Tk):
-    def __init__(self, config_file: str, *args, **kwargs):
+    def __init__(self, config_filepath: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.simulator = Simulator(config_file)
+        self.simulator: Optional[Simulator] = None
 
-        container = ttk.Frame(self)
-        container.pack(side="top", fill="both", expand=True)
+        with open(config_filepath, "r") as config_file:
+            self.config: Dict[str, Dict] = json.load(config_file)
 
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
+        self.container = ttk.Frame(self)
+        self.container.pack(side="top", fill="both", expand=True)
+
+        self.container.grid_rowconfigure(0, weight=1)
+        self.container.grid_columnconfigure(0, weight=1)
 
         self.page_history = []
-        self.pages: Dict[str, Page] = {
-            "start": StartPage(master=container, app=self),
-            "simulation": SimulationPage(master=container, app=self),
-            "settings": SettingsPage(master=container, app=self),
-            "results": ResultsPage(master=container, app=self),
-            "bandits_explained": BanditExplainPage(master=container, app=self),
-            "intro": IntroPage(master=container, app=self)
-        }
-
-        for _, v in self.pages.items():
-            v.grid(row=0, column=0, sticky="nsew")
 
         self.title("Restaurant Outreach")
         width = 1200
@@ -45,17 +33,23 @@ class App(tk.Tk):
         alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
         self.geometry(alignstr)
         self.resizable(width=True, height=True)
+        self.bind("<Button-1>", self.click_event)
 
         self.set_page("start")
 
-    def set_page(self, page: str):
+    def show_page(self, page_name: str) -> Page:
+        page = PAGES[page_name](master=self.container, app=self)
+        page.open()
+        page.grid(column=0, row=0, sticky=tk.NSEW)
+        return page
+
+    def set_page(self, page_name: str):
         if len(self.page_history) > 0:
             self.page_history[-1].close()
+            # self.page_history[-1].destroy()
 
-        new_page = self.pages[page]
-        new_page.open()
-        new_page.tkraise()
-        self.page_history.append(new_page)
+        page = self.show_page(page_name)
+        self.page_history.append(page)
 
     def back_page(self):
         if len(self.page_history) <= 1:
@@ -64,5 +58,24 @@ class App(tk.Tk):
         current = self.page_history.pop(-1)
         previous = self.page_history[-1]
         current.close()
+        current.destroy()
         previous.open()
-        previous.tkraise()
+        previous.grid(column=0, row=0, sticky=tk.NSEW)
+
+    def click_event(self, event):
+        x, y = self.winfo_pointerxy()  # get the mouse position on screen
+        widget = self.winfo_containing(x, y)  # identify the widget at this location
+        widget.focus()  # focus on root
+
+    def create_simulator(
+            self,
+            num_frames: int,
+            bandit: str,
+            n_arms: int
+    ):
+        self.simulator = Simulator(
+            config=self.config,
+            bandit=bandit,
+            n_arms=n_arms,
+            num_frames=num_frames,
+        )
