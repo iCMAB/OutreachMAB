@@ -2,7 +2,7 @@ from src.gui.app import App
 
 
 def main():
-    config_file = "../config.json"
+    config_file = "config.json"
     app = App(config_file)
     app.mainloop()
 

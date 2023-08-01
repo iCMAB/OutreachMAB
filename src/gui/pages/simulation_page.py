@@ -6,9 +6,6 @@ import numpy as np
 
 from src.gui.standard_widgets import Page, Subwidget, Header, ImageLabel, BoundedEntry
 
-DARK_BUTTON_BG = "#ff8080"
-LIGHT_BUTTON_BG = "#f0f0f0"
-
 
 class SimulationPage(Subwidget, Page):
     def __init__(self, *args, **kwargs):
@@ -107,13 +104,12 @@ class _LeftHeader(Subwidget, ttk.LabelFrame):
             maximum=self.simulator.num_frames - 1,
             default=0,
             var=self.frame_entry,
+            func=self.entry_submit,
             font=tkfont.Font(family='Times', size=16),
             foreground="#333333",
             justify="center",
         )
         current_iter.grid(column=2, row=0)
-        current_iter.bind(sequence="<FocusOut>", func=self.entry_submit)
-        current_iter.bind(sequence="<Key-Return>", func=self.entry_submit)
 
         right_button = tk.Button(
             self,
@@ -128,31 +124,25 @@ class _LeftHeader(Subwidget, ttk.LabelFrame):
         frame_num = self.frame_num_var.get()
         self.frame_entry.set(str(frame_num))
 
-        self.right_button.config(bg=LIGHT_BUTTON_BG)
-        self.left_button.config(bg=LIGHT_BUTTON_BG)
+        self.left_button.config(state=tk.NORMAL)
+        self.right_button.config(state=tk.NORMAL)
 
         if frame_num >= self.simulator.num_frames - 1:
-            self.right_button.config(bg=DARK_BUTTON_BG)
+            self.right_button.config(state=tk.DISABLED)
         elif frame_num <= 0:
-            self.left_button.config(bg=DARK_BUTTON_BG)
+            self.left_button.config(state=tk.DISABLED)
 
-    def entry_submit(self, *args):
-        self.frame_num_var.set(int(self.frame_entry.get()))
+    def entry_submit(self, frame_num: int):
+        self.frame_num_var.set(frame_num)
         self.page.update()
 
 
     def increment_frame_num(self):
         self.frame_num_var.set(min(self.frame_num_var.get() + 1, self.simulator.num_frames - 1))
-        if self.frame_num_var.get() >= self.simulator.num_frames - 1:
-            self.right_button.config(bg=DARK_BUTTON_BG)
-        self.left_button.config(bg=LIGHT_BUTTON_BG)
         self.page.update()
 
     def decrement_frame_num(self):
         self.frame_num_var.set(max(0, self.frame_num_var.get() - 1))
-        if self.frame_num_var.get() <= 0:
-            self.left_button.config(bg=DARK_BUTTON_BG)
-        self.right_button.config(bg=LIGHT_BUTTON_BG)
         self.page.update()
 
 

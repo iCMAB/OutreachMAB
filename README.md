@@ -36,17 +36,12 @@ Some ideas are not finalized yet.
 - Allow in-app parameter modification
 - Add contextual bandit simulation
 - Add comparison simulation
-- Dynamic max arm loading
-- Refactor `ttk.Entry` objects to utilize `validate` option
 - Check if `ttk.Text` widget is better for paragraphs than `ttk.Label`
-- Completely disable "disabled" buttons for performance
+- Add restaurant distribution overlay to sampling charts
 
 ### Known Bugs
 
 - Header text not centered
-- Running with limited arms does not update regret calculations
-    - Need to overhaul settings page
-- Simulation.run_simulation() does not erase old sim data
 
 ### Ideas for context options:
 

@@ -3,12 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Dict, Optional
 
-from src.gui.pages.bandit_explain_page import BanditExplainPage
-from src.gui.pages.intro_page import IntroPage
-from src.gui.pages.results_page import ResultsPage
-from src.gui.pages.settings_page import SettingsPage
-from src.gui.pages.simulation_page import SimulationPage
-from src.gui.pages.start_page import StartPage
+from src.gui.pages import PAGES
 from src.gui.standard_widgets import Page
 from src.simulation.simulator import Simulator
 
@@ -29,14 +24,6 @@ class App(tk.Tk):
         self.container.grid_columnconfigure(0, weight=1)
 
         self.page_history = []
-        self.pages = {
-            "start": StartPage,
-            "simulation": SimulationPage,
-            "settings": SettingsPage,
-            "results": ResultsPage,
-            "bandits_explained": BanditExplainPage,
-            "intro": IntroPage
-        }
 
         self.title("Restaurant Outreach")
         width = 1200
@@ -51,7 +38,7 @@ class App(tk.Tk):
         self.set_page("start")
 
     def show_page(self, page_name: str) -> Page:
-        page = self.pages[page_name](master=self.container, app=self)
+        page = PAGES[page_name](master=self.container, app=self)
         page.open()
         page.grid(column=0, row=0, sticky=tk.NSEW)
         return page
