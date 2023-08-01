@@ -19,7 +19,7 @@ class Header(ttk.LabelFrame):
             self,
             text=title,
             anchor=tk.CENTER,
-            font=("Times", 24)
+            font=("Arial", 24, "bold")
         )
         title.grid(column=1, row=0, sticky=tk.NSEW)
         self.columnconfigure(1, weight=1)
