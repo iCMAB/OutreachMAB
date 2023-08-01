@@ -46,7 +46,7 @@ Some ideas are not finalized yet.
 - Header text not centered
 - Running with limited arms does not update regret calculations
     - Need to overhaul settings page
-- Ensure that new simulation runs when after backing out of an existing simulation
+- Simulation.run_simulation() does not erase old sim data
 
 ### Ideas for context options:
 
