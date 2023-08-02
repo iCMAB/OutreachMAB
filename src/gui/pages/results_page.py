@@ -7,9 +7,6 @@ from src.gui.standard_widgets import Page, ImageLabel, Header
 from src.simulation.simulator import Simulator
 
 
-# TODO: Fix out pane scaling and default width
-
-
 class ResultsPage(Page):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

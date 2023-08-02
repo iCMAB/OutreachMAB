@@ -15,7 +15,7 @@ class UCBBandit(BanditModel):
         self.count = [0] * n_arms
         self.log_hist = []
 
-    def select_arm(self) -> int:
+    def select_arm(self, context) -> int:
         UCB_Values = [0] * self.n_arms
 
         for i in range(0, self.n_arms):

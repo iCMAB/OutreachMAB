@@ -19,7 +19,7 @@ class EpsilonGreedyBandit(BanditModel):
             self.values.append(0)
             self.cumulative.append(0)
 
-    def select_arm(self) -> int:
+    def select_arm(self, context) -> int:
         if random.random() < self.epsilon:
             choice = random.randint(0, self.n_arms - 1)
         else:

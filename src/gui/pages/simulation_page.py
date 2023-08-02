@@ -74,7 +74,7 @@ class _LeftPanel(Subwidget, ttk.Frame):
 
 class _LeftHeader(Subwidget, ttk.LabelFrame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
-        super().__init__(master, text="TEST")
+        super().__init__(master, text="Navigation")
         self.page = page
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
@@ -158,14 +158,23 @@ class _FrameInfo(Subwidget, ttk.LabelFrame):
 
         frame = self.simulator.frames[self.frame_num_var.get()]
 
-        choice_label = ttk.Label(master=self, text=f"Restaurant Choice: {frame.choice}")
-        choice_label.grid(column=0, row=0)
+        regret_label = ttk.Label(master=self, text=f"Context:", justify=tk.LEFT)
+        regret_label.grid(column=0, row=0, sticky=tk.NSEW)
 
-        reward_label = ttk.Label(master=self, text=f"Reward: {frame.reward:0.2f}")
-        reward_label.grid(column=0, row=1)
+        regret_label = ttk.Label(master=self, text=f"    Location: {frame.context['location']}", justify=tk.LEFT)
+        regret_label.grid(column=0, row=1, sticky=tk.NSEW)
 
-        regret_label = ttk.Label(master=self, text=f"Regret: {frame.regret:0.2f}")
-        regret_label.grid(column=0, row=2)
+        regret_label = ttk.Label(master=self, text=f"    Time: {frame.context['time']}", justify=tk.LEFT)
+        regret_label.grid(column=0, row=2, sticky=tk.NSEW)
+
+        choice_label = ttk.Label(master=self, text=f"Restaurant Choice: {frame.choice}", justify=tk.LEFT)
+        choice_label.grid(column=0, row=3, sticky=tk.NSEW)
+
+        reward_label = ttk.Label(master=self, text=f"    Reward: {frame.reward:0.2f}", justify=tk.LEFT)
+        reward_label.grid(column=0, row=4, sticky=tk.NSEW)
+
+        regret_label = ttk.Label(master=self, text=f"    Regret: {frame.regret:0.2f}", justify=tk.LEFT)
+        regret_label.grid(column=0, row=5, sticky=tk.NSEW)
 
 
 class _Charts(Subwidget, ttk.LabelFrame):

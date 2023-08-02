@@ -7,7 +7,7 @@ class BanditModel(ABC):
         self.type: str
 
     @abstractmethod
-    def select_arm(self) -> int:
+    def select_arm(self, context) -> int:
         pass
 
     @abstractmethod
