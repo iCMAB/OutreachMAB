@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 
-
 class Header(ttk.LabelFrame):
     def __init__(self, master, app, title: str, forward_button_args: dict):
         super().__init__(master)

@@ -2,6 +2,8 @@ import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import ttk
 
+import customtkinter as ctk
+
 from src.gui.standard_widgets import Page, Header, BoundedEntry
 
 
@@ -24,7 +26,8 @@ class SettingsPage(Page):
         self.columnconfigure((1, 2, 3, 4, 5), weight=2)
         self.columnconfigure(6, weight=1)
         # noinspection PyTypeChecker
-        self.rowconfigure((1, 2, 3, 4, 5), weight=1)
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure((1, 2, 3, 4, 5), weight=3)
 
         self.selected_bandit = tk.StringVar()
         self.selected_bandit.set("Epsilon Greedy")
@@ -107,7 +110,7 @@ class SettingsPage(Page):
 
         num_iter_desc.grid(row=6, column=1, columnspan=6, padx=10, pady=(0, 10), sticky="nsew")
 
-        button1 = ttk.Button(self, text="Start", command=lambda: self.app.set_page("intro"))
+        button1 = ctk.CTkButton(self, text="Start", command=lambda: self.app.set_page("intro"))
         button1.grid(row=7, column=0, columnspan=7, padx=10, pady=10, ipadx=50, ipady=20)
 
     def close(self):
