@@ -74,7 +74,7 @@ class _LeftPanel(Subwidget, ttk.Frame):
 
 class _LeftHeader(Subwidget, ttk.LabelFrame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
-        super().__init__(master, text="TEST")
+        super().__init__(master, text="Frame Controls")
         self.page = page
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
