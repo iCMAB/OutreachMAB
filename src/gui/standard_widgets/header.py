@@ -10,6 +10,8 @@ class Header(ttk.LabelFrame):
             height=2,
             width=5,
             text="BACK",
+            bg='#3B8ED0', activebackground='#36719F', fg='#DCE4EE',
+            font = tk.font.Font(size=16),
             command=lambda: app.back_page()
         )
         back_button.grid(column=0, row=0, sticky=tk.NW)
@@ -22,6 +24,8 @@ class Header(ttk.LabelFrame):
             self,
             height=2,
             width=5,
+            font=tk.font.Font(size=16),
+            bg='#3B8ED0', activebackground='#36719F', fg='#DCE4EE',
             **forward_button_args,
         )
         end_button.grid(column=1, row=0, sticky=tk.NE)

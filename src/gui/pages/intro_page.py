@@ -59,7 +59,7 @@ class IntroPage(Page):
         arms_label.grid(row=5, column=0, columnspan=4, padx=20, pady=10)
 
         continue_button = ctk.CTkButton(self, text="START",
-                                     command=lambda: self.app.set_page("simulation"))
+                                     command=lambda: self.app.set_page("simulation"), font=ctk.CTkFont(size=24))
         continue_button.grid(row=6, column=0, columnspan=4, padx=20, pady=10, ipadx=50, ipady=20)
 
     def open(self):

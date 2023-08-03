@@ -40,7 +40,7 @@ class SettingsPage(Page):
         model_selection.grid(row=1, column=3, pady=(10,5), columnspan=3, sticky="nsew")
 
         #the actual menu for bandit selection
-        bandit_menu_button = tk.Menubutton(self, background='#b0ada9', borderwidth=1, relief="solid", text="Select "+u'\u25BC', font=tkFont.Font(size=20))
+        bandit_menu_button = tk.Menubutton(self, background='#b0ada9', borderwidth=1, relief="solid", text="Select "+u'\u25BC', font=tkFont.Font(size=20), bg='#3B8ED0', activebackground='#36719F', fg = '#DCE4EE')
         bandit_menu = tk.Menu(bandit_menu_button, tearoff=False)
         bandit_menu_button.configure(menu=bandit_menu)
 
@@ -110,7 +110,7 @@ class SettingsPage(Page):
 
         num_iter_desc.grid(row=6, column=1, columnspan=6, padx=10, pady=(0, 10), sticky="nsew")
 
-        button1 = ctk.CTkButton(self, text="Start", command=lambda: self.app.set_page("intro"))
+        button1 = ctk.CTkButton(self, text="Start", command=lambda: self.app.set_page("intro"), font=ctk.CTkFont(size=24))
         button1.grid(row=7, column=0, columnspan=7, padx=10, pady=10, ipadx=50, ipady=20)
 
     def close(self):

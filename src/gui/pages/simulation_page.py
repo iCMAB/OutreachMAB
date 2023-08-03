@@ -85,6 +85,8 @@ class _LeftHeader(Subwidget, ttk.LabelFrame):
             height=2,
             width=5,
             command=self.decrement_frame_num,
+            font=tkfont.Font(size=14),
+            bg='#3B8ED0', activebackground='#36719F', fg = '#DCE4EE'
         )
         self.left_button.grid(column=0, row=0)
 
@@ -94,6 +96,8 @@ class _LeftHeader(Subwidget, ttk.LabelFrame):
             width=5,
             text="NEXT",
             command=self.increment_frame_num,
+            font=tkfont.Font(size=14),
+            bg='#3B8ED0', activebackground='#36719F', fg = '#DCE4EE'
         )
         self.right_button.grid(column=1, row=0)
 
@@ -117,6 +121,8 @@ class _LeftHeader(Subwidget, ttk.LabelFrame):
             width=5,
             text="JUMP",
             command=self.entry_submit,
+            font=tkfont.Font(size=14),
+            bg='#3B8ED0', activebackground='#36719F', fg = '#DCE4EE'
         )
         right_button.grid(column=4, row=0)
 

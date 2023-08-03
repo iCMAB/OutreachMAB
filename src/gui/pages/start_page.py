@@ -21,7 +21,7 @@ class StartPage(Page):
         label.grid(row=0, column=1, padx=10, pady=50)
 
         button1 = ctk.CTkButton(self, text="Start",
-                             command=lambda: self.app.set_page("bandits_explained"))
+                             command=lambda: self.app.set_page("bandits_explained"), font=ctk.CTkFont(size=24))
 
         # putting the button in its place by
         # using grid
@@ -29,13 +29,13 @@ class StartPage(Page):
 
 
         ## button to show frame 2 with text layout2
-        button2 = ctk.CTkButton(self, text="Settings", command=lambda: self.app.set_page("bandits_explained"))
+        button2 = ctk.CTkButton(self, text="Settings", command=lambda: self.app.set_page("bandits_explained"), font=ctk.CTkFont(size=24))
 
         # putting the button in its place by
         # using grid
         button2.grid(row=2, column=1, padx=10, pady=10, ipadx=50, ipady=20)
 
-        button3 = ctk.CTkButton(self, text="Quit", command=lambda: self.app.destroy())
+        button3 = ctk.CTkButton(self, text="Quit", command=lambda: self.app.destroy(), font=ctk.CTkFont(size=24))
         button3.grid(row=3, column=1, padx=10, pady=10, ipadx=50, ipady=20)
 
 
