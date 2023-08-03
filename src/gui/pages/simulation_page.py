@@ -12,6 +12,7 @@ class SimulationPage(Subwidget, Page):
         super().__init__(*args, **kwargs)
 
         self.frame_num_var = tk.IntVar()
+        self.configure(background='#D8E2DC')
 
         self.columnconfigure(0, weight=1)
 
@@ -28,6 +29,7 @@ class SimulationPage(Subwidget, Page):
         self.rowconfigure(0, weight=0, minsize=32)
 
         panes = ttk.PanedWindow(self, orient=tk.HORIZONTAL)
+        ttk.Style().configure('panes', background='#D8E2DC')
         panes.grid(column=0, row=1, sticky=tk.NSEW)
         self.rowconfigure(1, weight=1)
 
@@ -72,12 +74,13 @@ class _LeftPanel(Subwidget, tk.Frame):
         self.rowconfigure(index=2, weight=1)
 
 
-class _LeftHeader(Subwidget, ttk.LabelFrame):
+class _LeftHeader(Subwidget, tk.LabelFrame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master, text="Frame Controls")
         self.page = page
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
+        self.configure(background='#D8E2DC')
 
         self.left_button = tk.Button(
             self,
@@ -152,34 +155,36 @@ class _LeftHeader(Subwidget, ttk.LabelFrame):
         self.page.update()
 
 
-class _FrameInfo(Subwidget, ttk.LabelFrame):
+class _FrameInfo(Subwidget, tk.LabelFrame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master, text="Frame Information")
         self.page = page
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
+        self.configure(background = '#D8E2DC')
 
     def update(self):
         super().update()
 
         frame = self.simulator.frames[self.frame_num_var.get()]
 
-        choice_label = ttk.Label(master=self, text=f"Restaurant Choice: {frame.choice}")
+        choice_label = ttk.Label(master=self, text=f"Restaurant Choice: {frame.choice}", background = '#D8E2DC', font=tkfont.Font(size=14))
         choice_label.grid(column=0, row=0)
 
-        reward_label = ttk.Label(master=self, text=f"Reward: {frame.reward:0.2f}")
+        reward_label = ttk.Label(master=self, text=f"Reward: {frame.reward:0.2f}", background = '#D8E2DC', font=tkfont.Font(size=14))
         reward_label.grid(column=0, row=1)
 
-        regret_label = ttk.Label(master=self, text=f"Regret: {frame.regret:0.2f}")
+        regret_label = ttk.Label(master=self, text=f"Regret: {frame.regret:0.2f}", background = '#D8E2DC', font=tkfont.Font(size=14))
         regret_label.grid(column=0, row=2)
 
 
-class _Charts(Subwidget, ttk.LabelFrame):
+class _Charts(Subwidget, tk.LabelFrame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master, text="Reward/Regret Charts")
         self.page = page
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
+        self.configure(background='#D8E2DC')
 
     def update(self):
         output_dir = self.simulator.grapher.output_dir
@@ -213,17 +218,19 @@ class _Charts(Subwidget, ttk.LabelFrame):
         cumulative_label.grid(column=0, row=3)
 
 
-class _RightPanel(Subwidget, ttk.Frame):
+class _RightPanel(Subwidget, tk.Frame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master)
+        self.configure(background = '#D8E2DC')
         self.page = page
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
+        self.configure(background='#D8E2DC')
 
     def update(self):
         output_dir = self.simulator.grapher.output_dir
         for i in range(int(self.simulator.n_arms)):
-            restaurant_frame = ttk.LabelFrame(master=self, text=f"Restaurant #{i}")
+            restaurant_frame = tk.LabelFrame(master=self, text=f"Restaurant #{i}", background = '#D8E2DC')
             restaurant_frame.grid(column=0, row=i, sticky=tk.NSEW)
             self.columnconfigure(index=0, weight=1)
 
@@ -238,13 +245,13 @@ class _RightPanel(Subwidget, ttk.Frame):
             frames = self.simulator.frames[:self.frame_num_var.get() + 1]
             rewards = [frame.rewards[i] for frame in frames if i == frame.choice]
 
-            samples_label = ttk.Label(restaurant_frame, text=f"Number of Samples: {len(rewards)}")
+            samples_label = tk.Label(restaurant_frame, text=f"Number of Samples: {len(rewards)}", background = '#D8E2DC')
             samples_label.grid(column=1, row=0)
 
             avg_reward = f"{np.average(rewards):0.2f}" if len(rewards) > 0 else "N/A"
-            avg_label = ttk.Label(restaurant_frame, text=f"Average Reward: {avg_reward}")
+            avg_label = tk.Label(restaurant_frame, text=f"Average Reward: {avg_reward}", background = '#D8E2DC')
             avg_label.grid(column=1, row=1)
 
             std_dev = f"{np.std(rewards):0.2f}" if len(rewards) > 0 else "N/A"
-            sd_label = ttk.Label(restaurant_frame, text=f"Standard Deviation: {std_dev}")
+            sd_label = tk.Label(restaurant_frame, text=f"Standard Deviation: {std_dev}", background = '#D8E2DC')
             sd_label.grid(column=1, row=2)

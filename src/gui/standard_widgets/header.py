@@ -29,4 +29,4 @@ class Header(tk.LabelFrame):
             bg='#3B8ED0', activebackground='#36719F', fg='#DCE4EE',
             **forward_button_args,
         )
-        end_button.grid(column=2, row=0, sticky=tk.NE)
+        end_button.grid(column=1, row=0, sticky=tk.NE)

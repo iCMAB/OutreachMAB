@@ -14,6 +14,7 @@ class ResultsPage(Page):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.configure(background='#D8E2DC')
         self.columnconfigure(0, weight=1)
 
         header = Header(
@@ -55,15 +56,16 @@ class ResultsPage(Page):
         self.r_panel.update()
 
 
-class _RightPanel(ttk.LabelFrame):
+class _RightPanel(tk.LabelFrame):
     def __init__(self, parent, simulator: Simulator):
         super().__init__(parent, text="Reward/Regret Trends")
         self.simulator = simulator
+        self.configure(background='#D8E2DC')
 
     def update(self):
         output_dir = self.simulator.grapher.output_dir
         for i in range(int(self.simulator.n_arms)):
-            restaurant_frame = ttk.LabelFrame(master=self, text=f"Restaurant #{i}")
+            restaurant_frame = tk.LabelFrame(master=self, text=f"Restaurant #{i}", background='#D8E2DC')
             restaurant_frame.grid(column=0, row=i)
 
             image_label = ImageLabel(
@@ -75,20 +77,21 @@ class _RightPanel(ttk.LabelFrame):
             image_label.grid(column=0, row=0, rowspan=3)
 
             rewards = self.simulator.get_rewards(arm_index=i)
-            samples_label = ttk.Label(restaurant_frame, text=f"Number of Samples: {len(rewards)}")
+            samples_label = ttk.Label(restaurant_frame, text=f"Number of Samples: {len(rewards)}", background='#D8E2DC')
             samples_label.grid(column=1, row=0)
             avg_reward = np.average(rewards)
-            avg_label = ttk.Label(restaurant_frame, text=f"Average Reward: {avg_reward:0.2f}")
+            avg_label = ttk.Label(restaurant_frame, text=f"Average Reward: {avg_reward:0.2f}", background='#D8E2DC')
             avg_label.grid(column=1, row=1)
             std_dev = np.std(rewards)
-            sd_label = ttk.Label(restaurant_frame, text=f"Standard Deviation: {std_dev:0.2f}")
+            sd_label = ttk.Label(restaurant_frame, text=f"Standard Deviation: {std_dev:0.2f}", background='#D8E2DC')
             sd_label.grid(column=1, row=2)
 
 
-class _LeftPanel(ttk.LabelFrame):
+class _LeftPanel(tk.LabelFrame):
     def __init__(self, parent, simulator: Simulator):
         super().__init__(parent, text="Restaurant Sampling")
         self.simulator = simulator
+        self.configure(background='#D8E2DC')
 
     def update(self):
         output_dir = self.simulator.grapher.output_dir
@@ -112,7 +115,8 @@ class _LeftPanel(ttk.LabelFrame):
             the reward increases slowly as the Bandits explore, then settles
             into a linear growth once the optimal arm is found and the
             bandit starts to exploit it.
-            """
+            """,
+            background = '#D8E2DC'
         )
         standard_label.grid(column=0, row=1)
 
@@ -135,6 +139,7 @@ class _LeftPanel(ttk.LabelFrame):
             approach 0. You can judge the selected model for yourself by
             looking at the averages above, and the expected average reward
             has been added for reference.
-            """
+            """,
+            background = '#D8E2DC'
         )
         cumulative_label.grid(column=0, row=3)
