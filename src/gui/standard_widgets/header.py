@@ -17,7 +17,10 @@ class Header(tk.LabelFrame):
         )
         back_button.grid(column=0, row=0, sticky=tk.NW)
 
-        title = ttk.Label(self, text=title, justify=tk.CENTER, background='#D8E2DC', font=tk.font.Font(size=20))
+        title = ttk.Label(self, text=title, anchor=tk.CENTER, background='#D8E2DC', font=("Arial", 24, "bold"))
+        title.grid(column=1, row=0, sticky=tk.NSEW)
+        self.columnconfigure(1, weight=1)
+
         title.grid(column=1, row=0, sticky=tk.NSEW)
         self.columnconfigure(1, weight=1)
 
