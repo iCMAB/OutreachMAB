@@ -47,7 +47,7 @@ class SimulationPage(Subwidget, Page):
         super().update()
 
 
-class _LeftPanel(Subwidget, ttk.Frame):
+class _LeftPanel(Subwidget, tk.Frame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master)
         self.page = page

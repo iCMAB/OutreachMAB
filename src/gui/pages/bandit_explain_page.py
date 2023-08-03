@@ -1,5 +1,6 @@
 import tkinter as tk
 import webbrowser
+import tkinter.font as tkFont
 
 import customtkinter as ctk
 from src.gui.standard_widgets import Page, Header
@@ -24,7 +25,8 @@ class BanditExplainPage(Page):
 
         explain_text = tk.Label(self, text=" A Multi-Armed Bandit problem is one in which the problem has given multiple options, all with different\nrewards, where"\
                                  " at any given time, we can only select one option. The goal of the bandit is to leverage a\nmachine learning algorithm, in order"\
-                                 " to make the best selection each time the decision needs to be made.\n\nTo learn more about multi-armed bandits, see the supporting presentation.", justify="center")
+                                 " to make the best selection each time the decision needs to be made.\n\nTo learn more about multi-armed bandits, see the supporting presentation.", justify="center",
+                                 bg='#D8E2DC', font=tkFont.Font(size=14))
         explain_text.grid(row=1, column=1, columnspan=2, padx=10, pady=10)
 
         slides_button = ctk.CTkButton(self, text="Show Me the Presentation", command=lambda: webbrowser.open_new_tab("https://docs.google.com/presentation/d/1nfdbCnrvaHLtVeKtXrGiCp7zwmGpY7rCum5SNdVkCjk"), font=ctk.CTkFont(size=24))

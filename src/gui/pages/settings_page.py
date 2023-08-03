@@ -55,7 +55,7 @@ class SettingsPage(Page):
 
         bandit_menu_desc = tk.Label(self, text="Bandit Model: This is the type of algorithm the bandit" \
                                                " will be using when selecting\nan option for each frame.",
-                                    justify="left", font=tkFont.Font(size=12))
+                                    justify="left", font=tkFont.Font(size=14), bg='#D8E2DC')
 
         bandit_menu_desc.grid(row=2, column=1, columnspan=6, padx=10, pady=(0, 10), sticky="nsew")
 
@@ -80,7 +80,7 @@ class SettingsPage(Page):
 
         num_arms_desc = tk.Label(self,
                                  text="Number of Arms: This controls the number of possible restaurants the bandit can\n" \
-                                      "choose from in each frame.", justify="left", font=tkFont.Font(size=12))
+                                      "choose from in each frame.", justify="left", font=tkFont.Font(size=14), bg='#D8E2DC')
 
         num_arms_desc.grid(row=4, column=1, columnspan=6, padx=10, pady=(0, 10), sticky="nsew")
 
@@ -106,7 +106,7 @@ class SettingsPage(Page):
         num_iter_desc = tk.Label(self,
                                  text="Number of Iterations: This is the total number of frames that will be included\nin the simulation.\n\n" \
                                       "WARNING: With a low number of iterations the bandit may not have enough time to\nexplore and may not end up having a high rate of success.",
-                                 justify="left", font=tkFont.Font(size=12))
+                                 justify="left", font=tkFont.Font(size=14), bg='#D8E2DC')
 
         num_iter_desc.grid(row=6, column=1, columnspan=6, padx=10, pady=(0, 10), sticky="nsew")
 
