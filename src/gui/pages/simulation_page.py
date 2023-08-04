@@ -107,9 +107,9 @@ class _LeftHeader(Subwidget, tk.LabelFrame):
         self.frame_entry = tk.StringVar(value=str(self.frame_num_var.get()))
         current_iter = BoundedEntry(
             master=self,
-            minimum=0,
-            maximum=self.simulator.num_frames - 1,
-            default=0,
+            minimum=1,
+            maximum=self.simulator.num_frames ,
+            default=1,
             var=self.frame_entry,
             func=self.entry_submit,
             font=tkfont.Font(family='Times', size=16),
@@ -131,7 +131,7 @@ class _LeftHeader(Subwidget, tk.LabelFrame):
 
     def update(self) -> None:
         frame_num = self.frame_num_var.get()
-        self.frame_entry.set(str(frame_num))
+        self.frame_entry.set(str(frame_num + 1))
 
         self.left_button.config(state=tk.NORMAL)
         self.right_button.config(state=tk.NORMAL)
@@ -142,7 +142,7 @@ class _LeftHeader(Subwidget, tk.LabelFrame):
             self.left_button.config(state=tk.DISABLED)
 
     def entry_submit(self, frame_num: int):
-        self.frame_num_var.set(frame_num)
+        self.frame_num_var.set(frame_num - 1)
         self.page.update()
 
 
