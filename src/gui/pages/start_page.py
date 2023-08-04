@@ -18,8 +18,11 @@ class StartPage(Page):
         # grid
         label.grid(row=0, column=1, padx=10, pady=50)
 
-        button1 = ttk.Button(self, text="Start",
-                             command=lambda: self.app.set_page("bandits_explained"))
+        button1 = ttk.Button(
+            self,
+            text="Standard MAB Simulation",
+            command=lambda: self.app.set_page("bandits_explained", kwargs={"contextual": False})
+        )
 
         # putting the button in its place by
         # using grid
@@ -27,7 +30,11 @@ class StartPage(Page):
 
 
         ## button to show frame 2 with text layout2
-        button2 = ttk.Button(self, text="Settings", command=lambda: self.app.set_page("bandits_explained"))
+        button2 = ttk.Button(
+            self,
+            text="Contextual MAB Simulation",
+            command=lambda: self.app.set_page("bandits_explained", kwargs={"contextual": True})
+        )
 
         # putting the button in its place by
         # using grid

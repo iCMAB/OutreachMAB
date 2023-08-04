@@ -1,7 +1,7 @@
 import json
 import tkinter as tk
 from tkinter import ttk
-from typing import Dict, Optional
+from typing import Dict, Optional, List, Any
 
 from src.gui.pages import PAGES
 from src.gui.standard_widgets import Page
@@ -37,18 +37,23 @@ class App(tk.Tk):
 
         self.set_page("start")
 
-    def show_page(self, page_name: str) -> Page:
-        page = PAGES[page_name](master=self.container, app=self)
+    def show_page(self, page_name: str, args: List[Any], kwargs: Dict[str, Any]) -> Page:
+        page = PAGES[page_name](master=self.container, app=self, *args, **kwargs)
         page.open()
         page.grid(column=0, row=0, sticky=tk.NSEW)
         return page
 
-    def set_page(self, page_name: str):
+    def set_page(self, page_name: str, args: List[Any] = None, kwargs: Dict[str, Any] = None):
+        if args is None:
+            args = []
+        if kwargs is None:
+            kwargs = {}
+
         if len(self.page_history) > 0:
             self.page_history[-1].close()
             # self.page_history[-1].destroy()
 
-        page = self.show_page(page_name)
+        page = self.show_page(page_name, args, kwargs)
         self.page_history.append(page)
 
     def back_page(self):

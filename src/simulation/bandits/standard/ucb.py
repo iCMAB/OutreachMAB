@@ -2,13 +2,12 @@ import math
 
 import numpy as np
 
-from .bandit_model import BanditModel
+from src.simulation.bandits.bandit_model import BanditModel
 
 
 class UCBBandit(BanditModel):
     def __init__(self, n_arms: int, epsilon: float = 1):
-        super().__init__(n_arms)
-        self.type = "Upper Confidence Bound"
+        super().__init__(type="Upper Confidence Bound", n_arms=n_arms)
         self.exploration = epsilon #not actually considered epsilon, but epsilon is keyword that BanditModel takes
         self.sums = [0] * n_arms
         self.iter = 0

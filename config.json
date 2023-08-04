@@ -85,10 +85,13 @@
       }
     }
   ],
-  "bandit": {
-    "model": "Epsilon Greedy",
-    "parameters": {
+  "bandit_parameters": {
+    "Epsilon Greedy": {
       "epsilon": 0.5
+    },
+    "Linear UCB": {
+      "d": 3,
+      "alpha": 1
     }
   }
 }

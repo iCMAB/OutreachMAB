@@ -3,10 +3,11 @@ import tkinter.font as tkFont
 from tkinter import ttk
 
 from src.gui.standard_widgets import Page, Header, BoundedEntry
+from src.simulation.bandits import STANDARD_BANDITS, CONTEXTUAL_BANDITS
 
 
 class SettingsPage(Page):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, contextual: bool = False, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         header = Header(
@@ -26,14 +27,28 @@ class SettingsPage(Page):
         # noinspection PyTypeChecker
         self.rowconfigure((1, 2, 3, 4, 5), weight=1)
 
-        self.selected_bandit = tk.StringVar()
-        self.selected_bandit.set("Epsilon Greedy")
-
         #bandit model label and current selection
-        model_label = ttk.Label(self, text='Bandit Model', font=tkFont.Font(size=18), background='#b0ada9', borderwidth=40, relief="solid")
+        model_label = ttk.Label(
+            self,
+            text='Bandit Model',
+            font=tkFont.Font(size=18),
+            background='#b0ada9',
+            borderwidth=40,
+            relief="solid"
+        )
         model_label.grid(row=1, column=1, padx=(10,0), pady=(10, 5), sticky="nsew", columnspan=2)
 
-        model_selection = ttk.Label(self, textvariable=self.selected_bandit, font=tkFont.Font(size=18), background='#b0ada9', borderwidth=40, justify="left", relief="solid")
+        self.selected_bandit = tk.StringVar()
+
+        model_selection = ttk.Label(
+            self,
+            textvariable=self.selected_bandit,
+            font=tkFont.Font(size=18),
+            background='#b0ada9',
+            borderwidth=40,
+            justify="left",
+            relief="solid"
+        )
         model_selection.grid(row=1, column=3, pady=(10,5), columnspan=3, sticky="nsew")
 
         #the actual menu for bandit selection
@@ -41,12 +56,14 @@ class SettingsPage(Page):
         bandit_menu = tk.Menu(bandit_menu_button, tearoff=False)
         bandit_menu_button.configure(menu=bandit_menu)
 
-        #ALL BANDIT OPTIONS GO HERE
-        bandit_menu.add_radiobutton(label="Epsilon Greedy", variable=self.selected_bandit, value="Epsilon Greedy")
-        bandit_menu.add_radiobutton(label="Thompson Sampling", variable=self.selected_bandit, value="Thompson Sampling")
-        bandit_menu.add_radiobutton(label="Upper Confidence Bound", variable=self.selected_bandit, value="Upper Confidence Bound")
-        bandit_menu.add_radiobutton(label="Randomly Selected", variable=self.selected_bandit, value="Random")
-        #END BANDIT OPTIONS
+        # Dynamically load bandit options
+        if not contextual:
+            bandits = STANDARD_BANDITS
+        else:
+            bandits = CONTEXTUAL_BANDITS
+        for name in bandits.keys():
+            bandit_menu.add_radiobutton(label=name, variable=self.selected_bandit, value=name)
+        self.selected_bandit.set(list(bandits.keys())[0])
 
         bandit_menu_button.grid(row=1, column=6, padx=(0, 10), pady=(10, 5), sticky="nsew")
 

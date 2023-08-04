@@ -32,7 +32,7 @@ class Simulator:
                 distribution=DISTRIBUTIONS[r_config["distribution"]["type"]](**r_config["distribution"]["parameters"])
             ))
 
-        self.bandit: BanditModel = BANDITS[bandit](n_arms=self.n_arms, **config["bandit"]["parameters"])
+        self.bandit: BanditModel = BANDITS[bandit](n_arms=self.n_arms, **config["bandit_parameters"][bandit])
 
     def run_simulation(self):
         self.log_start()
@@ -48,12 +48,13 @@ class Simulator:
             "location": (x, y),
             "time": time
         }
+        context_array = [x, y, time]
 
         frame = Frame(
             frame_num=self.frame_num,
             context=context,
             rewards=[r.sample_with_context(context) for r in self.restaurants],
-            choice=self.bandit.select_arm(context)
+            choice=self.bandit.select_arm(context_array)
         )
         self.bandit.update(frame.reward, frame.regret, frame.choice)
 

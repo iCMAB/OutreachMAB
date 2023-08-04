@@ -1,13 +1,12 @@
 import random
 
-from .bandit_model import BanditModel
+from src.simulation.bandits.bandit_model import BanditModel
 
 
 class RandomBandit(BanditModel):
 
     def __init__(self, n_arms: int, epsilon):
-        super().__init__(n_arms)
-        self.type = "Random"
+        super().__init__(type="Random", n_arms=n_arms)
 
     def select_arm(self, context) -> int:
         return random.randrange(0, self.n_arms)
