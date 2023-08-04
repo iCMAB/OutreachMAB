@@ -46,7 +46,7 @@ class Simulator:
         y = 10 * random.random()
         time = 24 * random.random()
 
-        bandit_context = [math.dist(r.location, (x, y)) for r in self.restaurants]
+        bandit_context = [[math.dist(r.location, (x, y))] for r in self.restaurants]
         context = {
             "location": (x, y),
             "time": time
