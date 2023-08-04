@@ -33,10 +33,10 @@ class SettingsPage(Page):
         self.selected_bandit.set("Epsilon Greedy")
 
         #bandit model label and current selection
-        model_label = ttk.Label(self, text='Bandit Model', font=tkFont.Font(size=18), background='#b0ada9', borderwidth=40, relief="solid")
+        model_label = ttk.Label(self, text='Bandit Model', font=tkFont.Font(size=18), borderwidth=40, relief="solid", foreground='#DCE4EE', background='#133C55')
         model_label.grid(row=1, column=1, padx=(10,0), pady=(10, 5), sticky="nsew", columnspan=2)
 
-        model_selection = ttk.Label(self, textvariable=self.selected_bandit, font=tkFont.Font(size=18), background='#b0ada9', borderwidth=40, justify="left", relief="solid")
+        model_selection = ttk.Label(self, textvariable=self.selected_bandit, font=tkFont.Font(size=18), foreground='#DCE4EE', background='#133C55', borderwidth=40, justify="left", relief="solid")
         model_selection.grid(row=1, column=3, pady=(10,5), columnspan=3, sticky="nsew")
 
         #the actual menu for bandit selection
@@ -61,7 +61,7 @@ class SettingsPage(Page):
 
 
         #number of arms label and entry box
-        arms_label = ttk.Label(self, text="Number of Arms", font=tkFont.Font(size=18), background='#b0ada9',
+        arms_label = ttk.Label(self, text="Number of Arms", font=tkFont.Font(size=18), foreground='#DCE4EE', background='#133C55',
                                 borderwidth=20, relief="solid")
         arms_label.grid(row=3, column=1, padx=(10, 0), pady=(10, 5), columnspan=4, sticky="nsew")
 
@@ -85,7 +85,7 @@ class SettingsPage(Page):
         num_arms_desc.grid(row=4, column=1, columnspan=6, padx=10, pady=(0, 10), sticky="nsew")
 
         #number of iterations label and entry box
-        iterations_label = ttk.Label(self, text="Number of Iterations", font=tkFont.Font(size=18), background='#b0ada9',
+        iterations_label = ttk.Label(self, text="Number of Iterations", font=tkFont.Font(size=18), foreground='#DCE4EE', background='#133C55',
                                borderwidth=20, relief="solid")
         iterations_label.grid(row=5, column=1, padx=(10, 0), pady=(10,5), columnspan=4, sticky="nsew")
 
