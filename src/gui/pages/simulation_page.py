@@ -129,9 +129,16 @@ class _LeftHeader(Subwidget, tk.LabelFrame):
         )
         right_button.grid(column=4, row=0)
 
+        self.cur_frame_label = tk.Label(self,
+                                        text= str(self.frame_num_var.get() + 1) + "/" + str(self.simulator.num_frames),
+                                        background='#D8E2DC', foreground='#525B76', font=tkfont.Font(size=18))
+        self.cur_frame_label.grid(column=5, row=0)
+
     def update(self) -> None:
         frame_num = self.frame_num_var.get()
         self.frame_entry.set(str(frame_num + 1))
+
+        self.cur_frame_label.config(text=str(frame_num + 1) + "/" + str(self.simulator.num_frames))
 
         self.left_button.config(state=tk.NORMAL)
         self.right_button.config(state=tk.NORMAL)
