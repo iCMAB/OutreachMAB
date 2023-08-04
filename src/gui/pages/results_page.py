@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-
+import customtkinter as ctk
 import numpy as np
 
 from src.gui.standard_widgets import Page, ImageLabel, Header
@@ -59,6 +59,7 @@ class ResultsPage(Page):
 class _RightPanel(tk.LabelFrame):
     def __init__(self, parent, simulator: Simulator):
         super().__init__(parent, text="Reward/Regret Trends")
+        self.parent = parent
         self.simulator = simulator
         self.configure(background='#D8E2DC')
 
@@ -85,6 +86,9 @@ class _RightPanel(tk.LabelFrame):
             std_dev = np.std(rewards)
             sd_label = ttk.Label(restaurant_frame, text=f"Standard Deviation: {std_dev:0.2f}", background='#D8E2DC')
             sd_label.grid(column=1, row=2)
+
+        quit_button = ctk.CTkButton(self, text="Quit", command=lambda: self.parent.app.destroy(), font=ctk.CTkFont(size=24))
+        quit_button.grid(row=self.simulator.n_arms, column=0, padx=10, pady=10, ipadx=50, ipady=20)
 
 
 class _LeftPanel(tk.LabelFrame):
