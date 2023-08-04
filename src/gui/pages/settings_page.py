@@ -67,16 +67,28 @@ class SettingsPage(Page):
 
         bandit_menu_button.grid(row=1, column=6, padx=(0, 10), pady=(10, 5), sticky="nsew")
 
-        bandit_menu_desc = tk.Label(self, text="Bandit Model: This is the type of algorithm the bandit" \
-                                               " will be using when selecting\nan option for each frame.",
-                                    justify="left", font=tkFont.Font(size=12))
+        bandit_menu_desc = tk.Label(
+            self,
+            text="""
+            Bandit Model: This is the type of algorithm the bandit will be using when selecting
+            an option for each frame.
+            """,
+            justify="left",
+            font=tkFont.Font(size=12)
+        )
 
         bandit_menu_desc.grid(row=2, column=1, columnspan=6, padx=10, pady=(0, 10), sticky="nsew")
 
 
         #number of arms label and entry box
-        arms_label = ttk.Label(self, text="Number of Arms", font=tkFont.Font(size=18), background='#b0ada9',
-                                borderwidth=20, relief="solid")
+        arms_label = ttk.Label(
+            self,
+            text="Number of Arms",
+            font=tkFont.Font(size=18),
+            background='#b0ada9',
+            borderwidth=20,
+            relief="solid"
+        )
         arms_label.grid(row=3, column=1, padx=(10, 0), pady=(10, 5), columnspan=4, sticky="nsew")
 
         self.num_arms_var = tk.StringVar(value="5")
@@ -99,8 +111,14 @@ class SettingsPage(Page):
         num_arms_desc.grid(row=4, column=1, columnspan=6, padx=10, pady=(0, 10), sticky="nsew")
 
         #number of iterations label and entry box
-        iterations_label = ttk.Label(self, text="Number of Iterations", font=tkFont.Font(size=18), background='#b0ada9',
-                               borderwidth=20, relief="solid")
+        iterations_label = ttk.Label(
+            self,
+            text="Number of Iterations",
+            font=tkFont.Font(size=18),
+            background='#b0ada9',
+            borderwidth=20,
+            relief="solid"
+        )
         iterations_label.grid(row=5, column=1, padx=(10, 0), pady=(10,5), columnspan=4, sticky="nsew")
 
         self.num_frames_var = tk.StringVar(value="100")
@@ -117,10 +135,18 @@ class SettingsPage(Page):
         )
         self.num_frames_entry.grid(row=5, column=4, padx=(0, 10), pady=(10, 5), sticky="nsew", columnspan=3)
 
-        num_iter_desc = tk.Label(self,
-                                 text="Number of Iterations: This is the total number of frames that will be included\nin the simulation.\n\n" \
-                                      "WARNING: With a low number of iterations the bandit may not have enough time to\nexplore and may not end up having a high rate of success.",
-                                 justify="left", font=tkFont.Font(size=12))
+        num_iter_desc = tk.Label(
+            self,
+            text="""
+            Number of Iterations: This is the total number of frames that will be included
+            in the simulation.
+            
+            WARNING: With a low number of iterations the bandit may not have enough time to
+            explore and may not end up having a high rate of success.
+            """,
+            justify="left",
+            font=tkFont.Font(size=12)
+        )
 
         num_iter_desc.grid(row=6, column=1, columnspan=6, padx=10, pady=(0, 10), sticky="nsew")
 

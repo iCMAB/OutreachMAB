@@ -36,6 +36,9 @@ class Restaurant:
         distance_penalty = sample * exponential_decay_penalty(distance * distance_decay_ratio)
         corrected_distance_penalty = distance_penalty * distance_penalty_ratio
 
+        # penalty = (1 - e ^ -distance * decay_factor) * penalty_factor
+        # reward = reward - penalty
+
         time_delta = abs(context["time"] - self.peak_time)
         time_decay_ratio = self.context_options["time_decay_ratio"]
         time_penalty_ratio = self.context_options["time_penalty_ratio"]

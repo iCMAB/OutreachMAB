@@ -7,11 +7,12 @@ from ..bandit_model import BanditModel
 
 class LinearUCB(BanditModel):
     def __init__(self, n_arms: int, d: int, alpha: float):
-        super().__init__(type="Random", n_arms=n_arms)
+        super().__init__(type="Linear UCB", n_arms=n_arms)
 
         self.arms = []
         for i in range(n_arms):
             self.arms.append(_Arm(i, d, alpha))
+
         self.d = d
         self.alpha = alpha
 

@@ -1,3 +1,4 @@
+import math
 import random
 from collections.abc import Mapping, MutableMapping
 from typing import List
@@ -44,17 +45,19 @@ class Simulator:
         x = 10 * random.random()
         y = 10 * random.random()
         time = 24 * random.random()
+
+        bandit_context = [math.dist(r.location, (x, y)) for r in self.restaurants]
         context = {
             "location": (x, y),
             "time": time
         }
-        context_array = [x, y, time]
+        # context_array = [x, y, time]
 
         frame = Frame(
             frame_num=self.frame_num,
             context=context,
             rewards=[r.sample_with_context(context) for r in self.restaurants],
-            choice=self.bandit.select_arm(context_array)
+            choice=self.bandit.select_arm(bandit_context)
         )
         self.bandit.update(frame.reward, frame.regret, frame.choice)
 
