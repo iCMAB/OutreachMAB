@@ -25,7 +25,7 @@ class App(tk.Tk):
 
         self.page_history = []
 
-        self.title("Restaurant Outreach")
+        self.title("Hungry Hungry Bandits")
         width = 1200
         height = 800
         screenwidth = self.winfo_screenwidth()

@@ -11,7 +11,7 @@ class StartPage(Page):
         super().__init__(*args, **kwargs)
 
         # label of frame Layout 2
-        label = ctk.CTkLabel(self, text="Multi-Armed Bandit\nRestaurant Selector", justify="center",
+        label = ctk.CTkLabel(self, text="Hungry Hungry\nBandits", justify="center",
                           font=ctk.CTkFont(size=36))
 
         # putting the grid in its place by using
