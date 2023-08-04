@@ -29,7 +29,7 @@ class LinearUCB(BanditModel):
 
         for arm_index in range(self.n_arms):
             # Calculate ucb based on each arm using current covariates at time t
-            arm_ucb = self.arms[arm_index].calc_UCB(context)
+            arm_ucb = self.arms[arm_index].calc_UCB(context[arm_index])
 
             # If current arm is highest than current highest_ucb
             if arm_ucb > highest_ucb:
@@ -49,7 +49,7 @@ class LinearUCB(BanditModel):
         return chosen_arm
 
     def update(self, reward: float, regret: int, choice: int):
-        self.arms[choice].reward_update(reward, self.context)
+        self.arms[choice].reward_update(reward, np.array(self.context[choice]))
 
 
 class _Arm:
