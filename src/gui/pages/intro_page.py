@@ -3,6 +3,7 @@ import tkinter.font as tkFont
 from tkinter import ttk
 
 import customtkinter as ctk
+
 from src.gui.standard_widgets import Page, Header
 
 
@@ -27,13 +28,13 @@ class IntroPage(Page):
         intro_text = ttk.Label(
             master=self,
             text="""
-In this activity you will be going through a simulation of a multi-armed bandit
-making restaurant recommendations. The multi-armed bandit in this stage will
-not be utilizing context. It will be attempting to find the restaurant that provides
-the best reward the most often. 
-You will be going through the simulation with the bandit and see the decision it
-makes each step of the way. There are supporting graphs to display the data
-that the bandit has collected so far.
+            In this activity you will be going through a simulation of a multi-armed bandit
+            making restaurant recommendations. The multi-armed bandit in this stage will
+            not be utilizing context. It will be attempting to find the restaurant that provides
+            the best reward the most often. 
+            You will be going through the simulation with the bandit and see the decision it
+            makes each step of the way. There are supporting graphs to display the data
+            that the bandit has collected so far.
             """,
 
             font=tkFont.Font(size=14), justify='center', background='#D8E2DC'

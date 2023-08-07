@@ -1,6 +1,3 @@
-import tkinter.font as tkFont
-from tkinter import ttk
-
 import customtkinter as ctk
 
 from src.gui.standard_widgets.page import Page
@@ -11,8 +8,13 @@ class StartPage(Page):
         super().__init__(*args, **kwargs)
 
         # label of frame Layout 2
-        label = ctk.CTkLabel(self, text="Hungry Hungry\nBandits", justify="center",
-                          font=ctk.CTkFont(size=36))
+        label = ctk.CTkLabel(
+            self,
+            text="Hungry Hungry\nBandits",
+            justify="center",
+            text_color="black",
+            font=ctk.CTkFont(size=36)
+        )
 
         # putting the grid in its place by using
         self.columnconfigure(index=0, weight=1)
