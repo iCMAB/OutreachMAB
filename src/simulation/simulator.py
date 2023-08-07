@@ -33,7 +33,12 @@ class Simulator:
                 distribution=DISTRIBUTIONS[r_config["distribution"]["type"]](**r_config["distribution"]["parameters"])
             ))
 
-        self.bandit: BanditModel = BANDITS[bandit](n_arms=self.n_arms, **config["bandit_parameters"][bandit])
+        try:
+            parameters = config["bandit_parameters"][bandit]
+        except KeyError:
+            parameters = {}
+
+        self.bandit: BanditModel = BANDITS[bandit](n_arms=self.n_arms, **parameters)
 
     def run_simulation(self):
         self.log_start()
