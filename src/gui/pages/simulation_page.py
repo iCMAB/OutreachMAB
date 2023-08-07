@@ -167,14 +167,22 @@ class _FrameInfo(Subwidget, ttk.LabelFrame):
         regret_label = ttk.Label(master=self, text=f"    Time: {frame.context['time']}", justify=tk.LEFT)
         regret_label.grid(column=0, row=2, sticky=tk.NSEW)
 
+        optimal_label = ttk.Label(master=self, text=f"Optimal Choice: {frame.rewards.index(max(frame.rewards))}",
+                                  justify=tk.LEFT)
+        optimal_label.grid(column=0, row=3, sticky=tk.NSEW)
+
         choice_label = ttk.Label(master=self, text=f"Restaurant Choice: {frame.choice}", justify=tk.LEFT)
-        choice_label.grid(column=0, row=3, sticky=tk.NSEW)
+        choice_label.grid(column=0, row=4, sticky=tk.NSEW)
 
         reward_label = ttk.Label(master=self, text=f"    Reward: {frame.reward:0.2f}", justify=tk.LEFT)
-        reward_label.grid(column=0, row=4, sticky=tk.NSEW)
+        reward_label.grid(column=0, row=5, sticky=tk.NSEW)
+
+        optimal_reward_label = ttk.Label(master=self, text=f"    Optimal: {max(frame.rewards):0.2f}",
+                                         justify=tk.LEFT)
+        optimal_reward_label.grid(column=0, row=6, sticky=tk.NSEW)
 
         regret_label = ttk.Label(master=self, text=f"    Regret: {frame.regret:0.2f}", justify=tk.LEFT)
-        regret_label.grid(column=0, row=5, sticky=tk.NSEW)
+        regret_label.grid(column=0, row=7, sticky=tk.NSEW)
 
 
 class _Charts(Subwidget, ttk.LabelFrame):
