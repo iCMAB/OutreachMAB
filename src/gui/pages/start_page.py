@@ -24,7 +24,7 @@ class StartPage(Page):
 
         button1 = ctk.CTkButton(
             self,
-            text="Start",
+            text="Run Standard Simulation",
             command=lambda: self.app.set_page("bandits_explained", kwargs={"contextual": False}),
             font=ctk.CTkFont(size=24)
         )
@@ -37,7 +37,7 @@ class StartPage(Page):
         ## button to show frame 2 with text layout2
         button2 = ctk.CTkButton(
             self,
-            text="Settings",
+            text="Run Contextual Simulation",
             command=lambda: self.app.set_page("bandits_explained", kwargs={"contextual": True}),
             font=ctk.CTkFont(size=24)
         )
