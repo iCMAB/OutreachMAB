@@ -12,6 +12,7 @@ class SimulationPage(Subwidget, Page):
         super().__init__(*args, **kwargs)
 
         self.frame_num_var = tk.IntVar()
+        self.configure(background='#D8E2DC')
 
         self.columnconfigure(0, weight=1)
 
@@ -28,6 +29,7 @@ class SimulationPage(Subwidget, Page):
         self.rowconfigure(0, weight=0, minsize=32)
 
         panes = ttk.PanedWindow(self, orient=tk.HORIZONTAL)
+        ttk.Style().configure('panes', background='#D8E2DC')
         panes.grid(column=0, row=1, sticky=tk.NSEW)
         self.rowconfigure(1, weight=1)
 
@@ -47,7 +49,7 @@ class SimulationPage(Subwidget, Page):
         super().update()
 
 
-class _LeftPanel(Subwidget, ttk.Frame):
+class _LeftPanel(Subwidget, tk.Frame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master)
         self.page = page
@@ -72,12 +74,13 @@ class _LeftPanel(Subwidget, ttk.Frame):
         self.rowconfigure(index=2, weight=1)
 
 
-class _LeftHeader(Subwidget, ttk.LabelFrame):
+class _LeftHeader(Subwidget, tk.LabelFrame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
-        super().__init__(master, text="Navigation")
+        super().__init__(master, text="Frame Controls")
         self.page = page
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
+        self.configure(background='#D8E2DC')
 
         self.left_button = tk.Button(
             self,
@@ -85,6 +88,8 @@ class _LeftHeader(Subwidget, ttk.LabelFrame):
             height=2,
             width=5,
             command=self.decrement_frame_num,
+            font=tkfont.Font(size=14),
+            bg='#3B8ED0', activebackground='#36719F', fg = '#DCE4EE'
         )
         self.left_button.grid(column=0, row=0)
 
@@ -94,15 +99,17 @@ class _LeftHeader(Subwidget, ttk.LabelFrame):
             width=5,
             text="NEXT",
             command=self.increment_frame_num,
+            font=tkfont.Font(size=14),
+            bg='#3B8ED0', activebackground='#36719F', fg = '#DCE4EE'
         )
         self.right_button.grid(column=1, row=0)
 
         self.frame_entry = tk.StringVar(value=str(self.frame_num_var.get()))
         current_iter = BoundedEntry(
             master=self,
-            minimum=0,
-            maximum=self.simulator.num_frames - 1,
-            default=0,
+            minimum=1,
+            maximum=self.simulator.num_frames,
+            default=1,
             var=self.frame_entry,
             func=self.entry_submit,
             font=tkfont.Font(family='Times', size=16),
@@ -117,12 +124,24 @@ class _LeftHeader(Subwidget, ttk.LabelFrame):
             width=5,
             text="JUMP",
             command=self.entry_submit,
+            font=tkfont.Font(size=14),
+            bg='#3B8ED0', activebackground='#36719F', fg = '#DCE4EE'
         )
         right_button.grid(column=4, row=0)
 
+        self.cur_frame_label = tk.Label(
+            self,
+            text=f"{self.frame_num_var.get() + 1}/{self.simulator.num_frames}",
+            background='#D8E2DC',
+            foreground='#525B76',
+            font=tkfont.Font(size=18))
+        self.cur_frame_label.grid(column=5, row=0)
+
     def update(self) -> None:
         frame_num = self.frame_num_var.get()
-        self.frame_entry.set(str(frame_num))
+        self.frame_entry.set(str(frame_num + 1))
+
+        self.cur_frame_label.config(text=f"{frame_num + 1}/{self.simulator.num_frames}")
 
         self.left_button.config(state=tk.NORMAL)
         self.right_button.config(state=tk.NORMAL)
@@ -133,7 +152,7 @@ class _LeftHeader(Subwidget, ttk.LabelFrame):
             self.left_button.config(state=tk.DISABLED)
 
     def entry_submit(self, frame_num: int):
-        self.frame_num_var.set(frame_num)
+        self.frame_num_var.set(frame_num - 1)
         self.page.update()
 
 
@@ -146,51 +165,59 @@ class _LeftHeader(Subwidget, ttk.LabelFrame):
         self.page.update()
 
 
-class _FrameInfo(Subwidget, ttk.LabelFrame):
+class _FrameInfo(Subwidget, tk.LabelFrame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master, text="Frame Information")
         self.page = page
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
+        self.configure(background = '#D8E2DC')
 
     def update(self):
         super().update()
 
         frame = self.simulator.frames[self.frame_num_var.get()]
 
-        regret_label = ttk.Label(master=self, text=f"Context:", justify=tk.LEFT)
+        regret_label = ttk.Label(master=self, text=f"Context:", justify=tk.LEFT, background='#D8E2DC',
+                                 font=tkfont.Font(size=14))
         regret_label.grid(column=0, row=0, sticky=tk.NSEW)
 
-        regret_label = ttk.Label(master=self, text=f"    Location: {frame.context['location']}", justify=tk.LEFT)
+        regret_label = ttk.Label(master=self, text=f"    Location: {frame.context['location']}", justify=tk.LEFT,
+                                 background='#D8E2DC', font=tkfont.Font(size=14))
         regret_label.grid(column=0, row=1, sticky=tk.NSEW)
 
-        regret_label = ttk.Label(master=self, text=f"    Time: {frame.context['time']}", justify=tk.LEFT)
+        regret_label = ttk.Label(master=self, text=f"    Time: {frame.context['time']}", justify=tk.LEFT,
+                                 background='#D8E2DC', font=tkfont.Font(size=14))
         regret_label.grid(column=0, row=2, sticky=tk.NSEW)
 
         optimal_label = ttk.Label(master=self, text=f"Optimal Choice: {frame.rewards.index(max(frame.rewards))}",
-                                  justify=tk.LEFT)
+                                  justify=tk.LEFT, background = '#D8E2DC', font=tkfont.Font(size=14))
         optimal_label.grid(column=0, row=3, sticky=tk.NSEW)
 
-        choice_label = ttk.Label(master=self, text=f"Restaurant Choice: {frame.choice}", justify=tk.LEFT)
+        choice_label = ttk.Label(master=self, text=f"Restaurant Choice: {frame.choice}", justify=tk.LEFT,
+                                 background='#D8E2DC', font=tkfont.Font(size=14))
         choice_label.grid(column=0, row=4, sticky=tk.NSEW)
 
-        reward_label = ttk.Label(master=self, text=f"    Reward: {frame.reward:0.2f}", justify=tk.LEFT)
+        reward_label = ttk.Label(master=self, text=f"    Reward: {frame.reward:0.2f}", justify=tk.LEFT,
+                                 background='#D8E2DC', font=tkfont.Font(size=14))
         reward_label.grid(column=0, row=5, sticky=tk.NSEW)
 
         optimal_reward_label = ttk.Label(master=self, text=f"    Optimal: {max(frame.rewards):0.2f}",
-                                         justify=tk.LEFT)
+                                         justify=tk.LEFT, background = '#D8E2DC', font=tkfont.Font(size=14))
         optimal_reward_label.grid(column=0, row=6, sticky=tk.NSEW)
 
-        regret_label = ttk.Label(master=self, text=f"    Regret: {frame.regret:0.2f}", justify=tk.LEFT)
+        regret_label = ttk.Label(master=self, text=f"    Regret: {frame.regret:0.2f}", justify=tk.LEFT,
+                                 background='#D8E2DC', font=tkfont.Font(size=14))
         regret_label.grid(column=0, row=7, sticky=tk.NSEW)
 
 
-class _Charts(Subwidget, ttk.LabelFrame):
+class _Charts(Subwidget, tk.LabelFrame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master, text="Reward/Regret Charts")
         self.page = page
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
+        self.configure(background='#D8E2DC')
 
     def update(self):
         output_dir = self.simulator.grapher.output_dir
@@ -224,17 +251,19 @@ class _Charts(Subwidget, ttk.LabelFrame):
         cumulative_label.grid(column=0, row=3)
 
 
-class _RightPanel(Subwidget, ttk.Frame):
+class _RightPanel(Subwidget, tk.Frame):
     def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
         super().__init__(master)
+        self.configure(background = '#D8E2DC')
         self.page = page
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
+        self.configure(background='#D8E2DC')
 
     def update(self):
         output_dir = self.simulator.grapher.output_dir
         for i in range(int(self.simulator.n_arms)):
-            restaurant_frame = ttk.LabelFrame(master=self, text=f"Restaurant #{i}")
+            restaurant_frame = tk.LabelFrame(master=self, text=f"Restaurant #{i}", background = '#D8E2DC')
             restaurant_frame.grid(column=0, row=i, sticky=tk.NSEW)
             self.columnconfigure(index=0, weight=1)
 
@@ -249,13 +278,13 @@ class _RightPanel(Subwidget, ttk.Frame):
             frames = self.simulator.frames[:self.frame_num_var.get() + 1]
             rewards = [frame.rewards[i] for frame in frames if i == frame.choice]
 
-            samples_label = ttk.Label(restaurant_frame, text=f"Number of Samples: {len(rewards)}")
+            samples_label = tk.Label(restaurant_frame, text=f"Number of Samples: {len(rewards)}", background = '#D8E2DC')
             samples_label.grid(column=1, row=0)
 
             avg_reward = f"{np.average(rewards):0.2f}" if len(rewards) > 0 else "N/A"
-            avg_label = ttk.Label(restaurant_frame, text=f"Average Reward: {avg_reward}")
+            avg_label = tk.Label(restaurant_frame, text=f"Average Reward: {avg_reward}", background = '#D8E2DC')
             avg_label.grid(column=1, row=1)
 
             std_dev = f"{np.std(rewards):0.2f}" if len(rewards) > 0 else "N/A"
-            sd_label = ttk.Label(restaurant_frame, text=f"Standard Deviation: {std_dev}")
+            sd_label = tk.Label(restaurant_frame, text=f"Standard Deviation: {std_dev}", background = '#D8E2DC')
             sd_label.grid(column=1, row=2)

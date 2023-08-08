@@ -2,6 +2,8 @@ import tkinter as tk
 import tkinter.font as tkFont
 from tkinter import ttk
 
+import customtkinter as ctk
+
 from src.gui.standard_widgets import Page, Header, BoundedEntry
 from src.simulation.bandits import STANDARD_BANDITS, CONTEXTUAL_BANDITS
 
@@ -25,16 +27,18 @@ class SettingsPage(Page):
         self.columnconfigure((1, 2, 3, 4, 5), weight=2)
         self.columnconfigure(6, weight=1)
         # noinspection PyTypeChecker
-        self.rowconfigure((1, 2, 3, 4, 5), weight=1)
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure((1, 2, 3, 4, 5), weight=3)
 
         #bandit model label and current selection
         model_label = ttk.Label(
             self,
             text='Bandit Model',
             font=tkFont.Font(size=18),
-            background='#b0ada9',
             borderwidth=40,
-            relief="solid"
+            relief="solid",
+            foreground='#DCE4EE',
+            background='#133C55'
         )
         model_label.grid(row=1, column=1, padx=(10,0), pady=(10, 5), sticky="nsew", columnspan=2)
 
@@ -44,15 +48,26 @@ class SettingsPage(Page):
             self,
             textvariable=self.selected_bandit,
             font=tkFont.Font(size=18),
-            background='#b0ada9',
             borderwidth=40,
             justify="left",
-            relief="solid"
+            relief="solid",
+            foreground='#DCE4EE',
+            background='#133C55'
         )
         model_selection.grid(row=1, column=3, pady=(10,5), columnspan=3, sticky="nsew")
 
         #the actual menu for bandit selection
-        bandit_menu_button = tk.Menubutton(self, background='#b0ada9', borderwidth=1, relief="solid", text="V")
+        bandit_menu_button = tk.Menubutton(
+            self,
+            background='#b0ada9',
+            borderwidth=1,
+            relief="solid",
+            text="Select "+u'\u25BC',
+            font=tkFont.Font(size=20),
+            bg='#3B8ED0',
+            activebackground='#36719F',
+            fg='#DCE4EE'
+        )
         bandit_menu = tk.Menu(bandit_menu_button, tearoff=False)
         bandit_menu_button.configure(menu=bandit_menu)
 
@@ -74,7 +89,8 @@ class SettingsPage(Page):
             an option for each frame.
             """,
             justify="left",
-            font=tkFont.Font(size=12)
+            font=tkFont.Font(size=14),
+            bg='#D8E2DC'
         )
 
         bandit_menu_desc.grid(row=2, column=1, columnspan=6, padx=10, pady=(0, 10), sticky="nsew")
@@ -85,9 +101,10 @@ class SettingsPage(Page):
             self,
             text="Number of Arms",
             font=tkFont.Font(size=18),
-            background='#b0ada9',
             borderwidth=20,
-            relief="solid"
+            relief="solid",
+            foreground='#DCE4EE',
+            background='#133C55'
         )
         arms_label.grid(row=3, column=1, padx=(10, 0), pady=(10, 5), columnspan=4, sticky="nsew")
 
@@ -104,9 +121,16 @@ class SettingsPage(Page):
             font=tkFont.Font(size=18))
         self.num_arms_entry.grid(row=3, column=4, padx=(0, 10), pady=(10, 5), sticky="nsew", columnspan=3)
 
-        num_arms_desc = tk.Label(self,
-                                 text="Number of Arms: This controls the number of possible restaurants the bandit can\n" \
-                                      "choose from in each frame.", justify="left", font=tkFont.Font(size=12))
+        num_arms_desc = tk.Label(
+            self,
+            text="""
+            Number of Arms: This controls the number of possible restaurants the bandit can
+            choose from in each frame.
+            """,
+            justify="left",
+            font=tkFont.Font(size=14),
+            bg='#D8E2DC'
+        )
 
         num_arms_desc.grid(row=4, column=1, columnspan=6, padx=10, pady=(0, 10), sticky="nsew")
 
@@ -115,9 +139,10 @@ class SettingsPage(Page):
             self,
             text="Number of Iterations",
             font=tkFont.Font(size=18),
-            background='#b0ada9',
             borderwidth=20,
-            relief="solid"
+            relief="solid",
+            foreground='#DCE4EE',
+            background='#133C55'
         )
         iterations_label.grid(row=5, column=1, padx=(10, 0), pady=(10,5), columnspan=4, sticky="nsew")
 
@@ -145,13 +170,14 @@ class SettingsPage(Page):
             explore and may not end up having a high rate of success.
             """,
             justify="left",
-            font=tkFont.Font(size=12)
+            font=tkFont.Font(size=14),
+            bg='#D8E2DC'
         )
 
         num_iter_desc.grid(row=6, column=1, columnspan=6, padx=10, pady=(0, 10), sticky="nsew")
 
-        button1 = ttk.Button(self, text="Start", command=lambda: self.app.set_page("intro"))
-        button1.grid(row=7, column=1, padx=10, pady=10, ipadx=50, ipady=20)
+        button1 = ctk.CTkButton(self, text="Start", command=lambda: self.app.set_page("intro"), font=ctk.CTkFont(size=24))
+        button1.grid(row=7, column=0, columnspan=7, padx=10, pady=10, ipadx=50, ipady=20)
 
     def close(self):
         num_arms = int(self.num_arms_var.get())

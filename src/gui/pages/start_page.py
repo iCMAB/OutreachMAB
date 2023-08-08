@@ -1,5 +1,4 @@
-import tkinter.font as tkFont
-from tkinter import ttk
+import customtkinter as ctk
 
 from src.gui.standard_widgets.page import Page
 
@@ -9,8 +8,13 @@ class StartPage(Page):
         super().__init__(*args, **kwargs)
 
         # label of frame Layout 2
-        label = ttk.Label(self, text="Multi-Armed Bandit\nRestaurant Selector", justify="center",
-                          font=tkFont.Font(size=36))
+        label = ctk.CTkLabel(
+            self,
+            text="Hungry Hungry\nBandits",
+            justify="center",
+            text_color="black",
+            font=ctk.CTkFont(size=36)
+        )
 
         # putting the grid in its place by using
         self.columnconfigure(index=0, weight=1)
@@ -18,10 +22,11 @@ class StartPage(Page):
         # grid
         label.grid(row=0, column=1, padx=10, pady=50)
 
-        button1 = ttk.Button(
+        button1 = ctk.CTkButton(
             self,
-            text="Standard MAB Simulation",
-            command=lambda: self.app.set_page("bandits_explained", kwargs={"contextual": False})
+            text="Start",
+            command=lambda: self.app.set_page("bandits_explained", kwargs={"contextual": False}),
+            font=ctk.CTkFont(size=24)
         )
 
         # putting the button in its place by
@@ -30,17 +35,18 @@ class StartPage(Page):
 
 
         ## button to show frame 2 with text layout2
-        button2 = ttk.Button(
+        button2 = ctk.CTkButton(
             self,
-            text="Contextual MAB Simulation",
-            command=lambda: self.app.set_page("bandits_explained", kwargs={"contextual": True})
+            text="Settings",
+            command=lambda: self.app.set_page("bandits_explained", kwargs={"contextual": True}),
+            font=ctk.CTkFont(size=24)
         )
 
         # putting the button in its place by
         # using grid
         button2.grid(row=2, column=1, padx=10, pady=10, ipadx=50, ipady=20)
 
-        button3 = ttk.Button(self, text="Quit", command=lambda: self.app.destroy())
+        button3 = ctk.CTkButton(self, text="Quit", command=lambda: self.app.destroy(), font=ctk.CTkFont(size=24))
         button3.grid(row=3, column=1, padx=10, pady=10, ipadx=50, ipady=20)
 
 
