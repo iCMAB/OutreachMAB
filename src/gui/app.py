@@ -76,11 +76,13 @@ class App(tk.Tk):
             self,
             num_frames: int,
             bandit: str,
-            n_arms: int
+            n_arms: int,
+            contextual: bool = False
     ):
         self.simulator = Simulator(
             config=self.config,
             bandit=bandit,
             n_arms=n_arms,
             num_frames=num_frames,
+            contextual=contextual
         )

@@ -12,6 +12,8 @@ class SettingsPage(Page):
     def __init__(self, contextual: bool = False, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.contextual = contextual
+
         header = Header(
             master=self,
             app=self.app,
@@ -144,14 +146,14 @@ class SettingsPage(Page):
             foreground='#DCE4EE',
             background='#133C55'
         )
-        iterations_label.grid(row=5, column=1, padx=(10, 0), pady=(10,5), columnspan=4, sticky="nsew")
+        iterations_label.grid(row=5, column=1, padx=(10, 0), pady=(10, 5), columnspan=4, sticky="nsew")
 
         self.num_frames_var = tk.StringVar(value="100")
         self.num_frames_entry = BoundedEntry(
             master=self,
             minimum=1,
-            maximum=1024,
-            default=100,
+            maximum=10000,
+            default=1000,
             var=self.num_frames_var,
             exportselection=False,
             background='#b0ada9',
@@ -176,7 +178,9 @@ class SettingsPage(Page):
 
         num_iter_desc.grid(row=6, column=1, columnspan=6, padx=10, pady=(0, 10), sticky="nsew")
 
-        button1 = ctk.CTkButton(self, text="Start", command=lambda: self.app.set_page("intro"), font=ctk.CTkFont(size=24))
+        button1 = ctk.CTkButton(self, text="Start",
+                                command=lambda: self.app.set_page("intro", kwargs={"contextual": self.contextual}),
+                                font=ctk.CTkFont(size=24))
         button1.grid(row=7, column=0, columnspan=7, padx=10, pady=10, ipadx=50, ipady=20)
 
     def close(self):
@@ -184,5 +188,6 @@ class SettingsPage(Page):
         self.app.create_simulator(
             num_frames=int(self.num_frames_var.get()),
             bandit=self.selected_bandit.get(),
-            n_arms=num_arms
+            n_arms=num_arms,
+            contextual=self.contextual
         )

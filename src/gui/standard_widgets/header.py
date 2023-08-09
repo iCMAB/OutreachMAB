@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+
 class Header(tk.LabelFrame):
     def __init__(self, master, app, title: str, forward_button_args: dict):
         super().__init__(master)
@@ -12,7 +13,7 @@ class Header(tk.LabelFrame):
             width=8,
             text="BACK",
             bg='#3B8ED0', activebackground='#36719F', fg='#DCE4EE',
-            font = tk.font.Font(size=16),
+            font=tk.font.Font(size=16),
             command=lambda: app.back_page()
         )
         back_button.grid(column=0, row=0, sticky=tk.NW)

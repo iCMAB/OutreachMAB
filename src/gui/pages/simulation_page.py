@@ -8,8 +8,10 @@ from src.gui.standard_widgets import Page, Subwidget, Header, ImageLabel, Bounde
 
 
 class SimulationPage(Subwidget, Page):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, contextual: bool = False, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.contextual = contextual
 
         self.frame_num_var = tk.IntVar()
         self.configure(background='#D8E2DC')
@@ -33,7 +35,7 @@ class SimulationPage(Subwidget, Page):
         panes.grid(column=0, row=1, sticky=tk.NSEW)
         self.rowconfigure(1, weight=1)
 
-        l_panel = _LeftPanel(master=self, page=self, frame_num_var=self.frame_num_var)
+        l_panel = _LeftPanel(master=self, page=self, frame_num_var=self.frame_num_var, contextual=self.contextual)
         panes.add(l_panel, weight=1)
         self.subwidgets.append(l_panel)
 
@@ -50,8 +52,9 @@ class SimulationPage(Subwidget, Page):
 
 
 class _LeftPanel(Subwidget, tk.Frame):
-    def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
+    def __init__(self, master, page: Page, frame_num_var: tk.IntVar, contextual: bool):
         super().__init__(master)
+        self.contextual = contextual
         self.page = page
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
@@ -63,7 +66,8 @@ class _LeftPanel(Subwidget, tk.Frame):
         self.subwidgets.append(header)
         self.rowconfigure(index=0, weight=0, minsize=32)
 
-        frame_info = _FrameInfo(master=self, page=self.page, frame_num_var=self.frame_num_var)
+        frame_info = _FrameInfo(master=self, page=self.page, frame_num_var=self.frame_num_var,
+                                contextual=self.contextual)
         frame_info.grid(column=0, row=1, sticky=tk.NSEW)
         self.subwidgets.append(frame_info)
         self.rowconfigure(index=1, weight=0, minsize=128)
@@ -166,49 +170,54 @@ class _LeftHeader(Subwidget, tk.LabelFrame):
 
 
 class _FrameInfo(Subwidget, tk.LabelFrame):
-    def __init__(self, master, page: Page, frame_num_var: tk.IntVar):
+    def __init__(self, master, page: Page, frame_num_var: tk.IntVar, contextual: bool):
         super().__init__(master, text="Frame Information")
+        self.contextual = contextual
         self.page = page
         self.simulator = page.app.simulator
         self.frame_num_var = frame_num_var
-        self.configure(background = '#D8E2DC')
+        self.configure(background='#D8E2DC')
 
     def update(self):
         super().update()
 
         frame = self.simulator.frames[self.frame_num_var.get()]
 
-        regret_label = ttk.Label(master=self, text=f"Context:", justify=tk.LEFT, background='#D8E2DC',
-                                 font=tkfont.Font(size=14))
-        regret_label.grid(column=0, row=0, sticky=tk.NSEW)
+        label_offset = 0
+        if self.contextual:
+            regret_label = ttk.Label(master=self, text=f"Context:", justify=tk.LEFT, background='#D8E2DC',
+                                     font=tkfont.Font(size=14))
+            regret_label.grid(column=0, row=0, sticky=tk.NSEW)
 
-        regret_label = ttk.Label(master=self, text=f"    Location: {frame.context['location']}", justify=tk.LEFT,
-                                 background='#D8E2DC', font=tkfont.Font(size=14))
-        regret_label.grid(column=0, row=1, sticky=tk.NSEW)
+            regret_label = ttk.Label(master=self, text=f"    Location: {frame.context['location']}", justify=tk.LEFT,
+                                     background='#D8E2DC', font=tkfont.Font(size=14))
+            regret_label.grid(column=0, row=1, sticky=tk.NSEW)
 
-        regret_label = ttk.Label(master=self, text=f"    Time: {frame.context['time']}", justify=tk.LEFT,
-                                 background='#D8E2DC', font=tkfont.Font(size=14))
-        regret_label.grid(column=0, row=2, sticky=tk.NSEW)
+            regret_label = ttk.Label(master=self, text=f"    Time: {frame.context['time']}", justify=tk.LEFT,
+                                     background='#D8E2DC', font=tkfont.Font(size=14))
+            regret_label.grid(column=0, row=2, sticky=tk.NSEW)
+
+            label_offset = 3
 
         optimal_label = ttk.Label(master=self, text=f"Optimal Choice: {frame.rewards.index(max(frame.rewards))}",
                                   justify=tk.LEFT, background = '#D8E2DC', font=tkfont.Font(size=14))
-        optimal_label.grid(column=0, row=3, sticky=tk.NSEW)
+        optimal_label.grid(column=0, row=label_offset, sticky=tk.NSEW)
 
         choice_label = ttk.Label(master=self, text=f"Restaurant Choice: {frame.choice}", justify=tk.LEFT,
                                  background='#D8E2DC', font=tkfont.Font(size=14))
-        choice_label.grid(column=0, row=4, sticky=tk.NSEW)
+        choice_label.grid(column=0, row=label_offset + 1, sticky=tk.NSEW)
 
         reward_label = ttk.Label(master=self, text=f"    Reward: {frame.reward:0.2f}", justify=tk.LEFT,
                                  background='#D8E2DC', font=tkfont.Font(size=14))
-        reward_label.grid(column=0, row=5, sticky=tk.NSEW)
+        reward_label.grid(column=0, row=label_offset + 2, sticky=tk.NSEW)
 
         optimal_reward_label = ttk.Label(master=self, text=f"    Optimal: {max(frame.rewards):0.2f}",
                                          justify=tk.LEFT, background = '#D8E2DC', font=tkfont.Font(size=14))
-        optimal_reward_label.grid(column=0, row=6, sticky=tk.NSEW)
+        optimal_reward_label.grid(column=0, row=label_offset + 3, sticky=tk.NSEW)
 
         regret_label = ttk.Label(master=self, text=f"    Regret: {frame.regret:0.2f}", justify=tk.LEFT,
                                  background='#D8E2DC', font=tkfont.Font(size=14))
-        regret_label.grid(column=0, row=7, sticky=tk.NSEW)
+        regret_label.grid(column=0, row=label_offset + 4, sticky=tk.NSEW)
 
 
 class _Charts(Subwidget, tk.LabelFrame):
