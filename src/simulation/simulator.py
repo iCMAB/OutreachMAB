@@ -1,3 +1,5 @@
+import math
+import random
 from collections.abc import Mapping, MutableMapping
 from typing import List
 
@@ -25,10 +27,18 @@ class Simulator:
         self.restaurants: List[Restaurant] = []
         for r_config in config["restaurants"][:self.n_arms]:
             self.restaurants.append(Restaurant(
-                distribution=DISTRIBUTIONS[r_config["distribution"]](**r_config["parameters"])
+                location=r_config["location"],
+                peak_time=r_config["peak_time"],
+                context_options=config["context_modifiers"],
+                distribution=DISTRIBUTIONS[r_config["distribution"]["type"]](**r_config["distribution"]["parameters"])
             ))
 
-        self.bandit: BanditModel = BANDITS[bandit](n_arms=self.n_arms, **config["bandit"]["parameters"])
+        try:
+            parameters = config["bandit_parameters"][bandit]
+        except KeyError:
+            parameters = {}
+
+        self.bandit: BanditModel = BANDITS[bandit](n_arms=self.n_arms, **parameters)
 
     def run_simulation(self):
         self.log_start()
@@ -37,10 +47,22 @@ class Simulator:
             self.run_frame()
 
     def run_frame(self) -> Frame:
+        x = 10 * random.random()
+        y = 10 * random.random()
+        time = 24 * random.random()
+
+        bandit_context = [[math.dist(r.location, (x, y))] for r in self.restaurants]
+        context = {
+            "location": (x, y),
+            "time": time
+        }
+        # context_array = [x, y, time]
+
         frame = Frame(
             frame_num=self.frame_num,
-            rewards=[r.sample() for r in self.restaurants],
-            choice=self.bandit.select_arm()
+            context=context,
+            rewards=[r.sample_with_context(context) for r in self.restaurants],
+            choice=self.bandit.select_arm(bandit_context)
         )
         self.bandit.update(frame.reward, frame.regret, frame.choice)
 
@@ -64,6 +86,7 @@ class Simulator:
         print("\n")
         print(f"Frame No. {frame.frame_num}")
         print(f"Restaurant Selected: {frame.choice}")
+        print(f"Context: {frame.context}")
         print(f"Reward: {frame.reward}")
         print(f"Regret: {frame.regret}")
 

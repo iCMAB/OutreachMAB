@@ -29,9 +29,16 @@ class Scatter(Graph):
             rewards = [sum(rewards[:i]) / (i + 1) for i in range(len(frames))]
             regrets = [sum(regrets[:i]) / (i + 1) for i in range(len(frames))]
 
+        ratio = .3
+        plt.rcParams['figure.figsize'] = (8, 8 * ratio)
         fig, ax = plt.subplots()
         ax.plot(rewards)
         ax.plot(regrets)
 
+        x_left, x_right = ax.get_xlim()
+        y_low, y_high = ax.get_ylim()
+        ax.set_aspect(abs((x_right - x_left) / (y_low - y_high)) * ratio)
+
+        plt.tight_layout()
         plt.savefig(self.filepath)
         plt.close(fig)

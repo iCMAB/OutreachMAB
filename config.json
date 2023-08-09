@@ -7,47 +7,94 @@
     "frames": 100
   },
   "options": 5,
+  "context_modifiers": {
+    "distance_decay_ratio": 0.01,
+    "distance_penalty_ratio": 1,
+    "time_decay_ratio": 0.01,
+    "time_penalty_ratio": 1
+  },
   "restaurants": [
     {
-      "distribution": "normal",
-      "parameters": {
-        "mean": 4,
-        "sd": 1
+      "location": [
+        0,
+        0
+      ],
+      "peak_time": 12,
+      "distribution": {
+        "type": "normal",
+        "parameters": {
+          "mean": 4,
+          "sd": 1
+        }
       }
     },
     {
-      "distribution": "normal",
-      "parameters": {
-        "mean": 5,
-        "sd": 1
+      "location": [
+        0,
+        0
+      ],
+      "peak_time": 12,
+      "distribution": {
+        "type": "normal",
+        "parameters": {
+          "mean": 5,
+          "sd": 1
+        }
       }
     },
     {
-      "distribution": "normal",
-      "parameters": {
-        "mean": 6,
-        "sd": 1
+      "location": [
+        0,
+        0
+      ],
+      "peak_time": 12,
+      "distribution": {
+        "type": "normal",
+        "parameters": {
+          "mean": 6,
+          "sd": 1
+        }
       }
     },
     {
-      "distribution": "normal",
-      "parameters": {
-        "mean": 7,
-        "sd": 1
+      "location": [
+        0,
+        0
+      ],
+      "peak_time": 12,
+      "distribution": {
+        "type": "normal",
+        "parameters": {
+          "mean": 7,
+          "sd": 1
+        }
       }
     },
     {
-      "distribution": "normal",
-      "parameters": {
-        "mean": 8,
-        "sd": 1
+      "location": [
+        0,
+        0
+      ],
+      "peak_time": 12,
+      "distribution": {
+        "type": "normal",
+        "parameters": {
+          "mean": 8,
+          "sd": 1
+        }
       }
     }
   ],
-  "bandit": {
-    "model": "Epsilon Greedy",
-    "parameters": {
+  "bandit_parameters": {
+    "Epsilon Greedy": {
       "epsilon": 0.5
+    },
+    "UCB": {
+      "epsilon": 0.5
+    },
+    "Linear UCB": {
+      "d": 1,
+      "alpha": 1
     }
   }
 }

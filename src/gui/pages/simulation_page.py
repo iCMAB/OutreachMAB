@@ -107,9 +107,9 @@ class _LeftHeader(Subwidget, tk.LabelFrame):
         self.frame_entry = tk.StringVar(value=str(self.frame_num_var.get()))
         current_iter = BoundedEntry(
             master=self,
-            minimum=0,
-            maximum=self.simulator.num_frames - 1,
-            default=0,
+            minimum=1,
+            maximum=self.simulator.num_frames,
+            default=1,
             var=self.frame_entry,
             func=self.entry_submit,
             font=tkfont.Font(family='Times', size=16),
@@ -129,9 +129,19 @@ class _LeftHeader(Subwidget, tk.LabelFrame):
         )
         right_button.grid(column=4, row=0)
 
+        self.cur_frame_label = tk.Label(
+            self,
+            text=f"{self.frame_num_var.get() + 1}/{self.simulator.num_frames}",
+            background='#D8E2DC',
+            foreground='#525B76',
+            font=tkfont.Font(size=18))
+        self.cur_frame_label.grid(column=5, row=0)
+
     def update(self) -> None:
         frame_num = self.frame_num_var.get()
-        self.frame_entry.set(str(frame_num))
+        self.frame_entry.set(str(frame_num + 1))
+
+        self.cur_frame_label.config(text=f"{frame_num + 1}/{self.simulator.num_frames}")
 
         self.left_button.config(state=tk.NORMAL)
         self.right_button.config(state=tk.NORMAL)
@@ -142,7 +152,7 @@ class _LeftHeader(Subwidget, tk.LabelFrame):
             self.left_button.config(state=tk.DISABLED)
 
     def entry_submit(self, frame_num: int):
-        self.frame_num_var.set(frame_num)
+        self.frame_num_var.set(frame_num - 1)
         self.page.update()
 
 
@@ -168,14 +178,37 @@ class _FrameInfo(Subwidget, tk.LabelFrame):
 
         frame = self.simulator.frames[self.frame_num_var.get()]
 
-        choice_label = ttk.Label(master=self, text=f"Restaurant Choice: {frame.choice}", background = '#D8E2DC', font=tkfont.Font(size=14))
-        choice_label.grid(column=0, row=0)
+        regret_label = ttk.Label(master=self, text=f"Context:", justify=tk.LEFT, background='#D8E2DC',
+                                 font=tkfont.Font(size=14))
+        regret_label.grid(column=0, row=0, sticky=tk.NSEW)
 
-        reward_label = ttk.Label(master=self, text=f"Reward: {frame.reward:0.2f}", background = '#D8E2DC', font=tkfont.Font(size=14))
-        reward_label.grid(column=0, row=1)
+        regret_label = ttk.Label(master=self, text=f"    Location: {frame.context['location']}", justify=tk.LEFT,
+                                 background='#D8E2DC', font=tkfont.Font(size=14))
+        regret_label.grid(column=0, row=1, sticky=tk.NSEW)
 
-        regret_label = ttk.Label(master=self, text=f"Regret: {frame.regret:0.2f}", background = '#D8E2DC', font=tkfont.Font(size=14))
-        regret_label.grid(column=0, row=2)
+        regret_label = ttk.Label(master=self, text=f"    Time: {frame.context['time']}", justify=tk.LEFT,
+                                 background='#D8E2DC', font=tkfont.Font(size=14))
+        regret_label.grid(column=0, row=2, sticky=tk.NSEW)
+
+        optimal_label = ttk.Label(master=self, text=f"Optimal Choice: {frame.rewards.index(max(frame.rewards))}",
+                                  justify=tk.LEFT, background = '#D8E2DC', font=tkfont.Font(size=14))
+        optimal_label.grid(column=0, row=3, sticky=tk.NSEW)
+
+        choice_label = ttk.Label(master=self, text=f"Restaurant Choice: {frame.choice}", justify=tk.LEFT,
+                                 background='#D8E2DC', font=tkfont.Font(size=14))
+        choice_label.grid(column=0, row=4, sticky=tk.NSEW)
+
+        reward_label = ttk.Label(master=self, text=f"    Reward: {frame.reward:0.2f}", justify=tk.LEFT,
+                                 background='#D8E2DC', font=tkfont.Font(size=14))
+        reward_label.grid(column=0, row=5, sticky=tk.NSEW)
+
+        optimal_reward_label = ttk.Label(master=self, text=f"    Optimal: {max(frame.rewards):0.2f}",
+                                         justify=tk.LEFT, background = '#D8E2DC', font=tkfont.Font(size=14))
+        optimal_reward_label.grid(column=0, row=6, sticky=tk.NSEW)
+
+        regret_label = ttk.Label(master=self, text=f"    Regret: {frame.regret:0.2f}", justify=tk.LEFT,
+                                 background='#D8E2DC', font=tkfont.Font(size=14))
+        regret_label.grid(column=0, row=7, sticky=tk.NSEW)
 
 
 class _Charts(Subwidget, tk.LabelFrame):

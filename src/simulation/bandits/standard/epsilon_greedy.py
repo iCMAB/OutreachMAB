@@ -1,25 +1,24 @@
 import random
 
-from .bandit_model import BanditModel
+from src.simulation.bandits.bandit_model import BanditModel
 
 
 class EpsilonGreedyBandit(BanditModel):
     def __init__(self, n_arms: int, epsilon: float = .1):
-        super().__init__(n_arms)
+        super().__init__(type="Epsilon Greedy", n_arms=n_arms)
         self.epsilon = epsilon
         self.counts = [n_arms]
         self.values = [n_arms]
         self.cumulative = [n_arms]
         self.max = 0
         self.max_choice = 0
-        self.type = "Epsilon Greedy"
 
         for i in range(self.n_arms - 1):
             self.counts.append(0)
             self.values.append(0)
             self.cumulative.append(0)
 
-    def select_arm(self) -> int:
+    def select_arm(self, context) -> int:
         if random.random() < self.epsilon:
             choice = random.randint(0, self.n_arms - 1)
         else:

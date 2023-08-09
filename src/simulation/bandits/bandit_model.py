@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
-
+from typing import List
 
 class BanditModel(ABC):
-    def __init__(self, n_arms: int):
+    def __init__(self, type: str, n_arms: int):
         self.n_arms = n_arms
-        self.type: str
+        self.type = type
 
     @abstractmethod
-    def select_arm(self) -> int:
+    def select_arm(self, context: List[float]) -> int:
         pass
 
     @abstractmethod

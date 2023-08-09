@@ -1,12 +1,7 @@
 from .bandit_model import BanditModel
-from .random import RandomBandit
-from .epsilon_greedy import EpsilonGreedyBandit
-from .thompson_sampling import TSBandit
-from .ucb import UCBBandit
+from .contextual import BANDITS as CONTEXTUAL_BANDITS
+from .contextual import LinearUCB
+from .standard import BANDITS as STANDARD_BANDITS
+from .standard import EpsilonGreedyBandit, RandomBandit, TSBandit, UCBBandit
 
-BANDITS = {
-    "Random": RandomBandit,
-    "Epsilon Greedy": EpsilonGreedyBandit,
-    "Thompson Sampling": TSBandit,
-    "Upper Confidence Bound": UCBBandit
-}
+BANDITS = STANDARD_BANDITS | CONTEXTUAL_BANDITS
