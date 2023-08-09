@@ -54,7 +54,7 @@ class Histogram(Graph):
         # Bin frame rewards by restaurant
         rewards = [frame.rewards[self.arm_index] for frame in frames if self.arm_index == frame.choice]
 
-        ratio = 1
+        ratio = .6
         plt.rcParams['figure.figsize'] = (8, 8 * ratio)
         fig, ax = plt.subplots()
         n, bins, patches = plt.hist(rewards, bins=np.arange(MIN, MAX, STEP))
