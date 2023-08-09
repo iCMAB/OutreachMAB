@@ -21,7 +21,7 @@ class IntroPage(Page):
             title="Simulation Introduction",
             forward_button_args={
                 "text": "START",
-                "command": lambda: self.app.set_page("simulation")
+                "command": lambda: self.app.set_page("simulation", kwargs={"contextual": self.contextual})
             }
         )
         header.grid(column=0, row=0, sticky=tk.NSEW)

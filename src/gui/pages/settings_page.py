@@ -20,7 +20,7 @@ class SettingsPage(Page):
             title="Settings",
             forward_button_args={
                 "text": "NEXT",
-                "command": lambda: self.app.set_page("intro")
+                "command": lambda: self.app.set_page("intro", kwargs={"contextual": self.contextual})
             }
         )
         header.grid(column=0, columnspan=7, row=0, sticky=tk.NSEW)

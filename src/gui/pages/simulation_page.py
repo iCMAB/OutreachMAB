@@ -1,10 +1,11 @@
+import textwrap
 import tkinter as tk
 import tkinter.font as tkfont
 from tkinter import ttk
 
 import numpy as np
 
-from src.gui.standard_widgets import Page, Subwidget, Header, ImageLabel, BoundedEntry
+from src.gui.standard_widgets import Page, Subwidget, Header, ImageLabel, BoundedEntry, ToolTip
 
 
 class SimulationPage(Subwidget, Page):
@@ -93,9 +94,10 @@ class _LeftHeader(Subwidget, tk.LabelFrame):
             width=5,
             command=self.decrement_frame_num,
             font=tkfont.Font(size=14),
-            bg='#3B8ED0', activebackground='#36719F', fg = '#DCE4EE'
+            bg='#3B8ED0', activebackground='#36719F', fg='#DCE4EE'
         )
         self.left_button.grid(column=0, row=0)
+        ToolTip(widget=self.left_button, text="Rewinds simulation by one frame")
 
         self.right_button = tk.Button(
             self,
@@ -104,9 +106,10 @@ class _LeftHeader(Subwidget, tk.LabelFrame):
             text="NEXT",
             command=self.increment_frame_num,
             font=tkfont.Font(size=14),
-            bg='#3B8ED0', activebackground='#36719F', fg = '#DCE4EE'
+            bg='#3B8ED0', activebackground='#36719F', fg='#DCE4EE'
         )
         self.right_button.grid(column=1, row=0)
+        ToolTip(widget=self.right_button, text="Advances simulation by one frame")
 
         self.frame_entry = tk.StringVar(value=str(self.frame_num_var.get()))
         current_iter = BoundedEntry(
@@ -121,17 +124,22 @@ class _LeftHeader(Subwidget, tk.LabelFrame):
             justify="center",
         )
         current_iter.grid(column=2, row=0)
+        ToolTip(widget=current_iter, text="Manually input a frame index, input is automatically bounded")
 
-        right_button = tk.Button(
+        jump_button = tk.Button(
             self,
             height=2,
             width=5,
             text="JUMP",
             command=self.entry_submit,
             font=tkfont.Font(size=14),
-            bg='#3B8ED0', activebackground='#36719F', fg = '#DCE4EE'
+            bg='#3B8ED0', activebackground='#36719F', fg='#DCE4EE'
         )
-        right_button.grid(column=4, row=0)
+        jump_button.grid(column=4, row=0)
+        ToolTip(
+            widget=jump_button,
+            text="Submit frame entry, clicking outside of text box or hitting <Enter> also submits entry"
+        )
 
         self.cur_frame_label = tk.Label(
             self,
@@ -185,39 +193,63 @@ class _FrameInfo(Subwidget, tk.LabelFrame):
 
         label_offset = 0
         if self.contextual:
-            regret_label = ttk.Label(master=self, text=f"Context:", justify=tk.LEFT, background='#D8E2DC',
+            context_header = ttk.Label(master=self, text=f"Context:", justify=tk.LEFT, background='#D8E2DC',
                                      font=tkfont.Font(size=14))
-            regret_label.grid(column=0, row=0, sticky=tk.NSEW)
+            context_header.grid(column=0, row=0, sticky=tk.NSEW)
 
-            regret_label = ttk.Label(master=self, text=f"    Location: {frame.context['location']}", justify=tk.LEFT,
-                                     background='#D8E2DC', font=tkfont.Font(size=14))
-            regret_label.grid(column=0, row=1, sticky=tk.NSEW)
+            loc_label = ttk.Label(
+                master=self,
+                text=f"    Location: ({frame.context['location'][0]:0.2f}, {frame.context['location'][1]:0.2f})",
+                justify=tk.LEFT,
+                background='#D8E2DC',
+                font=tkfont.Font(size=14)
+            )
+            loc_label.grid(column=0, row=1, sticky=tk.NSEW)
+            ToolTip(
+                widget=loc_label,
+                text=textwrap.dedent("""
+                The location of the user during this frame, arbitrary units from 0 - 10.
+                Penalty exponentially decays as distance from restaurant increases
+                """).strip()
+            )
 
-            regret_label = ttk.Label(master=self, text=f"    Time: {frame.context['time']}", justify=tk.LEFT,
+            time_label = ttk.Label(master=self, text=f"    Time: {frame.context['time']: 0.2f}", justify=tk.LEFT,
                                      background='#D8E2DC', font=tkfont.Font(size=14))
-            regret_label.grid(column=0, row=2, sticky=tk.NSEW)
+            time_label.grid(column=0, row=2, sticky=tk.NSEW)
+            ToolTip(
+                widget=time_label,
+                text=textwrap.dedent("""
+                The current time of the user during this frame, measured in hours since midnight (0 - 24).
+                Penalty exponentially decays as distance from restaurant's peak increases
+                """).strip()
+            )
 
             label_offset = 3
 
         optimal_label = ttk.Label(master=self, text=f"Optimal Choice: {frame.rewards.index(max(frame.rewards))}",
-                                  justify=tk.LEFT, background = '#D8E2DC', font=tkfont.Font(size=14))
+                                  justify=tk.LEFT, background='#D8E2DC', font=tkfont.Font(size=14))
         optimal_label.grid(column=0, row=label_offset, sticky=tk.NSEW)
+        ToolTip(widget=optimal_label, text="The optimal restaurant choice for this frame")
 
         choice_label = ttk.Label(master=self, text=f"Restaurant Choice: {frame.choice}", justify=tk.LEFT,
                                  background='#D8E2DC', font=tkfont.Font(size=14))
         choice_label.grid(column=0, row=label_offset + 1, sticky=tk.NSEW)
+        ToolTip(widget=choice_label, text="The restaurant selected for this frame")
 
         reward_label = ttk.Label(master=self, text=f"    Reward: {frame.reward:0.2f}", justify=tk.LEFT,
                                  background='#D8E2DC', font=tkfont.Font(size=14))
         reward_label.grid(column=0, row=label_offset + 2, sticky=tk.NSEW)
+        ToolTip(widget=reward_label, text="The reward returned from the chosen restaurant")
 
         optimal_reward_label = ttk.Label(master=self, text=f"    Optimal: {max(frame.rewards):0.2f}",
-                                         justify=tk.LEFT, background = '#D8E2DC', font=tkfont.Font(size=14))
+                                         justify=tk.LEFT, background='#D8E2DC', font=tkfont.Font(size=14))
         optimal_reward_label.grid(column=0, row=label_offset + 3, sticky=tk.NSEW)
+        ToolTip(widget=optimal_reward_label, text="The maximum possible reward from all restaurants this frame")
 
         regret_label = ttk.Label(master=self, text=f"    Regret: {frame.regret:0.2f}", justify=tk.LEFT,
                                  background='#D8E2DC', font=tkfont.Font(size=14))
         regret_label.grid(column=0, row=label_offset + 4, sticky=tk.NSEW)
+        ToolTip(widget=regret_label, text="The difference between the maximum possible reward and the reward observed")
 
 
 class _Charts(Subwidget, tk.LabelFrame):
