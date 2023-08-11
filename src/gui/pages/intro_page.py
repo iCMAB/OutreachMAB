@@ -8,8 +8,10 @@ from src.gui.standard_widgets import Page, Header
 
 
 class IntroPage(Page):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, contextual: bool = False, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.contextual = contextual
 
         self.grid_columnconfigure(0, weight=1)
 
@@ -19,7 +21,7 @@ class IntroPage(Page):
             title="Simulation Introduction",
             forward_button_args={
                 "text": "START",
-                "command": lambda: self.app.set_page("simulation")
+                "command": lambda: self.app.set_page("simulation", kwargs={"contextual": self.contextual})
             }
         )
         header.grid(column=0, row=0, sticky=tk.NSEW)
@@ -59,7 +61,9 @@ class IntroPage(Page):
         arms_label.grid(row=5, column=0, columnspan=4, padx=20, pady=10)
 
         continue_button = ctk.CTkButton(self, text="START",
-                                     command=lambda: self.app.set_page("simulation"), font=ctk.CTkFont(size=24))
+                                        command=lambda: self.app.set_page("simulation",
+                                                                          kwargs={"contextual": self.contextual}),
+                                        font=ctk.CTkFont(size=24))
         continue_button.grid(row=6, column=0, columnspan=4, padx=20, pady=10, ipadx=50, ipady=20)
 
     def open(self):

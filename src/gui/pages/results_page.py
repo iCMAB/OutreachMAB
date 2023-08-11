@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+
 import customtkinter as ctk
 import numpy as np
 
@@ -70,7 +71,7 @@ class _RightPanel(tk.LabelFrame):
                 master=restaurant_frame,
                 image_filepath=output_dir / f"{i}_rewards.png",
                 text=f"Restaurant #{i} graph placeholder",
-                size=(96, 96),
+                size=(144, 96),
             )
             image_label.grid(column=0, row=0, rowspan=3)
 

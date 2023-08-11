@@ -17,6 +17,7 @@ class Simulator:
             bandit: str,
             n_arms: int,
             num_frames: int,
+            contextual: bool = False
     ):
         self.n_arms: int = n_arms
         self.num_frames: int = num_frames
@@ -25,13 +26,23 @@ class Simulator:
         self.grapher = Grapher(n_arms=self.n_arms, output_dir=config["graphing"]["output_dir"])
 
         self.restaurants: List[Restaurant] = []
-        for r_config in config["restaurants"][:self.n_arms]:
-            self.restaurants.append(Restaurant(
-                location=r_config["location"],
-                peak_time=r_config["peak_time"],
-                context_options=config["context_modifiers"],
-                distribution=DISTRIBUTIONS[r_config["distribution"]["type"]](**r_config["distribution"]["parameters"])
-            ))
+        if contextual:
+            for r_config in config["restaurants"][:self.n_arms]:
+                self.restaurants.append(Restaurant(
+                    location=r_config["location"],
+                    peak_time=r_config["peak_time"],
+                    context=config["context_modifiers"],
+                    distribution=DISTRIBUTIONS[r_config["distribution"]["type"]](
+                        **r_config["distribution"]["parameters"])
+                ))
+        else:
+            for r_config in config["restaurants"][:self.n_arms]:
+                self.restaurants.append(Restaurant(
+                    location=r_config["location"],
+                    peak_time=r_config["peak_time"],
+                    distribution=DISTRIBUTIONS[r_config["distribution"]["type"]](
+                        **r_config["distribution"]["parameters"])
+                ))
 
         try:
             parameters = config["bandit_parameters"][bandit]
