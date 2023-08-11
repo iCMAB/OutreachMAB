@@ -25,6 +25,11 @@ Config file is in the form of a json nested dictionary
 - Bandit Model
     - Select model to run from drop-down in application
     - Bandit parameters are passed as keyword arguments when the bandit model is instantiated
+- Restaurants
+    - Each restaurant's reward distribution follows a normal distribution with a mean and standard deviation set in the
+      config file
+    - Each restaurant's context settings are also set in the config file, contextual penalty calculations can be found
+      below
 - Contextual Modifiers
     - Change the rate of decay and scaling of the reward penalties given to restaurant samples during contextual
       simulations
