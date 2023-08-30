@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>OutreachMAB</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+		/>
+		<style>
+			@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
+
+			body {
+				margin: 0;
+				box-sizing: border-box;
+			}
+
+			.container {
+				line-height: 150%;
+				height: 100%;
+				display: grid;
+				grid-template-rows: auto 1fr;
+			}
+
+			.header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 15px;
+				background-color: #e9e9e9;
+				line-height: 36px;
+			}
+
+			.header h1 {
+				color: #222222;
+				font-size: 30px;
+				font-family: sans-serif;
+			}
+
+			.header .social a {
+				padding: 0 5px;
+				color: #222222;
+			}
+
+			.main-container {
+				display: grid;
+				grid-template-columns: auto 1fr;
+			}
+
+			.left {
+				width: 180px;
+				margin: 0;
+				padding: 1em;
+
+				@media screen and (max-width: 480px) {
+					width: 100px;
+				}
+			}
+
+			.left img {
+				display: block;
+				margin: auto;
+				width: 130px;
+
+				@media screen and (max-device-width: 480px) {
+					width: 100px;
+				}
+			}
+
+			.content {
+				border-left: 1px solid #d4d4d4;
+				padding: 1em;
+				overflow: hidden;
+			}
+
+			h2 {
+				padding-top: 16px;
+			}
+
+			p.subtitle {
+				font-family: sans-serif;
+				background-color: #f36917;
+				color: white;
+				padding: 12px;
+				font-size: 15px;
+				line-height: 18px;
+				font-weight: bold;
+
+				@media screen and (max-device-width: 480px) {
+					font-size: 12px;
+					line-height: 16px;
+				}
+			}
+
+			ul.sidebar {
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+				font-family: sans-serif;
+				position: sticky;
+				top: 2%;
+			}
+
+			ul.subsections {
+				list-style-type: none;
+				font-size: 15px;
+				padding-left: 16px;
+			}
+
+			ul.subsections li a {
+				padding: 4px 16px;
+
+				@media screen and (max-device-width: 480px) {
+					padding: 2px 8px;
+				}
+			}
+
+			li a {
+				display: block;
+				color: #000;
+				padding: 8px 16px;
+				text-decoration: none;
+
+				@media screen and (max-device-width: 480px) {
+					padding: 4px 8px;
+				}
+			}
+
+			li a.active {
+				background-color: #f36917;
+				color: white;
+			}
+
+			li a:hover:not(.active) {
+				background-color: #29292a;
+				color: white;
+			}
+
+			table {
+				font-family: arial, sans-serif;
+				border-collapse: collapse;
+				width: 100%;
+				margin: 30px 0;
+				table-layout: fixed;
+			}
+
+			td,
+			th {
+				border: 1px solid #dddddd;
+				padding: 8px;
+			}
+
+			th {
+				background-color: #f36917;
+				color: white;
+			}
+
+			tr td i.fas {
+				display: block;
+				font-size: 35px;
+				text-align: center;
+			}
+
+			.footer {
+				background-color: #e9e9e9;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<header class="header">
+				<h1>Multi-Armed Bandit Outreach</h1>
+			</header>
+			<div class="main-container">
+				<aside class="left">
+					<img src="images/rit.png" alt="RIT logo" />
+					<p class="subtitle">Department of Software Engineering</p>
+					<hr />
+					<ul class="sidebar">
+						<li><a href="#abstract">Abstract</a></li>
+						<li><a href="#download">Download</a></li>
+						<li>
+							<a href="#setup">Setup</a>
+							<ul class="subsections">
+								<li><a href="#executable">Executable File</a></li>
+								<li><a href="#repo-cloning">Repository Cloning</a></li>
+							</ul>
+
+						</li>
+						<li>
+							<a href="#output">Output</a>
+							<ul class="subsections">
+								<li>
+									<a href="#1-model-selection"
+										>Model Selection</a
+									>
+								</li>
+								<li><a href="#2-simulation">Simulation</a></li>
+								<li><a href="#3-results">Results</a></li>
+								<li>
+									<a href="#5-visualization">Visualization</a>
+								</li>
+							</ul>
+						</li>
+						<li><a href="#team">Team</a></li>
+					</ul>
+					<br /><br />
+				</aside>
+				<main class="content">
+					<h2 id="abstract" style="padding-top: 0">Abstract</h2>
+					<p>
+						This is the Multi-Armed Bandit Outreach project. This project was built in an effort to provide
+                        outreach to students who are interested in machine learning and are between the education levels of
+                        11th Grade and college Sophomore.
+					</p>
+					<p>
+						The application uses a real-world scenario of selecting a
+                        restaurant to eat at. The restaurants are each given a reward
+                        distribution, it is the goal of the system to find which restaurant
+                        is the optimal choice for each iteration. The participant is shown a simulation of
+                        the problem both without context and with it. This is to help them build an understanding
+                        of the purpose of adding context to multi-armed bandits, as well as to see how context affects every
+                        day scenarios. The participant is also able to change the scale of the system, by changing the number of restaurants,
+                        number of iterations or even selecting a different bandit model.
+					</p>
+					<p>
+						The user is able to select from Epsilon Greedy, Thompson Sampling, Upper Confidence Bound and Random Selection models.
+                        The participant may also choose to run the application in a way that will compare these models for them and show the
+                        results of each bandit model. This functionality helps the participant understand that not all multi-armed bandits
+                        operate exactly the same and shows that there are different solutions to the same problem. Even if they all fall under the
+                        category of multi-armed bandits, each model approaches the problem differently.
+					</p>
+					<hr />
+					<h2 id="download">Download</h2>
+					<p>
+						This project can be accessed at
+						<a
+							href="https://github.com/iCMAB/OutreachMAB"
+							>OutreachMAB Github.</a
+						>
+					</p>
+					<h2 id="setup">Setup</h2>
+					Python 3.10 is required for this application. You can then <!--select to use the Executable File or---> clone the repository in order to access the project.
+					<!--
+					<h3 id="executable">Executable File</h3>
+					You can download the program from {LINK COMING SOON}
+					-->
+					<h3 id="repo-cloning">Repository Cloning</h3>
+					<ol>
+						<li>
+							Clone
+							<pre>
+git clone https://github.com/iCMAB/OutreachMAB.git</pre
+							>
+						</li>
+						<li>
+							Install dependencies
+							<pre>pip3 install -r requirements.txt</pre>
+						</li>
+						<li>
+							Run
+							<pre>python3 main.py</pre>
+						</li>
+					</ol>
+					<h2 id="output">Application Usage</h2>
+					<p>
+						When running the program, there are 3 important screens to pay attention to:
+					</p>
+					<h3 id="1-settings-selection">1. Settings Selection</h3>
+					<img
+						src="images/select-settings.png"
+						alt="A screen prompting the user to select a multi-armed bandit model, the number of arms and the number of iterations."
+						style="width: 100%; max-width: 900px"
+					/><br />
+					<p>
+						Here you can change the bandit model, number of arms (restaurants in the context of the problem) and then number of iterations.
+					</p>
+					<h3 id="2-simulation">2. Simulation</h3>
+					<img
+						src="images/simulation-screen.png"
+						alt="The simulation screen, including graphs for cumulative reward and regret, a distribution of rewards received from each restaurant and a control center for going through the iterations."
+						style="width: 100%; max-width: 900px"
+					/><br />
+					<p>
+						The simulation consists of three major parts. The control center in the top left where the participant can go through the iterations of the simulation.
+						Then there is the reward and regret graphs, one is cumulative and one is per iteration. The last part is the graphs along the right side of the screen.
+						These graphs show the current distribution of rewards that the bandit has collected from each restaurant.
+					</p>
+
+					<h3 id="3-Results">3. Results</h3>
+					<img
+						src="images/results.png"
+						alt="The final results of the situation. Total Reward: 627.8, Total Regret: 194.6. Restaurants were selected 11, 18, 6, 59, and 6 times respectively."
+						style="width: 100%; max-width: 900px"
+					/><br />
+					<p>
+						At the conclusion of the simulation, the final graphs are shown.
+					</p>
+					<p>
+						The two larger graphs show reward and regret in two different ways. The first graph is cumulative reward and regret, with the second being
+						average reward and regret over each iteration. Each of these graphs have a description beneath them to explain what the graph represents.
+
+						Then on the right the final distribution found by the bandit for each restaurant is shown.
+					</p>
+					<hr />
+					<h2 id="team">The Team</h2>
+					<table>
+						<tr>
+							<th>Carter Vail</th>
+							<th>Dante Falardeau</th>
+						</tr>
+						<tr>
+							<td>
+								Fourth Year Software Engineering student.<br />
+								Interested in software development. <br /><a
+									href="https://www.linkedin.com/in/carter-vail-210066227/"
+									>LinkedIn</a
+								>
+							</td>
+							<td>
+								Fifth year Software Engineer interested in integrating automation into existing workflows. <br/>
+								<a
+									href="https://www.linkedin.com/in/dante-falardeau-089867206/"
+									>LinkedIn</a
+								>
+							</td>
+						</tr>
+						<tr>
+							<th>Devroop Kar</th>
+							<th>Dr. Daniel Krutz</th>
+						</tr>
+						<tr>
+							<td>
+								Incoming PhD Student in Computing and Information Sciences.<br/>
+								Data Engineer and AI Enthusiast <br/>
+								<a
+								href="https://www.linkedin.com/in/devroop-kar-b6ab24147/"
+								>LinkedIn</a>
+							</td>
+							<td>
+								Director of the<a
+									href="https://danielkrutz.github.io/AwareLab.html"
+								>
+									AWARE LAB</a
+								>
+								and assistant professor.<br />Interested in Self
+								Adaptive Systems, Strategic Reasoning and
+								Computing Education.
+							</td>
+						</tr>
+					</table>
+				</main>
+			</div>
+			<footer class="footer">
+				<table style="border: none !important">
+					<tr>
+						<td style="text-align: right; border: none">
+							<img src="images/rit.png" width="100px" />
+						</td>
+						<td style="border: none">
+							<a
+								href="https://danielkrutz.github.io/AwareLab.html"
+								><img
+									src="images/aware-lab-logo.png"
+									alt="AWARE Lab"
+							/></a>
+						</td>
+						<td style="text-align: left; border: none">
+							<img
+								src="images/NSF.png"
+								alt="NSF"
+								width="110"
+								height="110"
+							/>
+						</td>
+					</tr>
+				</table>
+			</footer>
+		</div>
+	</body>
+</html>
